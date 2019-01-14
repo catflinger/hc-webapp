@@ -9,7 +9,7 @@ import { IReading } from 'src/app/common/types';
 @Injectable({
   providedIn: 'root'
 })
-export class SensorReadingService {
+export class SensorAvailabilityService {
     private bSubject: BehaviorSubject<IReading[]>;
 
     constructor(
@@ -24,7 +24,7 @@ export class SensorReadingService {
     }
 
     public refresh(): void {
-        this.http.get(this.apiBase + "sensor/configured")
+        this.http.get(this.apiBase + "sensor/available")
         .pipe(map((data: any): IReading[] => {
             const result: IReading[] = [];
             data.sensors.forEach((data: any) => {

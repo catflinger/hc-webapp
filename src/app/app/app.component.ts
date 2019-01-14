@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { ConfigService } from '../services/config.service';
 import { IConfiguration, IReading } from '../common/types';
-import { SensorReadingService } from '../services/sensor-reading.service';
+import { SensorReadingService } from "../services/sensor-reading.service";
+import { SensorAvailabilityService } from '../services/sensor-availability.service';
 
 @Component({
     selector: 'app-root',
@@ -13,13 +14,16 @@ export class AppComponent {
 
     private config: IConfiguration;
     private sensorReadings: IReading[] = [];
+    private availableSensors: IReading[] = [];
 
     private configString: string = "";
     private readingsString: string = "";
+    private availableString: string = "";
 
     constructor(
         configService: ConfigService,
-        sensorReadingService: SensorReadingService) {
+        sensorReadingService: SensorReadingService,
+        sensorAvailabilityService: SensorAvailabilityService) {
 
         configService.getConfig()
             .subscribe((config) => {
@@ -32,5 +36,12 @@ export class AppComponent {
                 this.sensorReadings = readings;
                 this.readingsString = JSON.stringify(this.sensorReadings);
             });
+
+        sensorAvailabilityService.getReadings()
+            .subscribe((readings: IReading[]) => {
+                this.availableSensors = readings;
+                this.availableString = JSON.stringify(this.availableSensors);
+            });
     }
+
 }

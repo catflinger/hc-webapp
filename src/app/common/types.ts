@@ -1,3 +1,8 @@
+// helper for creating Generic classes that instantiate placeholder types
+interface NoParamConstructor<T> {
+    new (): T;
+}
+
 /**
  * The remaining interfaces are for immutable classes
  */
