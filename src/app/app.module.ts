@@ -11,12 +11,16 @@ import { SensorAvailabilityService } from './services/sensor-availability.servic
 import { ConfigService } from './services/config.service';
 import { ControlStateService } from './services/control-state.service';
 import { OverrideService } from './services/override-service';
+import { HomeComponent } from './home/home.component';
+import { TempComponent } from './temp/temp.component';
 
 const apiBase: string = "http://localhost:3000/api/";
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        HomeComponent,
+        TempComponent
     ],
     imports: [
         BrowserModule,
