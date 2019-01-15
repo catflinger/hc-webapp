@@ -13,6 +13,8 @@ import { ControlStateService } from './services/control-state.service';
 import { OverrideService } from './services/override-service';
 import { HomeComponent } from './home/home.component';
 import { TempComponent } from './temp/temp.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { MainMenuComponent } from './main-menu/main-menu.component';
 
 const apiBase: string = "http://localhost:3000/api/";
 
@@ -20,7 +22,9 @@ const apiBase: string = "http://localhost:3000/api/";
     declarations: [
         AppComponent,
         HomeComponent,
-        TempComponent
+        TempComponent,
+        PageNotFoundComponent,
+        MainMenuComponent
     ],
     imports: [
         BrowserModule,
