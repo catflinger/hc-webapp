@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { ConfigService } from '../services/config.service';
-import { IConfiguration, IReading, IControlState } from '../common/types';
+import { IConfiguration, IReading, IControlState, IOverride } from '../common/types';
 import { SensorReadingService } from "../services/sensor-reading.service";
 import { SensorAvailabilityService } from '../services/sensor-availability.service';
 import { ControlStateService } from '../services/control-state.service';
+import { OverrideService } from '../services/override-service';
 
 @Component({
     selector: 'app-root',
@@ -17,17 +18,20 @@ export class AppComponent {
     private controlState: IControlState;
     private sensorReadings: IReading[] = [];
     private availableSensors: IReading[] = [];
+    private overrides: IOverride[] = [];
 
     private configString: string = "";
     private readingsString: string = "";
     private availableString: string = "";
     private controlStateString: string = "";
+    private overrideStateString: string = "";
 
     constructor(
-        configService: ConfigService,
-        controlStateService: ControlStateService,
-        sensorReadingService: SensorReadingService,
-        sensorAvailabilityService: SensorAvailabilityService) {
+        private configService: ConfigService,
+        private controlStateService: ControlStateService,
+        private sensorReadingService: SensorReadingService,
+        private overrideService: OverrideService,
+        private sensorAvailabilityService: SensorAvailabilityService) {
 
         configService.getConfig()
             .subscribe((config) => {
@@ -52,6 +56,19 @@ export class AppComponent {
                 this.availableSensors = readings;
                 this.availableString = JSON.stringify(this.availableSensors);
             });
+
+        overrideService.getOverrides()
+        .subscribe((overrides: IOverride[]) => {
+            this.overrides = overrides;
+            this.overrideStateString = JSON.stringify(this.overrides);
+        });
     }
 
+    private setOverride(minutes: number) {
+        this.overrideService.setOverride(minutes);
+    }
+
+    private clearOverrides(minutes: number) {
+        this.overrideService.clearOverrides();
+    }
 }

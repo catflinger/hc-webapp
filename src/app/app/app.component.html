@@ -28,7 +28,16 @@
     AVAILABLE: {{availableString}}
 </div>
 <div>
-    AVAILABLE: {{controlStateString}}
+    CONTROL STATE: {{controlStateString}}
+</div>
+<div>
+    OVERRIDES: {{overrideStateString}}
+</div>
+<div>
+    <button type="button" (click)="setOverride(30)">Set Override</button>
+</div>
+<div>
+    <button type="button" (click)="clearOverrides()">Clear Override</button>
 </div>
 
 <router-outlet></router-outlet>

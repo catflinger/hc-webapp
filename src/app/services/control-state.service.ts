@@ -17,9 +17,10 @@ export class ControlStateService {
         private http: HttpClient,
         @Inject(INJECTABLES.ApiBase) private baseUrl: string,
         ) {
-            // default to a value of null for the initial config
-            this.bSubject = <BehaviorSubject<ControlState>>new BehaviorSubject(null);
-            this.refresh();
+
+        // default to a value of null for the initial config
+        this.bSubject = <BehaviorSubject<ControlState>>new BehaviorSubject(null);
+        this.refresh();
     }
 
     public getControlState(): Observable<ControlState> {
