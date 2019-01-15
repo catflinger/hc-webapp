@@ -43,7 +43,6 @@ export class TempComponent implements OnInit {
         this.overrideService.clearOverrides();
     }
 
-
     ngOnInit() {
         this.configService.getConfig()
             .subscribe((config) => {

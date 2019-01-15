@@ -1,5 +1,24 @@
-<div class="row">
-    <div class="col">
-        <h3>Home</h3>
+<div class="row mt-5">
+    <div class="col-sm-3 mb-5">
+        <button type="button" class="btn btn-primary" (click)="setOverride(30)">On 30 mins</button>
     </div>
+    <div class="col-sm-3 mb-5">
+        <button type="button" class="btn btn-primary" (click)="setOverride(60)">On 1 hour</button>
+    </div>
+    <div class="col-sm-3 mb-5">
+            <button type="button" class="btn btn-primary" (click)="setOverride(120)">On 2 hours</button>
+        </div>
+        <div class="col-sm-3 mb-5">
+        <button type="button" class="btn btn-primary" (click)="clearOverrides()">Cancel</button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col text-nowrap">Bedroom</div>
+    <div class="col text-nowrap">19</div>
+</div>
+
+<div class="row">
+    <div class="col text-nowrap">Hot water</div>
+    <div class="col text-nowrap">51</div>
 </div>
