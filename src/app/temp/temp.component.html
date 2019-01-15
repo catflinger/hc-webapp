@@ -3,23 +3,34 @@
         <h3>Development page</h3>
     </div>
 </div>
-<div class="row">
-    <div class="col"> CONFIG: {{configString}} </div>
+<div class="row mt-5">
+    <div class="col-sm-2">CONFIG</div>
+    <div class="col">{{configString}} </div>
 </div>
-<div class="row">
-    <div class="col">READINGS: {{readingsString}}</div>
+<div class="row mt-5">
+    <div class="col-sm-2">READINGS</div>
+    <div class="col">{{readingsString}}</div>
 </div>
-<div class="row">
-    <div class="col">AVAILABLE: {{availableString}}</div>
+<div class="row mt-5">
+    <div class="col-sm-2">AVAILABLE</div>
+    <div class="col">{{availableString}}</div>
 </div>
-<div class="row">
-    <div class="col">CONTROL STATE: {{controlStateString}}</div>
+<div class="row mt-5">
+    <div class="col-sm-2">CONTROL STATE</div>
+    <div class="col">{{controlStateString}}</div>
 </div>
-<div class="row">
-    <div class="col">OVERRIDES: {{overrideStateString}}</div>
+<div class="row mt-5">
+    <div class="col-sm-2">OVERRIDES</div>
+    <div class="col">{{overrideStateString}}</div>
 </div>
-<div class="row">
-    <div class="col-sm-2"><button type="button" class="btn btn-primary" (click)="setOverride(30)">Set Override</button></div>
-    <div class="col-sm-2"><button type="button" class="btn btn-primary" (click)="clearOverrides()">Clear Override</button></div>
-    <div class="col-sm-2"><button type="button" class="btn btn-primary" [routerLink]="['/home']">Home</button></div>
+<div class="row mt-5">
+    <div class="col-sm-2 mb-5">
+        <button type="button" class="btn btn-primary" (click)="setOverride(30)">Set Override</button>
+    </div>
+    <div class="col-sm-2 mb-5">
+        <button type="button" class="btn btn-primary" (click)="clearOverrides()">Clear Override</button>
+    </div>
+    <div class="col-sm-2 mb-5">
+        <button type="button" class="btn btn-primary" [routerLink]="['/home']">Home</button>
+    </div>
 </div>
