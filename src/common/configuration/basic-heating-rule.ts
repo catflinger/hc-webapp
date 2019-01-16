@@ -1,4 +1,4 @@
-import { IControlState, IReading, IRule, IRuleResult, ITimeOfDay } from "../types";
+import { IControlState, IReading, IRule, IRuleResult, ITimeOfDay } from "../interfaces";
 import { TimeOfDay } from "./time-of-day";
 
 /* Base class for implementing rules */

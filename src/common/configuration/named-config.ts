@@ -1,5 +1,5 @@
 import { ConfigValidation } from "../config-validation";
-import { INamedConfig } from "../types";
+import { INamedConfig } from "../interfaces";
 
 export class NamedConfig implements INamedConfig {
     public readonly weekdayProgramId: string;

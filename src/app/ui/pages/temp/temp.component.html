@@ -3,7 +3,7 @@
         <h3>Development page</h3>
     </div>
 </div>
-<div class="row mt-5">
+<div class="row mt-5" *ngIf="config">
     <div class="col-sm-2">CONFIG</div>
     <div class="col">{{configString}} </div>
 </div>
@@ -32,5 +32,10 @@
     </div>
     <div class="col-sm-2 mb-5">
         <button type="button" class="btn btn-primary" [routerLink]="['/home']">Home</button>
+    </div>
+</div>
+<div class="row mt-5" *ngIf="config">
+    <div class="col">
+        <app-rule-chart [program]="program"></app-rule-chart>
     </div>
 </div>

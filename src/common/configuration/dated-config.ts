@@ -1,5 +1,5 @@
 import { ConfigValidation } from "../config-validation";
-import { IDatedConfig } from "../types";
+import { IDatedConfig } from "../interfaces";
 
 export class DatedConfig implements IDatedConfig {
     public readonly programId: string;

@@ -1,5 +1,5 @@
 import { ConfigValidation } from "../config-validation";
-import { ISensorConfig } from "../types";
+import { ISensorConfig } from "../interfaces";
 
 export class SensorConfig implements ISensorConfig {
     public readonly id: string;

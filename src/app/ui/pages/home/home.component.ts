@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { SensorReadingService } from '../services/sensor-reading.service';
-import { OverrideService } from '../services/override-service';
-import { IReading, IOverride } from '../common/types';
+import { SensorReadingService } from '../../../services/sensor-reading.service';
+import { OverrideService } from '../../../services/override-service';
+import { IReading, IOverride } from '../../../../common/interfaces';
 
 @Component({
     selector: 'app-home',

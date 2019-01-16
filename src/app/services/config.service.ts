@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { map } from "rxjs/operators";
 import { Observable, BehaviorSubject } from "rxjs";
 
-import { Configuration } from '../common/configuration/configuration';
+import { Configuration } from '../../common/types';
 import { INJECTABLES } from '../injection-tokens';
 
 @Injectable({
@@ -29,6 +29,7 @@ export class ConfigService {
     public refresh(): void {
         this.http.get(this.baseUrl + "config")
         .pipe(map((data: any): Configuration => {
+            //console.log("GOT CONFIG:" + JSON.stringify(data));
             return new Configuration(data.config);
         }))
         .subscribe((s) => {

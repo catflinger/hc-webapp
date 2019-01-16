@@ -4,7 +4,7 @@ import { map } from "rxjs/operators";
 import { Observable, BehaviorSubject, timer } from "rxjs";
 
 import { INJECTABLES } from '../injection-tokens';
-import { IReading } from 'src/app/common/types';
+import { IReading } from '../../common/interfaces';
 
 @Injectable({
   providedIn: 'root'

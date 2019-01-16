@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { TempComponent } from './temp/temp.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { HomeComponent } from './ui/pages/home/home.component';
+import { TempComponent } from './ui/pages/temp/temp.component';
+import { PageNotFoundComponent } from './ui/pages/page-not-found/page-not-found.component';
 
 const routes: Routes = [
     { path: "home", component: HomeComponent },

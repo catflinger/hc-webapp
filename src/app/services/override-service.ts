@@ -4,7 +4,7 @@ import { map } from "rxjs/operators";
 import { Observable, BehaviorSubject, timer } from "rxjs";
 
 import { INJECTABLES } from '../injection-tokens';
-import { Override } from '../common/configuration/override';
+import { Override } from '../../common/types';
 
 @Injectable({
   providedIn: 'root'

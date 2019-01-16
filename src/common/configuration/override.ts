@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import { IOverride, IRule } from "../types";
+import { IOverride, IRule } from "../interfaces";
 
 export class Override implements IOverride {
     public readonly rule: IRule;

@@ -1,4 +1,4 @@
-import { IConfiguration, IDatedConfig, INamedConfig, IProgram, ISensorConfig } from "../types";
+import { IConfiguration, IDatedConfig, INamedConfig, IProgram, ISensorConfig } from "../interfaces";
 import { DatedConfig } from "./dated-config";
 import { NamedConfig } from "./named-config";
 import { Program } from "./program";

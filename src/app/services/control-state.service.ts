@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { map } from "rxjs/operators";
 import { Observable, BehaviorSubject } from "rxjs";
 
-import { ControlState } from '../common/configuration/control-state';
+import { ControlState } from '../../common/types';
 import { INJECTABLES } from '../injection-tokens';
 
 @Injectable({

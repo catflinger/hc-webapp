@@ -1,11 +1,7 @@
-// helper for creating Generic classes that instantiate placeholder types
-interface NoParamConstructor<T> {
-    new (): T;
-}
-
 /**
- * The remaining interfaces are for immutable classes
+ * All these interfaces are intended for use with immutable classes
  */
+
 export interface IProgram {
     id: string;
     name: string;
@@ -37,6 +33,8 @@ export interface ITimeOfDay {
     addHours(hours: number): ITimeOfDay;
     addMinutes(minutes: number): ITimeOfDay;
     addSeconds(seconds: number): ITimeOfDay;
+
+    toSeconds(): number;
 }
 
 export interface IControlState {
@@ -80,4 +78,11 @@ export interface IOverride {
     readonly id: string;
     readonly date: Date;
     readonly rule: IRule;
+}
+
+export interface IConfigValidation {
+    getBoolean(val: any, message: string, defaultValue?: boolean): boolean;
+    getString(val: any, message: string, defaultValue?: string): string;
+    getNumber(val: any, message: string, defaultValue?: number): number;
+    getDate(val: any, message: string, defaultValue?: Date): Date;
 }

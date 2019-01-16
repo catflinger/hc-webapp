@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 
 import { ConfigValidation } from "../config-validation";
-import { IProgram, IRule } from "../types";
+import { IProgram, IRule } from "../interfaces";
 import { BasicHeatingRule } from "./basic-heating-rule";
 
 export class Program implements IProgram {
