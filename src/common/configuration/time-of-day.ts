@@ -3,7 +3,7 @@ import { ITimeOfDay } from "../interfaces";
 
 export class TimeOfDay implements ITimeOfDay {
 
-    private static fromSeconds(totalSeconds: number): ITimeOfDay {
+    public static fromSeconds(totalSeconds: number): ITimeOfDay {
         // tidy up the input value to a reasonable positive innteger
         totalSeconds = Math.floor(totalSeconds);
         totalSeconds = Math.max(0, totalSeconds);

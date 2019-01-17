@@ -16,6 +16,10 @@ export class ProgramCardComponent implements OnInit {
     ngOnInit() {
     }
 
+    private onRuleClick(event: any) {
+        console.log("CLICKED " + JSON.stringify(event));
+    }
+
     private setNamedProgram(key: string, id: string) {
         try {
             const config: any = this.configService.getMutableCopy();

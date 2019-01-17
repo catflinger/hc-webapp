@@ -11,6 +11,7 @@ export interface IProgram {
 }
 
 export interface IRule {
+    id: string;
     startTime: ITimeOfDay;
     endTime: ITimeOfDay;
     applyRule(currentState: IControlState, readings: ReadonlyArray<IReading>, time: ITimeOfDay | Date): IRuleResult;

@@ -21,7 +21,7 @@
         </div>
         <div class="row">
             <div class="col-12 d-flex justify-content-center">
-                <app-rule-chart [program]="program"></app-rule-chart>
+                <app-rule-chart [program]="program" (ruleClick)="onRuleClick($event)"></app-rule-chart>
             </div>
         </div>
 
