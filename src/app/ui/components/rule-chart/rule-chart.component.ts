@@ -1,8 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import { IRule, IProgram, ITimeOfDay } from '../../../../common/interfaces';
 import { v4 as uuid } from 'uuid';
-import { TimeOfDay } from 'src/common/types';
 
 class RGB {
     constructor(
@@ -78,10 +76,8 @@ export class RuleChartComponent implements OnInit {
             // create rgb color for that pixel
             if (slotColor.isSameColorAs(pixel[0], pixel[1], pixel[2])) {
 
-                // TO DO: work out which rule(s) have been clicked on
+                // work out which rule(s) have been clicked on
                 const seconds = this.pointToSeconds(mousePos);
-
-                console.log("TOD" + JSON.stringify(TimeOfDay.fromSeconds(seconds)));
 
                 const result: string[] = [];
 
@@ -155,8 +151,6 @@ export class RuleChartComponent implements OnInit {
         let lengthOfArc = Math.sqrt(xOffset*xOffset + yOffset*yOffset);
         xOffset /= lengthOfArc;
         yOffset /= lengthOfArc;
-
-        console.log("x= " + xOffset + " y= " + yOffset);
 
         let angle;
 
