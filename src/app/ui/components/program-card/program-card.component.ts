@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { IProgram } from 'src/common/interfaces';
+import { ConfigService } from 'src/app/services/config.service';
 
 @Component({
     selector: 'app-program-card',
@@ -10,9 +11,19 @@ export class ProgramCardComponent implements OnInit {
 
     @Input("program") private program: IProgram;
 
-    constructor() { }
+    constructor(private configService: ConfigService) { }
 
     ngOnInit() {
     }
 
+    private setNamedProgram(key: string, id: string) {
+        try {
+            const config: any = this.configService.getMutableCopy();
+            config.namedConfig[key] = id;
+            this.configService.setConfig(config);
+        } catch(err) {
+            // TO DO: add a status panel to app somehwere
+            alert("ERROR saving config");
+        }
+    }
 }

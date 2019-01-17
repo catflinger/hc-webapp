@@ -1,4 +1,24 @@
 <h3>Programs</h3>
+<div class="row">
+    <div class="col-12 mt-5 d-flex justify-content-center" *ngIf="config">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td>Weekday</td>
+                    <td>{{weekdayProgramName}}</td>
+                </tr>
+                <tr>
+                    <td>Saturday</td>
+                    <td>{{saturdayProgramName}}</td>
+                </tr>
+                <tr>
+                    <td>Sunday</td>
+                    <td>{{sundayProgramName}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 <div class="card-deck" *ngIf="config">
     <ng-container *ngFor="let program of config.getProgramConfig()">
         <app-program-card [program]="program"></app-program-card>

@@ -54,6 +54,7 @@ export interface IConfiguration {
     getNamedConfig(): INamedConfig;
     getDatedConfig(): ReadonlyArray<IDatedConfig>;
     getSensorConfig(): ReadonlyArray<ISensorConfig>;
+    toMutable(): any;
 }
 
 export interface INamedConfig {

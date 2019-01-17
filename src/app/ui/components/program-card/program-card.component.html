@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card  mt-5">
     <div class="card-header">
         <h4 class="card-title">{{program.name}}</h4>
     </div>
@@ -27,19 +27,19 @@
 
         <div class="row">
             <div class="col-4">
-                <button class="btn btn-primary">Weekdays</button>
+                <button class="btn btn-outline-primary" (click)="setNamedProgram('weekdayProgramId', program.id)">Weekdays</button>
             </div>
             <div class="col-4">
-                <button class="btn btn-primary">Saturdays</button>
+                <button class="btn btn-outline-primary" (click)="setNamedProgram('saturdayProgramId', program.id)">Saturdays</button>
             </div>
             <div class="col-4">
-                <button class="btn btn-primary">Sundays</button>
+                <button class="btn btn-outline-primary" (click)="setNamedProgram('sundayProgramId', program.id)">Sundays</button>
             </div>
         </div>
 
         <div class="row mt-3">
             <div class="col-12">
-                <a href="#" class="card-link">Edit</a>
+                <a [routerLink]="['/program-edit', program.id]" class="card-link">Edit</a>
             </div>
         </div>
     </div>

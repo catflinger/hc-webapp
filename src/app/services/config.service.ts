@@ -3,8 +3,9 @@ import { HttpClient } from "@angular/common/http";
 import { map } from "rxjs/operators";
 import { Observable, BehaviorSubject } from "rxjs";
 
-import { Configuration } from '../../common/types';
+import { Configuration, NamedConfig } from '../../common/types';
 import { INJECTABLES } from '../injection-tokens';
+import { IConfiguration } from 'src/common/interfaces';
 
 @Injectable({
     providedIn: 'root'
@@ -24,6 +25,28 @@ export class ConfigService {
 
     public getConfig(): Observable<Configuration> {
         return this.bSubject.asObservable();
+    }
+
+    public setConfig(config: any) {
+        return new Promise((resolve, reject) => {
+            this.http.put(this.baseUrl + "config", config)
+            .toPromise()
+            .then((data: any) => {
+                try {
+                    this.bSubject.next(new Configuration(data.config));
+                    resolve();
+                } catch(err) {
+                    reject(err);
+                }
+            })
+            .catch((err) => {
+                reject(err);
+            })
+        });
+    }
+
+    public getMutableCopy(): any {
+        return JSON.parse(JSON.stringify(this.bSubject.value));
     }
 
     public refresh(): void {
