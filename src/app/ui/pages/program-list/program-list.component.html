@@ -1,0 +1,7 @@
+<h3>Programs</h3>
+<div class="card-deck" *ngIf="config">
+    <ng-container *ngFor="let program of config.getProgramConfig()">
+        <app-program-card [program]="program"></app-program-card>
+    </ng-container>
+
+</div>

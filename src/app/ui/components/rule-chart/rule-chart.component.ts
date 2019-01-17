@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import { IRule, IProgram, ITimeOfDay } from '../../../../common/interfaces';
+import { v4 as uuid } from 'uuid';
 
 @Component({
     selector: 'app-rule-chart',
@@ -10,7 +11,7 @@ import { IRule, IProgram, ITimeOfDay } from '../../../../common/interfaces';
 export class RuleChartComponent implements OnInit {
     private canvas: PieCanvas;
 
-    @Input() public program: IProgram;
+    @Input("program") public program: IProgram;
 
     constructor() { 
         this.canvas = new PieCanvas();
@@ -99,6 +100,6 @@ class PieCanvas {
     public get cy(): number { return this.height / 2 };
 
     constructor() {
-        this.id = "abcde";
+        this.id = uuid();
     }
 }

@@ -16,6 +16,12 @@ import { TempComponent } from './ui/pages/temp/temp.component';
 import { PageNotFoundComponent } from './ui/pages/page-not-found/page-not-found.component';
 import { MainMenuComponent } from './ui/components/main-menu/main-menu.component';
 import { RuleChartComponent } from './ui/components/rule-chart/rule-chart.component';
+import { ProgramEditComponent } from './ui/pages/program-edit/program-edit.component';
+import { ProgramListComponent } from './ui/pages/program-list/program-list.component';
+import { SensorListComponent } from './ui/pages/sensor-list/sensor-list.component';
+import { SensorEditComponent } from './ui/pages/sensor-edit/sensor-edit.component';
+import { StatusComponent } from './ui/pages/status/status.component';
+import { ProgramCardComponent } from './ui/components/program-card/program-card.component';
 
 const apiBase: string = "http://localhost:3000/api/";
 
@@ -26,7 +32,13 @@ const apiBase: string = "http://localhost:3000/api/";
         TempComponent,
         PageNotFoundComponent,
         MainMenuComponent,
-        RuleChartComponent
+        RuleChartComponent,
+        ProgramEditComponent,
+        ProgramListComponent,
+        SensorListComponent,
+        SensorEditComponent,
+        StatusComponent,
+        ProgramCardComponent,
     ],
     imports: [
         BrowserModule,

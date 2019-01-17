@@ -1,0 +1,46 @@
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">{{program.name}}</h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Hot water maximum</td>
+                            <td>{{program.maxHwTemp}}</td>
+                        </tr>
+                        <tr>
+                            <td>Hot water minimum</td>
+                            <td>{{program.minHwTemp}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center">
+                <app-rule-chart [program]="program"></app-rule-chart>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4">
+                <button class="btn btn-primary">Weekdays</button>
+            </div>
+            <div class="col-4">
+                <button class="btn btn-primary">Saturdays</button>
+            </div>
+            <div class="col-4">
+                <button class="btn btn-primary">Sundays</button>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <a href="#" class="card-link">Edit</a>
+            </div>
+        </div>
+    </div>
+</div>
