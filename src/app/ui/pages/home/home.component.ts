@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SensorReadingService } from '../../../services/sensor-reading.service';
 import { OverrideService } from '../../../services/override-service';
 import { IReading, IOverride } from '../../../../common/interfaces';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
-
+export class HomeComponent implements OnInit, OnDestroy {
+    private subs: Subscription[] = [];
     private sensorReadings: IReading[] = [];
     private overrides: IOverride[] = [];
 
@@ -20,15 +21,21 @@ export class HomeComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.sensorReadingService.getReadings()
-            .subscribe((readings: IReading[]) => {
-                this.sensorReadings = readings;
-            });
+        this.subs.push(this.sensorReadingService.getReadings()
+        .subscribe((readings: IReading[]) => {
+            this.sensorReadings = readings;
+        }));
 
-        this.overrideService.getOverrides()
-            .subscribe((overrides: IOverride[]) => {
-                this.overrides = overrides;
-            });
+        this.subs.push(this.overrideService.getOverrides()
+        .subscribe((overrides: IOverride[]) => {
+            this.overrides = overrides;
+        }));
+    }
+
+    ngOnDestroy() {
+        this.subs.forEach((s) => {
+            s.unsubscribe();
+        });
     }
 
     private setOverride(minutes: number) {

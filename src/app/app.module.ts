@@ -22,6 +22,7 @@ import { SensorListComponent } from './ui/pages/sensor-list/sensor-list.componen
 import { SensorEditComponent } from './ui/pages/sensor-edit/sensor-edit.component';
 import { StatusComponent } from './ui/pages/status/status.component';
 import { ProgramCardComponent } from './ui/components/program-card/program-card.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const apiBase: string = "http://localhost:3000/api/";
 
@@ -44,7 +45,8 @@ const apiBase: string = "http://localhost:3000/api/";
         BrowserModule,
         BrowserAnimationsModule,
         AppRoutingModule,
-        HttpClientModule
+        HttpClientModule,
+        ReactiveFormsModule,
     ],
     providers: [
         SensorAvailabilityService,

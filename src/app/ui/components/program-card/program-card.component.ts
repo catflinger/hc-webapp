@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { IProgram } from 'src/common/interfaces';
 import { ConfigService } from 'src/app/services/config.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-program-card',
