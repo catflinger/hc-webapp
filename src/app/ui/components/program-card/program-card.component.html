@@ -15,6 +15,12 @@
                             <td>Hot water minimum</td>
                             <td>{{program.minHwTemp}}</td>
                         </tr>
+                        <tr>
+                            <td class="text-right" colspan="2">
+                                <button type="button" class="btn btn-link mr-0 pr-0" [routerLink]="['/program-edit', program.id]">edit</button>
+                            </td>
+                        </tr>
+        
                     </tbody>
                 </table>
             </div>
@@ -39,7 +45,7 @@
 
         <div class="row mt-3">
             <div class="col-12">
-                <a [routerLink]="['/program-edit', program.id]" class="card-link">Edit</a>
+                <a [routerLink]="['/program', program.id,'rules-edit']" class="card-link">Edit Rules</a>
             </div>
         </div>
     </div>

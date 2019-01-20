@@ -23,6 +23,9 @@ import { SensorEditComponent } from './ui/pages/sensor-edit/sensor-edit.componen
 import { StatusComponent } from './ui/pages/status/status.component';
 import { ProgramCardComponent } from './ui/components/program-card/program-card.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RulesEditComponent } from './ui/pages/rules-edit/rules-edit.component';
+import { RuleCardComponent } from './ui/components/rule-card/rule-card.component';
+import { RuleEditComponent } from './ui/pages/rule-edit/rule-edit.component';
 
 const apiBase: string = "http://localhost:3000/api/";
 
@@ -40,6 +43,9 @@ const apiBase: string = "http://localhost:3000/api/";
         SensorEditComponent,
         StatusComponent,
         ProgramCardComponent,
+        RulesEditComponent,
+        RuleCardComponent,
+        RuleEditComponent,
     ],
     imports: [
         BrowserModule,

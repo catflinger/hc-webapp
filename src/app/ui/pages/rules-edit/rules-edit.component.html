@@ -1,0 +1,31 @@
+<div class="row mt-5" *ngIf="program">
+    <div class="col d-flex justify-content-center">
+        {{program.name}}
+    </div>
+</div>
+
+<div class="row mt-3" *ngIf="program">
+    <div class="col d-flex justify-content-center">
+        <app-rule-chart [program]="program"></app-rule-chart>
+    </div>
+</div>
+
+<div class="row" *ngIf="program">
+    <div class="col d-flex justify-content-center">
+        <div>
+            <div id="rules" class="card-deck mt-3">
+                <app-rule-card 
+                    *ngFor="let rule of program.getRules(); let i = index;" 
+                    [rule]="rule" 
+                    [title]="'Rule ' + (program.getRules().length > 1 ? i + 1 : '')"
+                    (edit)="onEdit($event)"
+                    (delete)="onDelete($event)">
+                </app-rule-card>
+            </div>
+            <div class="btn-group mt-5">
+                <button type="button" class="btn btn-primary mr-5" (click)="onAdd()">Add rule</button>
+                <button type="button" class="btn btn-primary" (click)="onClose()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -18,7 +18,6 @@ export class ProgramCardComponent implements OnInit {
     }
 
     private onRuleClick(event: any) {
-        console.log("CLICKED " + JSON.stringify(event));
     }
 
     private setNamedProgram(key: string, id: string) {

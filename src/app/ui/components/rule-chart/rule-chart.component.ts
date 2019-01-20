@@ -1,12 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, OnChanges } from '@angular/core';
 import { IRule, IProgram, ITimeOfDay } from '../../../../common/interfaces';
 import { v4 as uuid } from 'uuid';
 
 class RGB {
     constructor(
-    public readonly r: number,
-    public readonly g: number,
-    public readonly b: number){}
+        public readonly r: number,
+        public readonly g: number,
+        public readonly b: number) { }
 
     public toCssColor(): string {
         return `rgb(${this.r},${this.g},${this.b})`
@@ -27,14 +27,14 @@ const radiansPerQuarter = PI / 2;
     templateUrl: './rule-chart.component.html',
     styleUrls: ['./rule-chart.component.css']
 })
-export class RuleChartComponent implements OnInit {
+export class RuleChartComponent implements OnInit, AfterViewInit, OnChanges {
     private canvas: PieCanvas;
 
     @Input("program") public program: IProgram;
 
     @Output() ruleClick: EventEmitter<string[]> = new EventEmitter();
 
-    constructor() { 
+    constructor() {
         this.canvas = new PieCanvas();
     }
 
@@ -42,8 +42,25 @@ export class RuleChartComponent implements OnInit {
     }
 
     ngAfterViewInit() {
+        console.log("ngAfterViewInit");
+        this.initChart();
+        this.drawChart();
+    }
+
+    ngOnChanges() {
+        console.log("ngOnChanges");
+        if (this.canvas.getDrawingContext()) {
+            this.drawChart();
+        }
+    }
+
+    private initChart() {
         const ctx = this.canvas.getDrawingContext();
         ctx.translate(this.canvas.cx, this.canvas.cy);
+    }
+
+    private drawChart() {
+        const ctx = this.canvas.getDrawingContext();
 
         ctx.strokeStyle = "#AAAAAA";
         ctx.fillStyle = "#AAAAAA";
@@ -66,28 +83,28 @@ export class RuleChartComponent implements OnInit {
         const ctx = this.canvas.getDrawingContext();
 
         const mousePos = {
-              x: event.offsetX,
-              y: event.offsetY,
-            };
+            x: event.offsetX,
+            y: event.offsetY,
+        };
 
-            // get pixel under cursor
-            const pixel = ctx.getImageData(mousePos.x, mousePos.y, 1, 1).data;
-          
-            // create rgb color for that pixel
-            if (slotColor.isSameColorAs(pixel[0], pixel[1], pixel[2])) {
+        // get pixel under cursor
+        const pixel = ctx.getImageData(mousePos.x, mousePos.y, 1, 1).data;
 
-                // work out which rule(s) have been clicked on
-                const seconds = this.pointToSeconds(mousePos);
+        // create rgb color for that pixel
+        if (slotColor.isSameColorAs(pixel[0], pixel[1], pixel[2])) {
 
-                const result: string[] = [];
+            // work out which rule(s) have been clicked on
+            const seconds = this.pointToSeconds(mousePos);
 
-                this.program.getRules().forEach((rule: IRule) => {
-                    if (seconds >= rule.startTime.toSeconds() && seconds <= rule.endTime.toSeconds()) {
-                        result.push(rule.id);
-                    }
-                });
-                this.ruleClick.emit(result);
-            }
+            const result: string[] = [];
+
+            this.program.getRules().forEach((rule: IRule) => {
+                if (seconds >= rule.startTime.toSeconds() && seconds <= rule.endTime.toSeconds()) {
+                    result.push(rule.id);
+                }
+            });
+            this.ruleClick.emit(result);
+        }
     }
 
     private drawSlot(ctx: CanvasRenderingContext2D, from: ITimeOfDay, to: ITimeOfDay, color: string): void {
@@ -97,18 +114,18 @@ export class RuleChartComponent implements OnInit {
         ctx.beginPath();
         ctx.moveTo(0, 0);
         ctx.arc(
-            0, 
-            0, 
+            0,
+            0,
             this.canvas.radius,
-            from.toSeconds() * Math.PI * 2 / (60 * 60 * 24) - PI / 2, 
-            to.toSeconds() * Math.PI * 2 / (60 * 60 * 24) -PI / 2, 
+            from.toSeconds() * Math.PI * 2 / (60 * 60 * 24) - PI / 2,
+            to.toSeconds() * Math.PI * 2 / (60 * 60 * 24) - PI / 2,
             false);
         ctx.fill();
 
         ctx.stroke();
     }
 
-    private drawHourLines(ctx: CanvasRenderingContext2D):void {
+    private drawHourLines(ctx: CanvasRenderingContext2D): void {
         for (let n = 0; n < 24; n++) {
             let radians = (n * Math.PI * 2) / 24 - Math.PI / 2;
             let tickFactor = n % 6 ? 0.9 : 0.8;
@@ -126,7 +143,7 @@ export class RuleChartComponent implements OnInit {
             ctx.strokeStyle = "#FFFFFF";
             ctx.beginPath();
             ctx.moveTo(x1, y1);
-            ctx.lineTo(x2,y2);
+            ctx.lineTo(x2, y2);
             ctx.stroke();
 
             ctx.strokeStyle = "#666666";
@@ -140,7 +157,7 @@ export class RuleChartComponent implements OnInit {
     // pointToSeconds calculates the angle between the line form the given point to the origin
     // and the zero-hour line.  The result is returned as the number of seconds from midnight
     // that such an angle would represent on the chart
-    private pointToSeconds(pos: {x: number, y: number}): number {
+    private pointToSeconds(pos: { x: number, y: number }): number {
 
         let result: number;
 
@@ -148,14 +165,14 @@ export class RuleChartComponent implements OnInit {
         let xOffset = pos.x - this.canvas.cx;
         let yOffset = -(pos.y - this.canvas.cy);
 
-        let lengthOfArc = Math.sqrt(xOffset*xOffset + yOffset*yOffset);
+        let lengthOfArc = Math.sqrt(xOffset * xOffset + yOffset * yOffset);
         xOffset /= lengthOfArc;
         yOffset /= lengthOfArc;
 
         let angle;
 
         if (xOffset === 0) {
-            result = yOffset > 0 ? 0: 2 * secondsPerQuarter;
+            result = yOffset > 0 ? 0 : 2 * secondsPerQuarter;
         } else if (yOffset === 0) {
             result = xOffset > 0 ? secondsPerQuarter : 3 * secondsPerQuarter;
         } else if (xOffset > 0 && yOffset > 0) {
@@ -194,6 +211,7 @@ class PieCanvas {
     }
 
     getDrawingContext(): CanvasRenderingContext2D {
-        return (<HTMLCanvasElement>document.getElementById(this.id)).getContext("2d");
+        const el = <HTMLCanvasElement>document.getElementById(this.id);
+        return el ? el.getContext("2d") : null;
     }
 }

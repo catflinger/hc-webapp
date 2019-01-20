@@ -8,11 +8,15 @@ import { ProgramEditComponent } from './ui/pages/program-edit/program-edit.compo
 import { SensorListComponent } from './ui/pages/sensor-list/sensor-list.component';
 import { SensorEditComponent } from './ui/pages/sensor-edit/sensor-edit.component';
 import { StatusComponent } from './ui/pages/status/status.component';
+import { RulesEditComponent } from './ui/pages/rules-edit/rules-edit.component';
+import { RuleEditComponent } from './ui/pages/rule-edit/rule-edit.component';
 
 const routes: Routes = [
     { path: "home", component: HomeComponent },
     { path: "programs", component: ProgramListComponent },
     { path: "program-edit/:id", component: ProgramEditComponent },
+    { path: "program/:id/rules-edit", component: RulesEditComponent },
+    { path: "program/:id/rules-edit/:ruleid", component: RuleEditComponent },
     { path: "sensors", component: SensorListComponent },
     { path: "sensor-edit/:id", component: SensorEditComponent },
     { path: "status", component: StatusComponent },

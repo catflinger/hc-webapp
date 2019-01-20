@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col d-flex justify-content-center">
-        <form class="form mt-5" [formGroup]="form" (ngSubmit)="onFormSubmit()" *ngIf="form">
+        <form class="form mt-5" [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="form">
 
             <div class="form-group">
                 <label class="control-label" for="inputName">Name</label>
@@ -19,51 +19,12 @@
                     formControlName="minHwTemp">
             </div>
 
-            <div>
-                <app-rule-chart [program]="program"></app-rule-chart>
-            </div>
-
-            <div class="form-group">
-
-                <div class="mt-3">
-                    <button type="button" class="btn btn-outline-primary">Add rule</button>
-                </div>
-
-                <div id="rules" class="card-deck mt-3">
-                    <div class="card mt-3" *ngFor="let rule of program.getRules(); let i = index;">
-                        <div class=card-header>Rule {{program.getRules().length > 1 ? i + 1 : ""}}</div>
-                        <div class="card-body">
-                            <table class=table>
-                                <tr>
-                                    <td>start at: </td>
-                                    <td>{{rule.startTime.toSeconds()}}</td>
-                                </tr>
-                                <tr>
-                                    <td>end at: </td>
-                                    <td>{{rule.endTime.toSeconds()}}</td>
-                                </tr>
-                            </table>
-                            <div class="row">
-                                <div class=col>
-                                    <button type="button" class="btn btn-outline-secondary">edit</button>
-                                </div>
-                                <div class=col>
-                                    <button type="button" class="btn btn-outline-secondary">delete</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="form-group row">
                 <div class=col>
-                    <button type="submit" class="btn btn-primary mr-5 mt-5">Save</button>
-                    <button type="button" class="btn btn-primary mr-5 mt-5">Cancel</button>
+                    <button type="submit" class="btn btn-primary mr-5 mt-3">Save</button>
+                    <button type="button" class="btn btn-primary mr-5 mt-3" (click)="onCancel()">Cancel</button>
                 </div>
             </div>
-
-
         </form>
     </div>
 </div>

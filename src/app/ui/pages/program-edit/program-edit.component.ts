@@ -53,12 +53,29 @@ export class ProgramEditComponent implements OnInit, OnDestroy {
         });
     }
 
-    private onFormSubmit() {
-        console.log("Form submitted");
+    private onSubmit() {
+        const config: any = this.configService.getMutableCopy();
+        const program: any = config.programConfig.find((p: any) => { return p.id === this.program.id});
+
+        if (program) {
+            program.maxHwTemp = this.form.value.maxHwTemp;
+            program.minHwTemp = this.form.value.minHwTemp;
+
+            this.configService.setConfig(config)
+            .then(() => {
+                this.router.navigate(["programs"]);
+            })
+            .catch((err) => {
+                // to DO: display error somewhere
+            });
+        } else {
+            // program is missing for some reason, this could happen
+            // abort the operation
+            this.router.navigate(["programs"]);
+        }
     }
 
     private onCancel() {
-        console.log("Form cancelled");
         this.router.navigate(["programs"]);
     }
 

@@ -36,6 +36,7 @@ export interface ITimeOfDay {
     addSeconds(seconds: number): ITimeOfDay;
 
     toSeconds(): number;
+    toString(): string;
 }
 
 export interface IControlState {

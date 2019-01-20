@@ -1,0 +1,30 @@
+<div class="card mt-3">
+
+    <div class=card-header>{{title}}</div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <table class=table>
+                    <tr>
+                        <td>start at: </td>
+                        <td>{{rule.startTime.toString()}}</td>
+                    </tr>
+                    <tr>
+                        <td>end at: </td>
+                        <td>{{rule.endTime.toString()}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-outline-secondary" (click)="onEdit()">edit</button>
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-outline-secondary" (click)="onDelete()">delete</button>
+            </div>
+        </div>
+    </div>
+</div>
