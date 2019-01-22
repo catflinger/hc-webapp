@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AppContextService } from 'src/app/services/app-context.service';
 
 @Component({
   selector: 'app-page-not-found',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PageNotFoundComponent implements OnInit {
 
-  constructor() { }
+  constructor(private appContextService: AppContextService) { 
+      appContextService.clearContext();
+  }
 
   ngOnInit() {
   }

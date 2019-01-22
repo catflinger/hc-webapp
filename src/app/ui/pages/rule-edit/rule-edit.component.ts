@@ -91,22 +91,18 @@ export class RuleEditComponent implements OnInit {
                     })
                     .catch((error) => {
                         // to DO: report this somewhere
-                        console.log("ERROR save rule A " + error);
                         this.navigateToRulesPage();
                     });
                 } catch (err) {
                     // TO DO: notify the user
-                    console.log("ERROR save rule B " + err);
                     this.navigateToRulesPage();
                 }
             } else {
                 // TO DO: notify someone somewhere
-                console.log("ERROR save rule C");
                 this.navigateToRulesPage();
             }
         } else {
                 // TO DO: notify someone somewhere
-                console.log("ERROR save rule D");
                 this.navigateToRulesPage();
         }
     }

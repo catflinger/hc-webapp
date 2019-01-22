@@ -17,7 +17,7 @@
                         </tr>
                         <tr>
                             <td class="text-right" colspan="2">
-                                <button type="button" class="btn btn-link mr-0 pr-0" [routerLink]="['/program-edit', program.id]">edit</button>
+                                <button type="button" class="btn btn-link mr-0 pr-0" (click)="edit()">edit</button>
                             </td>
                         </tr>
         
@@ -27,7 +27,7 @@
         </div>
         <div class="row">
             <div class="col-12 d-flex justify-content-center">
-                <app-rule-chart [program]="program"></app-rule-chart>
+                <app-rule-chart [rules]="program.getRules()"></app-rule-chart>
             </div>
         </div>
 
@@ -45,7 +45,7 @@
 
         <div class="row mt-3">
             <div class="col-12">
-                <a [routerLink]="['/program', program.id,'rules-edit']" class="card-link">Edit Rules</a>
+                <button (click)="editRules()" class="card-link btn-link">Edit Rules</button>
             </div>
         </div>
     </div>

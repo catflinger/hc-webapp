@@ -20,7 +20,7 @@ export class TimeOfDay implements ITimeOfDay {
     public readonly minute: number = NaN;
     public readonly second: number = NaN;
 
-    constructor(data: string | { hour:number, minute:number, second:number }) {
+    constructor(data: string | { hour: number, minute: number, second: number }) {
         if (typeof data === "string") {
             if (/^\d{1,2}:\d{1,2}:\d{1,2}$/.test(data)) {
                 const parts: string[] = data.split(":");

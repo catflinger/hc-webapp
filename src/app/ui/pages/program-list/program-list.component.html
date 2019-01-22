@@ -21,7 +21,7 @@
 </div>
 <div class="card-deck" *ngIf="config">
     <ng-container *ngFor="let program of config.getProgramConfig()">
-        <app-program-card [program]="program"></app-program-card>
+        <app-program-card [program]="program" (setNamedProgram)="setNamedProgram($event)"></app-program-card>
     </ng-container>
 
 </div>

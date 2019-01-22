@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, OnChanges } from '@angular/core';
 import { IRule, IProgram, ITimeOfDay } from '../../../../common/interfaces';
 import { v4 as uuid } from 'uuid';
+import { AppContextService } from 'src/app/services/app-context.service';
+import { AppContext } from 'src/app/services/app-context';
 
 class RGB {
     constructor(
@@ -12,12 +14,14 @@ class RGB {
         return `rgb(${this.r},${this.g},${this.b})`
     }
 
-    isSameColorAs(r: number, g: number, b: number) {
-        return this.r === r && this.g === g && this.b === b;
+    isSameColorAs(other: RGB) {
+        return this.r === other.r && this.g === other.g && this.b === other.b;
     }
 }
 
-const slotColor: RGB = new RGB(0xBF, 0, 0);
+const fillColor: RGB = new RGB(0xFF, 0x00, 0x00);
+const fillHighlightColor: RGB = new RGB(0xFF, 0x90, 0x60);
+
 const PI = Math.PI;
 const secondsPerQuarter = 6 * 60 * 60;
 const radiansPerQuarter = PI / 2;
@@ -29,29 +33,30 @@ const radiansPerQuarter = PI / 2;
 })
 export class RuleChartComponent implements OnInit, AfterViewInit, OnChanges {
     private canvas: PieCanvas;
+    private appContext: AppContext;
 
-    @Input("program") public program: IProgram;
+    @Input("rules") public rules: ReadonlyArray<IRule>;
 
     @Output() ruleClick: EventEmitter<string[]> = new EventEmitter();
 
-    constructor() {
+    constructor(private appContextService: AppContextService) {
         this.canvas = new PieCanvas();
+        appContextService.getAppContext().subscribe((ac) => {
+            this.appContext = ac;
+            this.drawChart();
+        });
     }
 
     ngOnInit() {
     }
 
     ngAfterViewInit() {
-        console.log("ngAfterViewInit");
         this.initChart();
         this.drawChart();
     }
 
     ngOnChanges() {
-        console.log("ngOnChanges");
-        if (this.canvas.getDrawingContext()) {
-            this.drawChart();
-        }
+        this.drawChart();
     }
 
     private initChart() {
@@ -61,6 +66,11 @@ export class RuleChartComponent implements OnInit, AfterViewInit, OnChanges {
 
     private drawChart() {
         const ctx = this.canvas.getDrawingContext();
+
+        // if we have been called before the DOM is ready then do nothing
+        if (!ctx) {
+            return;
+        }
 
         ctx.strokeStyle = "#AAAAAA";
         ctx.fillStyle = "#AAAAAA";
@@ -72,14 +82,17 @@ export class RuleChartComponent implements OnInit, AfterViewInit, OnChanges {
         ctx.arc(0, 0, this.canvas.radius + 20, 0, 2 * Math.PI, false);
         ctx.stroke();
 
-        this.program.getRules().forEach((rule: IRule) => {
-            this.drawSlot(ctx, rule.startTime, rule.endTime, slotColor.toCssColor());
+        this.rules.forEach((rule: IRule) => {
+            const color: RGB = rule.id === this.appContext.ruleId ? fillHighlightColor : fillColor;
+            this.drawSlot(ctx, rule.startTime, rule.endTime, color, color);
         });
 
         this.drawHourLines(ctx);
     }
 
     private onClick(event: MouseEvent) {
+        const result: string[] = [];
+
         const ctx = this.canvas.getDrawingContext();
 
         const mousePos = {
@@ -91,26 +104,25 @@ export class RuleChartComponent implements OnInit, AfterViewInit, OnChanges {
         const pixel = ctx.getImageData(mousePos.x, mousePos.y, 1, 1).data;
 
         // create rgb color for that pixel
-        if (slotColor.isSameColorAs(pixel[0], pixel[1], pixel[2])) {
+        const color = new RGB(pixel[0], pixel[1], pixel[2]);
+        if (color.isSameColorAs(fillHighlightColor) || color.isSameColorAs(fillColor)) {
 
             // work out which rule(s) have been clicked on
             const seconds = this.pointToSeconds(mousePos);
 
-            const result: string[] = [];
-
-            this.program.getRules().forEach((rule: IRule) => {
+            this.rules.forEach((rule: IRule) => {
                 if (seconds >= rule.startTime.toSeconds() && seconds <= rule.endTime.toSeconds()) {
                     result.push(rule.id);
                 }
             });
-            this.ruleClick.emit(result);
         }
+        this.ruleClick.emit(result);
     }
 
-    private drawSlot(ctx: CanvasRenderingContext2D, from: ITimeOfDay, to: ITimeOfDay, color: string): void {
+    private drawSlot(ctx: CanvasRenderingContext2D, from: ITimeOfDay, to: ITimeOfDay, fill: RGB, stroke: RGB): void {
 
-        ctx.fillStyle = color;
-        ctx.strokeStyle = color;
+        ctx.fillStyle = fill.toCssColor();
+        ctx.strokeStyle = stroke.toCssColor();
         ctx.beginPath();
         ctx.moveTo(0, 0);
         ctx.arc(

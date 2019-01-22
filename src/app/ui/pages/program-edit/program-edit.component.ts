@@ -6,6 +6,7 @@ import { ConfigService } from 'src/app/services/config.service';
 import { IConfiguration, IProgram, IRule } from 'src/common/interfaces';
 import { Program } from 'src/common/types';
 import { Subscription } from 'rxjs';
+import { AppContextService } from 'src/app/services/app-context.service';
 
 @Component({
     selector: 'app-program-edit',
@@ -22,17 +23,22 @@ export class ProgramEditComponent implements OnInit, OnDestroy {
         private router: Router,
         private route: ActivatedRoute,
         private configService: ConfigService,
+        private appContextService: AppContextService,
         private fb: FormBuilder,
     ) { }
 
     ngOnInit() {
+        const programId = this.route.snapshot.params.id;
+
+        this.appContextService.setProgramContext(programId);
+
         this.subs.push(this.configService.getConfig()
         .subscribe(
             (config: IConfiguration) => {
                 if (config) {
                     this.config = config;
                     const program = this.config.getProgramConfig().find((p) => { 
-                        return p.id === this.route.snapshot.params.id; 
+                        return p.id === programId; 
                     });
                     
                     this.program = program ? program : new Program(null);

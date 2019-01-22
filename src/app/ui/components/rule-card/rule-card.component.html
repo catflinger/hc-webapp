@@ -1,6 +1,9 @@
 <div class="card mt-3">
 
-    <div class=card-header>{{title}}</div>
+    <div class=card-header (click)="onClick()" [ngClass]="{
+        'bg-primary': selected,
+        'text-white': selected,
+        'bg-light': !selected}">{{title}}</div>
 
     <div class="card-body">
         <div class="row">

@@ -3,6 +3,7 @@ import { SensorReadingService } from '../../../services/sensor-reading.service';
 import { OverrideService } from '../../../services/override-service';
 import { IReading, IOverride } from '../../../../common/interfaces';
 import { Subscription } from 'rxjs';
+import { AppContextService } from 'src/app/services/app-context.service';
 
 @Component({
     selector: 'app-home',
@@ -18,7 +19,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     constructor(
         private sensorReadingService: SensorReadingService,
         private overrideService: OverrideService,
-    ) { }
+        private appContextService: AppContextService,
+    ) {
+        appContextService.clearContext();
+     }
 
     ngOnInit() {
         this.subs.push(this.sensorReadingService.getReadings()

@@ -36,6 +36,6 @@
 </div>
 <div class="row mt-5" *ngIf="config">
     <div class="col">
-        <app-rule-chart [program]="program"></app-rule-chart>
+        <app-rule-chart [rules]="program.getRules()"></app-rule-chart>
     </div>
 </div>

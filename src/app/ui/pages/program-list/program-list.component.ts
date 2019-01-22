@@ -3,6 +3,7 @@ import { ConfigService } from 'src/app/services/config.service';
 import { IConfiguration, IProgram } from 'src/common/interfaces';
 import { NamedConfig } from 'src/common/types';
 import { Subscription } from 'rxjs';
+import { AppContextService } from 'src/app/services/app-context.service';
 
 @Component({
     selector: 'app-program-list',
@@ -17,7 +18,11 @@ export class ProgramListComponent implements OnInit, OnDestroy {
     private saturdayProgramName: string;
     private sundayProgramName: string;
 
-    constructor(private configService: ConfigService) { }
+    constructor(
+        private configService: ConfigService,
+        private appContextService: AppContextService) { 
+            appContextService.clearContext();
+        }
 
     ngOnInit() {
         this.subs.push(this.configService.getConfig()
@@ -46,4 +51,16 @@ export class ProgramListComponent implements OnInit, OnDestroy {
     private getProgram(id: string): IProgram {
         return this.config.getProgramConfig().find((program) => { return program.id === id; });
     }
+
+    private setNamedProgram(event: {name: string, programId: string}) {
+        try {
+            const config: any = this.configService.getMutableCopy();
+            config.namedConfig[event.name] = event.programId;
+            this.configService.setConfig(config);
+        } catch(err) {
+            // TO DO: add a status panel to app somehwere
+            alert("ERROR saving config");
+        }
+    }
+
 }

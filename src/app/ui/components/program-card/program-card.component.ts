@@ -1,7 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { IProgram } from 'src/common/interfaces';
-import { ConfigService } from 'src/app/services/config.service';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { IProgram, IRule } from 'src/common/interfaces';
+import { stringify } from '@angular/core/src/util';
+import { BasicHeatingRule } from 'src/common/types';
+import { Router } from '@angular/router';
+import { routerNgProbeToken } from '@angular/router/src/router_module';
 
 @Component({
     selector: 'app-program-card',
@@ -11,23 +13,22 @@ import { Subscription } from 'rxjs';
 export class ProgramCardComponent implements OnInit {
 
     @Input("program") private program: IProgram;
+    @Output("setNamedProgram") private namedProgramEvent: EventEmitter<{name: string, programId: string}> = new EventEmitter();
 
-    constructor(private configService: ConfigService) { }
+    constructor(private router: Router) { }
 
     ngOnInit() {
     }
 
-    private onRuleClick(event: any) {
+    private edit() {
+        this.router.navigate(['/program-edit', this.program.id])
     }
 
-    private setNamedProgram(key: string, id: string) {
-        try {
-            const config: any = this.configService.getMutableCopy();
-            config.namedConfig[key] = id;
-            this.configService.setConfig(config);
-        } catch(err) {
-            // TO DO: add a status panel to app somehwere
-            alert("ERROR saving config");
-        }
+    private editRules() {
+        this.router.navigate(['/program', this.program.id,'rules-edit'])
+    }
+
+    private setNamedProgram(name: string, programId: string) {
+        this.namedProgramEvent.emit({name, programId});
     }
 }

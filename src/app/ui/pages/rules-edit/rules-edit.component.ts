@@ -1,10 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { ConfigService } from 'src/app/services/config.service';
 import { IConfiguration, IProgram, IRule } from 'src/common/interfaces';
 import { Program, BasicHeatingRule } from 'src/common/types';
 import { Subscription } from 'rxjs';
+import { AppContextService } from 'src/app/services/app-context.service';
+import { AppContext } from 'src/app/services/app-context';
 
 
 @Component({
@@ -16,24 +18,35 @@ export class RulesEditComponent implements OnInit , OnDestroy {
     private subs: Subscription[] = [];
     private config: IConfiguration;
     private program: IProgram;
+    private rules: ReadonlyArray<IRule>;
+    private appContext: AppContext;
 
     constructor(
         private router: Router,
         private route: ActivatedRoute,
         private configService: ConfigService,
-    ) { }
+        private appContextService: AppContextService,
+    ) { 
+        appContextService.getAppContext().subscribe((ac) => {
+            this.appContext = ac;
+        });
+    }
 
     ngOnInit() {
+        const programId = this.route.snapshot.params.id;
+        this.appContextService.setProgramContext(programId);
+
         this.subs.push(this.configService.getConfig()
         .subscribe(
             (config: IConfiguration) => {
                 if (config) {
                     this.config = config;
                     const program = this.config.getProgramConfig().find((p) => { 
-                        return p.id === this.route.snapshot.params.id; 
+                        return p.id === programId; 
                     });
                     
                     this.program = program ? program : new Program(null);
+                    this.rules = program.getRules();
                 }
             }, 
             (err) => {
@@ -48,6 +61,10 @@ export class RulesEditComponent implements OnInit , OnDestroy {
         this.subs.forEach((s) => {
             s.unsubscribe();
         });
+    }
+
+    private onCardSelect(rule: IRule): void {
+        this.appContextService.setRuleContext(rule.id);
     }
 
     private onEdit(rule:IRule) {
@@ -96,6 +113,14 @@ export class RulesEditComponent implements OnInit , OnDestroy {
             .catch((error) => {
                 // to DO: report this somewhere
             });
+        }
+    }
+
+    private onChartClick(event: string[]) {
+        if (event && event.length) {
+            this.appContextService.setRuleContext(event[0]);
+        } else {
+            this.appContextService.clearRuleContext();
         }
     }
 

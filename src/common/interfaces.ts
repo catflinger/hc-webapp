@@ -1,6 +1,6 @@
-/**
- * All these interfaces are intended for use with immutable classes
- */
+/*
+All these interfaces are intended for use with immutable classes.
+*/
 
 export interface IProgram {
     id: string;

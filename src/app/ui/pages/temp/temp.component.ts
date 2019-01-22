@@ -7,6 +7,7 @@ import { SensorAvailabilityService } from '../../../services/sensor-availability
 import { ControlStateService } from '../../../services/control-state.service';
 import { OverrideService } from '../../../services/override-service';
 import { Subscription } from 'rxjs';
+import { AppContextService } from 'src/app/services/app-context.service';
 
 @Component({
     selector: 'app-temp',
@@ -35,8 +36,9 @@ export class TempComponent implements OnInit, OnDestroy {
         private controlStateService: ControlStateService,
         private sensorReadingService: SensorReadingService,
         private overrideService: OverrideService,
-        private sensorAvailabilityService: SensorAvailabilityService) {
-
+        private sensorAvailabilityService: SensorAvailabilityService,
+        private appContextService: AppContextService) {
+            appContextService.clearContext();
     }
 
     private setOverride(minutes: number) {
