@@ -27,6 +27,10 @@ export class BasicHeatingRule implements IRule {
         } else {
             throw new Error("endTime not found in rule config");
         }
+
+        if (this.startTime.isLaterThan(this.endTime)) {
+            throw new Error("start time cannopt be later than and time in TimeOfDay");
+        }
     }
 
     public toJSON(): any {

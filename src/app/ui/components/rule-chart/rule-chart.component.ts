@@ -20,7 +20,7 @@ class RGB {
 }
 
 const fillColor: RGB = new RGB(0xFF, 0x00, 0x00);
-const fillHighlightColor: RGB = new RGB(0xFF, 0x90, 0x60);
+const fillHighlightColor: RGB = new RGB(0x00, 0x7B, 0xFF);
 
 const PI = Math.PI;
 const secondsPerQuarter = 6 * 60 * 60;
