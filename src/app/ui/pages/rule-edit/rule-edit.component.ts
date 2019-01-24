@@ -87,44 +87,38 @@ export class RuleEditComponent implements OnInit {
     }
 
     onSubmit(): void {
-        const config: any = this.configService.getMutableCopy();
+        this.configService.updateConfig((config: any) => {
 
-        const program = config.programConfig.find((p) => { return p.id === this.params.id; });
-        if (program) {
-            const rule: IRule = program.rules.find((r) => {
-                return r.id === this.params.ruleid;
-            });
+            const program = config.programConfig.find((p) => { return p.id === this.params.id; });
+            if (program) {
+                const rule: IRule = program.rules.find((r) => {
+                    return r.id === this.params.ruleid;
+                });
 
-            if (rule) {
-                try {
+                if (rule) {
                     const startHour: number = this.form.value.startHour.value;
                     const startMinute: number = this.form.value.startMinute.value;
                     const duration: number = this.form.value.duration.value;
 
                     rule.startTime = new TimeOfDay({hour: startHour, minute: startMinute, second: 0});
                     rule.endTime = new TimeOfDay(rule.startTime.addMinutes(duration));
-
-                    this.configService.setConfig(config)
-                    .then(() => {
-                        // navigate
-                        this.navigateToRulesPage();
-                    })
-                    .catch((error) => {
-                        // to DO: report this somewhere
-                        this.navigateToRulesPage();
-                    });
-                } catch (err) {
-                    // TO DO: notify the user
-                    this.navigateToRulesPage();
+                } else {
+                    throw new Error("Could not find rule for editing");
                 }
             } else {
-                // TO DO: notify someone somewhere
-                this.navigateToRulesPage();
+                throw new Error("Could not find program for editing rule");
             }
-        } else {
-                // TO DO: notify someone somewhere
-                this.navigateToRulesPage();
-        }
+            return false;
+        })
+        .then(() => {
+            // navigate
+            this.navigateToRulesPage();
+        })
+        .catch((error) => {
+            // to DO: report this somewhere
+            console.log("ERROR updating rule" + error)
+            this.navigateToRulesPage();
+        });
     }
 
     onCancel(): void {

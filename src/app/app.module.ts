@@ -27,6 +27,7 @@ import { RulesEditComponent } from './ui/pages/rules-edit/rules-edit.component';
 import { RuleCardComponent } from './ui/components/rule-card/rule-card.component';
 import { RuleEditComponent } from './ui/pages/rule-edit/rule-edit.component';
 import { AppContextService } from './services/app-context.service';
+import { SensorService } from './services/sensor.service';
 
 const apiBase: string = "http://localhost:3000/api/";
 
@@ -57,6 +58,7 @@ const apiBase: string = "http://localhost:3000/api/";
     ],
     providers: [
         AppContextService,
+        SensorService,
         SensorAvailabilityService,
         SensorReadingService,
         ConfigService,

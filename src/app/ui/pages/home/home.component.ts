@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SensorReadingService } from '../../../services/sensor-reading.service';
 import { OverrideService } from '../../../services/override-service';
-import { IReading, IOverride } from '../../../../common/interfaces';
+import { ISensorConfig, IOverride } from '../../../../common/interfaces';
 import { Subscription } from 'rxjs';
 import { AppContextService } from 'src/app/services/app-context.service';
 
@@ -12,7 +12,7 @@ import { AppContextService } from 'src/app/services/app-context.service';
 })
 export class HomeComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
-    private sensorReadings: IReading[] = [];
+    private sensorReadings: ISensorConfig[] = [];
     private overrides: IOverride[] = [];
 
 
@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.subs.push(this.sensorReadingService.getReadings()
-        .subscribe((readings: IReading[]) => {
+        .subscribe((readings: ISensorConfig[]) => {
             this.sensorReadings = readings;
         }));
 

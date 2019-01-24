@@ -4,6 +4,7 @@ import { IConfiguration, IProgram } from 'src/common/interfaces';
 import { NamedConfig } from 'src/common/types';
 import { Subscription } from 'rxjs';
 import { AppContextService } from 'src/app/services/app-context.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-program-list',
@@ -20,7 +21,9 @@ export class ProgramListComponent implements OnInit, OnDestroy {
 
     constructor(
         private configService: ConfigService,
-        private appContextService: AppContextService) { 
+        private appContextService: AppContextService,
+        private router: Router,
+        ) { 
             appContextService.clearContext();
         }
 
@@ -52,15 +55,35 @@ export class ProgramListComponent implements OnInit, OnDestroy {
         return this.config.getProgramConfig().find((program) => { return program.id === id; });
     }
 
-    private setNamedProgram(event: {name: string, programId: string}) {
-        try {
-            const config: any = this.configService.getMutableCopy();
+    private onSetNamedProgram(event: {name: string, programId: string}) {
+        this.configService.updateConfig((config: any) => {
             config.namedConfig[event.name] = event.programId;
-            this.configService.setConfig(config);
-        } catch(err) {
+            return false;
+        })
+        .catch((err) => {
             // TO DO: add a status panel to app somehwere
             alert("ERROR saving config");
-        }
+
+        });
     }
 
+    private onDelete(id: string) {
+        this.configService.updateConfig((config: any) => {
+
+            const index = config.programConfig.indexOf((p: IProgram) => { return p.id === id; });
+            if (index) {
+                config.programConfig.splice(index, 1);
+            } else {
+                return true;
+            }
+        })
+        .catch((error) => {
+            // to DO: report this somewhere
+            console.log("ERROR saving changes");
+        });
+    }
+    
+    private onNewProgram() {
+        this.router.navigate(["/program-new"])
+    }
 }

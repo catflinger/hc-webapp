@@ -9,7 +9,7 @@ import { ISensorConfig } from '../../common/interfaces';
 @Injectable({
   providedIn: 'root'
 })
-export class SensorAvailabilityService {
+export class SensorService {
     private bSubject: BehaviorSubject<ISensorConfig[]>;
 
     constructor(
@@ -24,11 +24,8 @@ export class SensorAvailabilityService {
     }
 
     public refresh(): void {
-        this.http.get(this.apiBase + "sensor/available")
+        this.http.get(this.apiBase + "sensor")
         .pipe(map((data: any): ISensorConfig[] => {
-
-            console.log("Available Sensor Data :" + JSON.stringify(data));
-
             const result: ISensorConfig[] = [];
             data.sensors.forEach((data: any) => {
                 result.push(data as ISensorConfig);

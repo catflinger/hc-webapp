@@ -14,6 +14,7 @@ export class ProgramCardComponent implements OnInit {
 
     @Input("program") private program: IProgram;
     @Output("setNamedProgram") private namedProgramEvent: EventEmitter<{name: string, programId: string}> = new EventEmitter();
+    @Output("deleteProgram") private deleteProgramEvent: EventEmitter<string> = new EventEmitter();
 
     constructor(private router: Router) { }
 
@@ -30,5 +31,9 @@ export class ProgramCardComponent implements OnInit {
 
     private setNamedProgram(name: string, programId: string) {
         this.namedProgramEvent.emit({name, programId});
+    }
+
+    private onDelete() {
+        this.deleteProgramEvent.emit(this.program.id);
     }
 }

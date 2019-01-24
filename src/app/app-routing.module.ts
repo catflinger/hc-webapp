@@ -14,6 +14,7 @@ import { RuleEditComponent } from './ui/pages/rule-edit/rule-edit.component';
 const routes: Routes = [
     { path: "home", component: HomeComponent },
     { path: "programs", component: ProgramListComponent },
+    { path: "program-new", component: ProgramEditComponent },
     { path: "program-edit/:id", component: ProgramEditComponent },
     { path: "program/:id/rules-edit", component: RulesEditComponent },
     { path: "program/:id/rules-edit/:ruleid", component: RuleEditComponent },

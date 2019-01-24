@@ -72,23 +72,25 @@ export class RulesEditComponent implements OnInit , OnDestroy {
     }
 
     private onDelete(rule:IRule) {
-        const config: any = this.configService.getMutableCopy();
 
-        const program = config.programConfig.find((p) => { return p.id === this.program.id; });
-        if (program) {
-            program.rules = program.rules.filter((r) => {
-                return r.id !== rule.id;
-            });
-
-           this.configService.setConfig(config)
-            .then(() => {
-                // stay on this page
-            })
-            .catch((error) => {
-                // to DO: report this somewhere
-                console.log("ERROR saving changes");
-            });
-        }
+        this.configService.updateConfig((config: any) => {
+            let cancel: boolean = true;
+            const program = config.programConfig.find((p) => { return p.id === this.program.id; });
+            if (program) {
+                program.rules = program.rules.filter((r) => {
+                    return r.id !== rule.id;
+                });
+                cancel = false;
+            }
+            return cancel;
+        })
+        .then(() => {
+            // stay on this page
+        })
+        .catch((error) => {
+            // to DO: report this somewhere
+            console.log("ERROR saving changes " + error);
+        });
     }
 
     private onClose() {
@@ -96,24 +98,28 @@ export class RulesEditComponent implements OnInit , OnDestroy {
     }
 
     private onAdd() {
-        const config: any = this.configService.getMutableCopy();
+        let ruleId: string = null;
 
-        const program = config.programConfig.find((p) => { return p.id === this.program.id; });
-        if (program) {
-            const rule = new BasicHeatingRule({
-                startTime: { hour: 0, minute: 0, second: 0 }, 
-                endTime: { hour: 0, minute: 0, second: 0 }, 
-            });
-            program.rules.push(rule);
-
-            this.configService.setConfig(config)
-            .then(() => {
-                this.navigateToRuleEdit(rule.id);
-            })
-            .catch((error) => {
-                // to DO: report this somewhere
-            });
-        }
+        this.configService.updateConfig((config: any) => {
+            const program = config.programConfig.find((p) => { return p.id === this.program.id; });
+            if (program) {
+                const rule = new BasicHeatingRule({
+                    startTime: { hour: 0, minute: 0, second: 0 }, 
+                    endTime: { hour: 0, minute: 0, second: 0 }, 
+                });
+                ruleId = rule.id;
+                program.rules.push(rule);
+            } else {
+                throw new Error("could not find program to add rule to");
+            }
+            return false;
+        })
+        .then(() => {
+            this.navigateToRuleEdit(ruleId);
+        })
+        .catch((error) => {
+            // to DO: report this somewhere
+        });
     }
 
     private onChartClick(event: string[]) {

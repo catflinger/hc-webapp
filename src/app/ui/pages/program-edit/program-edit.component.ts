@@ -18,6 +18,7 @@ export class ProgramEditComponent implements OnInit, OnDestroy {
     private config: IConfiguration;
     private program: IProgram;
     private form: FormGroup;
+    private programId: string;
 
     constructor(
         private router: Router,
@@ -28,27 +29,36 @@ export class ProgramEditComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
-        const programId = this.route.snapshot.params.id;
+        this.programId = this.route.snapshot.params.id;
 
-        this.appContextService.setProgramContext(programId);
+        this.appContextService.setProgramContext(this.programId);
 
         this.subs.push(this.configService.getConfig()
         .subscribe(
             (config: IConfiguration) => {
                 if (config) {
                     this.config = config;
-                    const program = this.config.getProgramConfig().find((p) => { 
-                        return p.id === programId; 
-                    });
-                    
-                    this.program = program ? program : new Program(null);
+                    if (this.programId) {
+                        this.program = this.config.getProgramConfig().find((p) => { 
+                            return p.id === this.programId; 
+                        });
+                    } else {
+                        this.program = new Program();
+                    }
 
-                    this.buildForm();
+                    if (this.program) {
+                        this.buildForm();
+                    } else {
+                        this.config = undefined;
+                        // TO DO: show message somewhere;
+                        console.log("Error program not found ");
+                    }
                 }
             }, 
             (err) => {
                 this.config = undefined;
                 // TO DO: show message somewhere;
+                console.log("Error loading form " + err);
             }
         ));
     }
@@ -60,25 +70,41 @@ export class ProgramEditComponent implements OnInit, OnDestroy {
     }
 
     private onSubmit() {
-        const config: any = this.configService.getMutableCopy();
-        const program: any = config.programConfig.find((p: any) => { return p.id === this.program.id});
+        let newProgramId: string = null;
 
-        if (program) {
-            program.maxHwTemp = this.form.value.maxHwTemp;
-            program.minHwTemp = this.form.value.minHwTemp;
+        this.configService.updateConfig((config: any) => {
 
-            this.configService.setConfig(config)
-            .then(() => {
+            let program: any;
+            
+            if (this.programId) {
+                program = config.programConfig.find((p: any) => { return p.id === this.program.id});
+            } else {
+                program = new Program();
+                newProgramId = program.id;
+                config.programConfig.push(program);
+            }
+
+            if (program) {
+                program.name = this.form.value.name;
+                program.maxHwTemp = this.form.value.maxHwTemp;
+                program.minHwTemp = this.form.value.minHwTemp;
+            } else {
+                throw new Error("program not found");
+            }
+            
+            return false;
+        })
+        .then((config) => {
+            if (this.programId) {
                 this.router.navigate(["programs"]);
-            })
-            .catch((err) => {
-                // to DO: display error somewhere
-            });
-        } else {
-            // program is missing for some reason, this could happen
-            // abort the operation
-            this.router.navigate(["programs"]);
-        }
+            } else {
+                this.router.navigate(["/program", newProgramId, "rules-edit"]);
+            }
+        })
+        .catch((err) => {
+            // to DO: display error somewhere
+            console.log("Error posting form " + err);
+        });
     }
 
     private onCancel() {
@@ -93,15 +119,6 @@ export class ProgramEditComponent implements OnInit, OnDestroy {
             name: [p.name, [Validators.required]],
             maxHwTemp: [p.maxHwTemp, [Validators.required]],
             minHwTemp: [p.minHwTemp, [Validators.required]],
-            rules: this.fb.array([]),
-        });
-
-        this.program.getRules().forEach((rule: IRule) => {
-            const controls = this.form.get("rules") as FormArray;
-            controls.push(this.fb.group({
-                startTime: [rule.startTime.toSeconds(), [Validators.required]],
-                endTime: [rule.endTime.toSeconds(), [Validators.required]],
-            }));
         });
     }
 }

@@ -1,3 +1,25 @@
-<p>
-  sensor-list works!
-</p>
+<h3>Sensors</h3>
+<div class="row">
+    <div class="col-12 mt-5 d-flex justify-content-center" *ngIf="sensors">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>sensor id</th>
+                    <th>name</th>
+                    <th>role</th>
+                    <th>log position</th>
+                    <th>reading</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let sensor of sensors">
+                    <td>{{sensor.id}}</td>
+                    <td>{{sensor.description}}</td>
+                    <td>{{sensor.role}}</td>
+                    <td>{{sensor.logPosition}}</td>
+                    <td>{{sensor.reading}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -27,36 +27,55 @@ export class ConfigService {
         return this.bSubject.asObservable();
     }
 
-    public setConfig(config: any) {
-        return new Promise((resolve, reject) => {
-            this.http.put(this.baseUrl + "config", config)
-            .toPromise()
-            .then((data: any) => {
-                try {
-                    this.bSubject.next(new Configuration(data.config));
-                    resolve();
-                } catch(err) {
+    public updateConfig(makeChanges: (config: any) => boolean): Promise<IConfiguration> {
+        let result: Promise<IConfiguration>;
+
+        const newConfig: any = this.getMutableCopy();
+        const cancel: boolean = makeChanges(newConfig);
+
+        if (cancel) {
+            result = Promise.resolve(this.bSubject.value);
+        } else {
+            result = new Promise((resolve, reject) => {
+                this.http.put(this.baseUrl + "config", newConfig)
+                .toPromise()
+                .then((data: any) => {
+                    try {
+                        this.bSubject.next(new Configuration(data.config));
+                        resolve(this.bSubject.value);
+                    } catch(err) {
+                        reject(err);
+                    }
+                })
+                .catch((err) => {
                     reject(err);
-                }
-            })
-            .catch((err) => {
-                reject(err);
-            })
-        });
+                })
+            });
+        }
+
+        return result;
     }
 
-    public getMutableCopy(): any {
+    private getMutableCopy(): any {
         return JSON.parse(JSON.stringify(this.bSubject.value));
     }
 
     public refresh(): void {
         this.http.get(this.baseUrl + "config")
         .pipe(map((data: any): Configuration => {
-            //console.log("GOT CONFIG:" + JSON.stringify(data));
+            // console.log("GOT CONFIG:" + JSON.stringify(data, null, 4));
             return new Configuration(data.config);
         }))
         .subscribe((s) => {
             this.bSubject.next(s);
         });
     }
+
+    // public updateConfig(updater: (any)=>void): Promise<void> {
+    //     const config: any = this.getMutableCopy();
+
+    //     updater(config);
+        
+    //     return this.setConfig(config);
+    // }
 }

@@ -19,9 +19,16 @@
         </table>
     </div>
 </div>
-<div class="card-deck" *ngIf="config">
-    <ng-container *ngFor="let program of config.getProgramConfig()">
-        <app-program-card [program]="program" (setNamedProgram)="setNamedProgram($event)"></app-program-card>
-    </ng-container>
 
+<div class="card-deck w-100" *ngIf="config">
+    <ng-container *ngFor="let program of config.getProgramConfig()">
+        <app-program-card [program]="program" (setNamedProgram)="onSetNamedProgram($event)" (deleteProgram)="onDelete($event)">
+        </app-program-card>
+    </ng-container>
+</div>
+
+<div class="row" *ngIf="config">
+    <div class="col-12 mt-5 d-flex justify-content-left">
+        <button type="button" class="btn btn-primary" (click)="onNewProgram()">New Program</button>
+    </div>
 </div>

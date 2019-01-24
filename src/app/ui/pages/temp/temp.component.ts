@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { ConfigService } from '../../../services/config.service';
-import { IConfiguration, IReading, IControlState, IOverride, IProgram } from '../../../../common/interfaces';
+import { IConfiguration, ISensorConfig, IControlState, IOverride, IProgram } from '../../../../common/interfaces';
 import { SensorReadingService } from "../../../services/sensor-reading.service";
 import { SensorAvailabilityService } from '../../../services/sensor-availability.service';
 import { ControlStateService } from '../../../services/control-state.service';
@@ -19,8 +19,8 @@ export class TempComponent implements OnInit, OnDestroy {
 
     private config: IConfiguration;
     private controlState: IControlState;
-    private sensorReadings: IReading[] = [];
-    private availableSensors: IReading[] = [];
+    private sensorReadings: ISensorConfig[] = [];
+    private availableSensors: ISensorConfig[] = [];
     private overrides: IOverride[] = [];
 
     private configString: string = "";
@@ -66,13 +66,13 @@ export class TempComponent implements OnInit, OnDestroy {
             }));
 
         this.subs.push(this.sensorReadingService.getReadings()
-            .subscribe((readings: IReading[]) => {
+            .subscribe((readings: ISensorConfig[]) => {
                 this.sensorReadings = readings;
                 this.readingsString = JSON.stringify(this.sensorReadings);
             }));
 
         this.subs.push(this.sensorAvailabilityService.getReadings()
-            .subscribe((readings: IReading[]) => {
+            .subscribe((readings: ISensorConfig[]) => {
                 this.availableSensors = readings;
                 this.availableString = JSON.stringify(this.availableSensors);
             }));
