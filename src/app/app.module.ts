@@ -6,8 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './ui/app/app.component';
 import { INJECTABLES } from './injection-tokens';
 import { HttpClientModule } from "@angular/common/http";
-import { SensorReadingService } from './services/sensor-reading.service';
-import { SensorAvailabilityService } from './services/sensor-availability.service';
 import { ConfigService } from './services/config.service';
 import { ControlStateService } from './services/control-state.service';
 import { OverrideService } from './services/override-service';
@@ -59,8 +57,6 @@ const apiBase: string = "http://localhost:3000/api/";
     providers: [
         AppContextService,
         SensorService,
-        SensorAvailabilityService,
-        SensorReadingService,
         ConfigService,
         ControlStateService,
         OverrideService,

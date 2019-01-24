@@ -9,6 +9,8 @@
                     <th>role</th>
                     <th>log position</th>
                     <th>reading</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -18,6 +20,12 @@
                     <td>{{sensor.role}}</td>
                     <td>{{sensor.logPosition}}</td>
                     <td>{{sensor.reading}}</td>
+                    <td>
+                        <button class="btn btn-light" (click)="onEdit(sensor.id)">Edit</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-light" (click)="onClear(sensor.id)">Clear</button>
+                    </td>
                 </tr>
             </tbody>
         </table>

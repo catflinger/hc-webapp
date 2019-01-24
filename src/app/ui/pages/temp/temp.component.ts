@@ -2,8 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { ConfigService } from '../../../services/config.service';
 import { IConfiguration, ISensorConfig, IControlState, IOverride, IProgram } from '../../../../common/interfaces';
-import { SensorReadingService } from "../../../services/sensor-reading.service";
-import { SensorAvailabilityService } from '../../../services/sensor-availability.service';
+import { SensorService } from "../../../services/sensor.service";
 import { ControlStateService } from '../../../services/control-state.service';
 import { OverrideService } from '../../../services/override-service';
 import { Subscription } from 'rxjs';
@@ -19,12 +18,11 @@ export class TempComponent implements OnInit, OnDestroy {
 
     private config: IConfiguration;
     private controlState: IControlState;
-    private sensorReadings: ISensorConfig[] = [];
-    private availableSensors: ISensorConfig[] = [];
+    private sensors: ISensorConfig[] = [];
     private overrides: IOverride[] = [];
 
     private configString: string = "";
-    private readingsString: string = "";
+    private sensorsString: string = "";
     private availableString: string = "";
     private controlStateString: string = "";
     private overrideStateString: string = "";
@@ -34,9 +32,8 @@ export class TempComponent implements OnInit, OnDestroy {
     constructor(
         private configService: ConfigService,
         private controlStateService: ControlStateService,
-        private sensorReadingService: SensorReadingService,
+        private sensorService: SensorService,
         private overrideService: OverrideService,
-        private sensorAvailabilityService: SensorAvailabilityService,
         private appContextService: AppContextService) {
             appContextService.clearContext();
     }
@@ -65,16 +62,10 @@ export class TempComponent implements OnInit, OnDestroy {
                 this.controlStateString = JSON.stringify(this.controlState);
             }));
 
-        this.subs.push(this.sensorReadingService.getReadings()
+        this.subs.push(this.sensorService.getReadings()
             .subscribe((readings: ISensorConfig[]) => {
-                this.sensorReadings = readings;
-                this.readingsString = JSON.stringify(this.sensorReadings);
-            }));
-
-        this.subs.push(this.sensorAvailabilityService.getReadings()
-            .subscribe((readings: ISensorConfig[]) => {
-                this.availableSensors = readings;
-                this.availableString = JSON.stringify(this.availableSensors);
+                this.sensors = readings;
+                this.sensorsString = JSON.stringify(this.sensors);
             }));
 
         this.subs.push(this.overrideService.getOverrides()

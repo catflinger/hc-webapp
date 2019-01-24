@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { ConfigService } from 'src/app/services/config.service';
 import { Subscription } from 'rxjs';
@@ -18,7 +18,7 @@ class Option {
     templateUrl: './rule-edit.component.html',
     styleUrls: ['./rule-edit.component.css']
 })
-export class RuleEditComponent implements OnInit {
+export class RuleEditComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
     private config: IConfiguration;
     private rule: IRule;

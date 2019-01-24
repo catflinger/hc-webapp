@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { SensorReadingService } from '../../../services/sensor-reading.service';
+import { SensorService } from '../../../services/sensor.service';
 import { OverrideService } from '../../../services/override-service';
 import { ISensorConfig, IOverride } from '../../../../common/interfaces';
 import { Subscription } from 'rxjs';
@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
     constructor(
-        private sensorReadingService: SensorReadingService,
+        private sensorReadingService: SensorService,
         private overrideService: OverrideService,
         private appContextService: AppContextService,
     ) {

@@ -70,8 +70,8 @@ export class ProgramListComponent implements OnInit, OnDestroy {
     private onDelete(id: string) {
         this.configService.updateConfig((config: any) => {
 
-            const index = config.programConfig.indexOf((p: IProgram) => { return p.id === id; });
-            if (index) {
+            const index = config.programConfig.findIndex((p: IProgram) => { return p.id === id; });
+            if (index >= 0) {
                 config.programConfig.splice(index, 1);
             } else {
                 return true;
