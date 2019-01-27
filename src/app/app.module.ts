@@ -26,6 +26,8 @@ import { RuleCardComponent } from './ui/components/rule-card/rule-card.component
 import { RuleEditComponent } from './ui/pages/rule-edit/rule-edit.component';
 import { AppContextService } from './services/app-context.service';
 import { SensorService } from './services/sensor.service';
+import { LogService } from './services/log.service';
+import { LoggerComponent } from './ui/pages/logger/logger.component';
 
 const apiBase: string = "http://localhost:3000/api/";
 
@@ -46,6 +48,7 @@ const apiBase: string = "http://localhost:3000/api/";
         RulesEditComponent,
         RuleCardComponent,
         RuleEditComponent,
+        LoggerComponent,
     ],
     imports: [
         BrowserModule,
@@ -59,6 +62,7 @@ const apiBase: string = "http://localhost:3000/api/";
         SensorService,
         ConfigService,
         ControlStateService,
+        LogService,
         OverrideService,
         { provide: INJECTABLES.ApiBase, useValue: apiBase },
     ],

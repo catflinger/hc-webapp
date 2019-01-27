@@ -10,9 +10,11 @@ import { SensorEditComponent } from './ui/pages/sensor-edit/sensor-edit.componen
 import { StatusComponent } from './ui/pages/status/status.component';
 import { RulesEditComponent } from './ui/pages/rules-edit/rules-edit.component';
 import { RuleEditComponent } from './ui/pages/rule-edit/rule-edit.component';
+import { LoggerComponent } from './ui/pages/logger/logger.component';
 
 const routes: Routes = [
     { path: "home", component: HomeComponent },
+    { path: "logger", component: LoggerComponent },
     { path: "programs", component: ProgramListComponent },
     { path: "program-new", component: ProgramEditComponent },
     { path: "program-edit/:id", component: ProgramEditComponent },

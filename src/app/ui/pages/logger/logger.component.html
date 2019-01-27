@@ -1,0 +1,24 @@
+<h3>Logger</h3>
+<div class="row">
+    <div class="col-12 mt-5 d-flex justify-content-center" *ngIf="extract">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>date</th>
+                    <th>heating</th>
+                    <th>hot water</th>
+                    <th>temp1</th>
+                    <th>temp2</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let entry of extract.entries">
+                    <td>{{entry.date}}</td>
+                    <td>{{entry.heating}}</td>
+                    <td>{{entry.hotWater}}</td>
+                    <td *ngFor="let reading of entry.readings">{{reading}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
