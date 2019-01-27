@@ -20,6 +20,7 @@ export class LogService {
     public getLogExtract(): Observable<ILogExtract> {
         return this.http.get(this.apiBase + "log")
         .pipe(map((data: any): ILogExtract => {
+            console.log("LOG " + JSON.stringify(data, null, 4));
             // TO DO: make some LogExtract classes and new form data
             return data.log as ILogExtract;
         }));
