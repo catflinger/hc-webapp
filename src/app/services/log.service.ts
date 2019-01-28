@@ -17,9 +17,14 @@ export class LogService {
     }
 
     public getLogExtract(from: Date, to: Date, sensors: string[]): Observable<ILogExtract> {
-        return this.http.get(this.apiBase + "log?params=" + JSON.stringify({ from: from.toISOString(), to: to.toISOString(), sensors}))
+
+        return this.http.get(this.apiBase + "log?params=" + JSON.stringify({ 
+            from: from.toISOString(), 
+            to: to.toISOString(), 
+            sensors}))
+
         .pipe(map((data: any): ILogExtract => {
-            console.log("LOG " + JSON.stringify(data, null, 4));
+            // console.log("LOG " + JSON.stringify(data, null, 4));
             // TO DO: make some LogExtract classes and new form data
             return data.log as ILogExtract;
         }));

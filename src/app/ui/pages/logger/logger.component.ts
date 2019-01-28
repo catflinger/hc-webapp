@@ -30,7 +30,14 @@ export class LoggerComponent implements OnInit, OnDestroy {
         this.subs.push(this.configService.getConfig().subscribe((config) => {
             this.config = config;
             if (config) {
-                this.refresh();
+                const from: Date = new Date("2019-01-01T00:00:00");
+                const to: Date = new Date("2019-12-31T23:59:59");
+                const sensors: string[] = this.config.getSensorConfig().map((sc) => sc.id);
+
+                this.subs.push(this.logService.getLogExtract(from, to, sensors)
+                .subscribe((logExtract) => {
+                    this.extract = logExtract;
+                }));
             }
         }));
     }
@@ -39,19 +46,5 @@ export class LoggerComponent implements OnInit, OnDestroy {
         this.subs.forEach((s) => {
             s.unsubscribe();
         });
-    }
-
-    private refresh() {
-        this.extract = undefined;
-        this.ngOnDestroy();
-
-        const from: Date = new Date("2019-01-01T00:00:00");
-        const to: Date = new Date("2019-12-31T23:59:59");
-        const sensors: string[] = this.config.getSensorConfig().map((sc) => sc.id);
-        
-        this.subs.push(this.logService.getLogExtract(from, to, sensors)
-        .subscribe((logExtract) => {
-            this.extract = logExtract;
-        }));
     }
 }
