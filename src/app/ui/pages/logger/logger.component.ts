@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { AppContextService } from 'src/app/services/app-context.service';
 import { ConfigService } from 'src/app/services/config.service';
 import { LogService } from 'src/app/services/log.service';
-import { ILogExtract } from 'src/common/interfaces';
+import { ILogExtract, IConfiguration } from 'src/common/interfaces';
 
 @Component({
     selector: 'app-logger',
@@ -15,6 +15,7 @@ import { ILogExtract } from 'src/common/interfaces';
 export class LoggerComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
     private extract: ILogExtract;
+    private config: IConfiguration;
 
     constructor(
         private appContextService: AppContextService,
@@ -26,7 +27,12 @@ export class LoggerComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.refresh();
+        this.subs.push(this.configService.getConfig().subscribe((config) => {
+            this.config = config;
+            if (config) {
+                this.refresh();
+            }
+        }));
     }
 
     ngOnDestroy() {
@@ -38,8 +44,12 @@ export class LoggerComponent implements OnInit, OnDestroy {
     private refresh() {
         this.extract = undefined;
         this.ngOnDestroy();
+
+        const from: Date = new Date("2019-01-01T00:00:00");
+        const to: Date = new Date("2019-12-31T23:59:59");
+        const sensors: string[] = this.config.getSensorConfig().map((sc) => sc.id);
         
-        this.subs.push(this.logService.getLogExtract()
+        this.subs.push(this.logService.getLogExtract(from, to, sensors)
         .subscribe((logExtract) => {
             this.extract = logExtract;
         }));
