@@ -1,17 +1,33 @@
 <h3>Logger</h3>
-<div class="row">
-    <div class="col-12 mt-5 d-flex justify-content-center" *ngIf="extract">
+
+<div class="row" *ngIf="config">
+    <div class="col-6 mt-5 d-flex justify-content-center">
+        <ngb-datepicker (select)="onDateSelect($event)"></ngb-datepicker>
+    </div>  
+    <div class="col-6 mt-5 d-flex justify-content-center">
+    SELECT SENSORS HERE...
+    </div>  
+</div>
+
+<div class="row" *ngIf="logExtract">
+    <div class="col-12 mt-5 d-flex justify-content-center">
+            <app-log-chart [logExtract]="logExtract"></app-log-chart>
+    </div>
+</div>
+
+<div class="row" *ngIf="logExtract">
+    <div class="col-12 mt-5 d-flex justify-content-center">
         <table class="table">
             <thead>
                 <tr>
                     <th>date</th>
                     <th>heating</th>
                     <th>hot water</th>
-                    <th *ngFor="let sensor of extract.sensors">{{sensor}}</th>
+                    <th *ngFor="let sensor of logExtract.sensors">{{sensor}}</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let entry of extract.entries">
+                <tr *ngFor="let entry of logExtract.entries">
                     <td>{{entry.date | date:"short"}}</td>
                     <td>{{entry.heating}}</td>
                     <td>{{entry.hotWater}}</td>

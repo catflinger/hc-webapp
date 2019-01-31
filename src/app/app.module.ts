@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './ui/app/app.component';
@@ -28,8 +29,10 @@ import { AppContextService } from './services/app-context.service';
 import { SensorService } from './services/sensor.service';
 import { LogService } from './services/log.service';
 import { LoggerComponent } from './ui/pages/logger/logger.component';
+import { LogChartComponent } from './ui/components/log-chart/log-chart.component';
 
 const apiBase: string = "http://localhost:3000/api/";
+const logApi: string = "dev/log";
 
 @NgModule({
     declarations: [
@@ -49,6 +52,7 @@ const apiBase: string = "http://localhost:3000/api/";
         RuleCardComponent,
         RuleEditComponent,
         LoggerComponent,
+        LogChartComponent,
     ],
     imports: [
         BrowserModule,
@@ -56,15 +60,20 @@ const apiBase: string = "http://localhost:3000/api/";
         AppRoutingModule,
         HttpClientModule,
         ReactiveFormsModule,
+        NgbModule,
     ],
     providers: [
+        // api services
         AppContextService,
         SensorService,
         ConfigService,
         ControlStateService,
         LogService,
         OverrideService,
+        
+        // constants
         { provide: INJECTABLES.ApiBase, useValue: apiBase },
+        { provide: INJECTABLES.LogApi, useValue: logApi },
     ],
     bootstrap: [AppComponent]
 })
