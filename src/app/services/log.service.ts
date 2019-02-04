@@ -5,6 +5,7 @@ import { Observable, BehaviorSubject } from "rxjs";
 
 import { INJECTABLES } from '../injection-tokens';
 import { ILogExtract } from '../../common/interfaces';
+import { LogExtract } from "../../common/log/log-extract";
 
 @Injectable({
   providedIn: 'root'
@@ -36,9 +37,8 @@ export class LogService {
             sensors}))
 
         .pipe(map((data: any): ILogExtract => {
-            // console.log("LOG " + JSON.stringify(data, null, 4));
-            // TO DO: make some LogExtract classes and new form data
-            return data.log as ILogExtract;
+            console.log(JSON.stringify(data, null, 4));
+            return new LogExtract(data.log);
         }))
 
         .toPromise()

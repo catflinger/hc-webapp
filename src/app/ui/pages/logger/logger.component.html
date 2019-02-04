@@ -1,11 +1,20 @@
 <h3>Logger</h3>
 
-<div class="row" *ngIf="config">
+<div class="row" *ngIf="sensors">
     <div class="col-6 mt-5 d-flex justify-content-center">
         <ngb-datepicker (select)="onDateSelect($event)"></ngb-datepicker>
     </div>  
     <div class="col-6 mt-5 d-flex justify-content-center">
-    SELECT SENSORS HERE...
+        <form class="form" [formGroup]="form">
+            <div formArrayName="sensors">
+                <div *ngFor="let sensor of sensors; let i = index">
+                        <label class="">
+                            <input type="checkbox" [formControlName]="i">
+                            {{sensor.description}}
+                        </label>   
+                    </div>
+                </div>
+        </form>
     </div>  
 </div>
 
@@ -15,7 +24,7 @@
     </div>
 </div>
 
-<div class="row" *ngIf="logExtract">
+<!-- <div class="row" *ngIf="logExtract">
     <div class="col-12 mt-5 d-flex justify-content-center">
         <table class="table">
             <thead>
@@ -36,4 +45,4 @@
             </tbody>
         </table>
     </div>
-</div>
+</div> -->

@@ -32,7 +32,7 @@ import { LoggerComponent } from './ui/pages/logger/logger.component';
 import { LogChartComponent } from './ui/components/log-chart/log-chart.component';
 
 const apiBase: string = "http://localhost:3000/api/";
-const logApi: string = "dev/log";
+const logApi: string = "log";
 
 @NgModule({
     declarations: [

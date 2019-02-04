@@ -1,5 +1,7 @@
-import { ILogExtract, ILogEntry } from 'src/common/interfaces';
-import { ChartConfiguration } from 'chart.js';
+import { ChartData, ChartDataSets } from 'chart.js';
+import * as moment from "moment";
+
+import { ILogExtract, ILogEntry, ISensorConfig } from 'src/common/interfaces';
 
 export class LogChartDataAdapter {
 
@@ -8,70 +10,44 @@ export class LogChartDataAdapter {
     // type and options should be set by the component not by the adapter
 
 
-    public logExtractToChartConfig(extract: ILogExtract): ChartConfiguration {
+    public toChartData(extract: ILogExtract, sensors: string[]): ChartData {
 
-        console.log("logExtractToChartConfig " + JSON.stringify(extract, null, 4));
-
-        const result: ChartConfiguration = {
-            type: "line",
-            data: {
-                labels: [],
-                datasets: [],
-            },
-            options: {
-                title: {
-                    display: true,
-                    text: "Logs for " + extract.from,
-                },
-                elements: {
-                    point: {
-                        radius: 0,
-                    },
-                },
-                scales: {
-                    xAxes: [
-                        {
-                            ticks: {
-                                autoSkip: true,
-                                maxTicksLimit: 24
-                            }
-                        }
-                    ],
-                },
-            },
+        const result = {
+            labels: [],
+            datasets: [],
         } 
-
-        // add the x-axis values
-        extract.entries.forEach((entry: ILogEntry) => {
-
-// TO DO: fix the type conversion below.  Need to usereal  classes for data not just interfaces
-            let dt: string = <string><unknown>entry.date;
-            let label: string = dt.substr(11, 2);
-
-            result.data.labels.push(label);
-        });
 
         // add one dataset each sensor
         extract.sensors.forEach((sensor: string, sensorIndex: number) => {
             let dataset = {
                 label: sensor,
                 data: [],
-                borderColor: "red",
+                borderColor: sensorIndex ? "red" : "blue",
                 fill: false
             };
-
-            // add the readings for the sensor
-            extract.entries.forEach((entry: ILogEntry) => {
-                dataset.data.push(entry.readings[sensorIndex]);
-            });
-
-            result.data.datasets.push(dataset);
+            result.datasets.push(dataset);
         });
 
+        const m = moment(extract.from);
+
+        // add a tick every 10 minutes
+        for (let ticks = 0; ticks < 6 * 24; ticks++) {
+            m.add(10, "minutes");
+
+            //find the record (if one exists) for this point in time
+            let entry: ILogEntry = extract.entries.find((e) => m.isSame(e.date, "minutes"));
+
+            let readings: ReadonlyArray<number> = entry ? entry.readings : [];
+
+            // add the readings for each dataset
+            result.datasets.forEach((dataset, i) => {
+                dataset.data.push({
+                    x: m.toISOString(),
+                    y: readings[i] === undefined ? null : readings[i],
+                });
+            });
+        };
+
         return result;
-    }
-
-    private entryToDataset() {
-
     }
 }
