@@ -37,7 +37,7 @@ export class LogService {
             sensors}))
 
         .pipe(map((data: any): ILogExtract => {
-            console.log(JSON.stringify(data, null, 4));
+            // console.log(JSON.stringify(data, null, 4));
             return new LogExtract(data.log);
         }))
 
