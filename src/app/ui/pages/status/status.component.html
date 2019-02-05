@@ -1,3 +1,55 @@
-<p>
-  status works!
-</p>
+<app-page-title title="status"></app-page-title>
+
+<div class="row mt-5" *ngIf="controlStateResponse">
+    <div class="col-sm-2">CONTROL STATE</div>
+    <div class="col-sm-10">
+        <app-control-state [controlState]="controlStateResponse.controlState"></app-control-state>
+    </div>
+</div>
+
+<div class="row mt-5" *ngIf="overrides && overrides.length">
+    <div class="col-sm-2">OVERRIDES</div>
+    <div class="col-sm-10">
+        <app-override-list [overrides]="overrides"></app-override-list>
+    </div>
+</div>
+
+<div class="row mt-5" *ngIf="readings">
+    <div class="col-sm-2">READINGS</div>
+    <div class="col-sm-10">
+        <app-sensor-reading-list [readings]="readings"></app-sensor-reading-list>
+    </div>
+</div>
+
+<div class="row mt-5" *ngIf="controlStateResponse">
+    <div class="col-sm-2">ACTIVE PROGRAM</div>
+    <div class="col-sm-10">
+
+        <div class="row">
+            <div class="col-md mb-3">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td colspan="2" class="font-weight-bold">{{controlStateResponse.activeProgram.name}}</td>
+                        </tr>
+                        <tr>
+                            <td>Hot water maximum</td>
+                            <td>{{controlStateResponse.activeProgram.maxHwTemp}}</td>
+                        </tr>
+                        <tr>
+                            <td>Hot water minimum</td>
+                            <td>{{controlStateResponse.activeProgram.minHwTemp}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md">
+                <app-rule-list [rules]="controlStateResponse.activeProgram.rules"></app-rule-list>
+            </div>
+
+            <div class="col-md">
+                <app-rule-chart [rules]="controlStateResponse.activeProgram.rules"></app-rule-chart>
+            </div>
+        </div>
+    </div>

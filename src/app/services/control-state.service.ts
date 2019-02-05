@@ -5,13 +5,15 @@ import { Observable, BehaviorSubject } from "rxjs";
 
 import { ControlState } from '../../common/types';
 import { INJECTABLES } from '../injection-tokens';
+import { IControlStateApiResponse } from '../../../src/common/interfaces';
+import { ControlStateApiResponse } from "../../../src/common/api/control-state-api-response";
 
 @Injectable({
     providedIn: 'root'
 })
 export class ControlStateService {
 
-    private bSubject: BehaviorSubject<ControlState>;
+    private bSubject: BehaviorSubject<IControlStateApiResponse>;
 
     constructor(
         private http: HttpClient,
@@ -19,18 +21,18 @@ export class ControlStateService {
         ) {
 
         // default to a value of null for the initial config
-        this.bSubject = <BehaviorSubject<ControlState>>new BehaviorSubject(null);
+        this.bSubject = <BehaviorSubject<IControlStateApiResponse>>new BehaviorSubject(null);
         this.refresh();
     }
 
-    public getControlState(): Observable<ControlState> {
+    public getControlState(): Observable<IControlStateApiResponse> {
         return this.bSubject.asObservable();
     }
 
     public refresh(): void {
         this.http.get(this.baseUrl + "control-state")
-        .pipe(map((data: any): ControlState => {
-            return new ControlState(data.controlState);
+        .pipe(map((data: any): IControlStateApiResponse => {
+            return new ControlStateApiResponse(data);
         }))
         .subscribe((s) => {
             this.bSubject.next(s);

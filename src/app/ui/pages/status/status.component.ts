@@ -1,18 +1,47 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AppContextService } from 'src/app/services/app-context.service';
+import { SensorService } from 'src/app/services/sensor.service';
+import { ISensorReading, IControlState, IOverride, IConfigValidation, IConfiguration, IControlStateApiResponse } from 'src/common/interfaces';
+import { Subscription } from 'rxjs';
+import { ControlStateService } from 'src/app/services/control-state.service';
+import { OverrideService } from 'src/app/services/override-service';
+import { ConfigService } from 'src/app/services/config.service';
 
 @Component({
     selector: 'app-status',
     templateUrl: './status.component.html',
     styleUrls: ['./status.component.css']
 })
-export class StatusComponent implements OnInit {
-
-    constructor(private appContextService: AppContextService) {
-        appContextService.clearContext();
+export class StatusComponent implements OnInit, OnDestroy {
+    private subs: Subscription[] = [];
+    private readings: ReadonlyArray<ISensorReading>;
+    private controlStateResponse: IControlStateApiResponse;
+    private overrides: IOverride[];
+    
+    constructor(
+        private appContextService: AppContextService,
+        private sensorService: SensorService,
+        private controlStateService: ControlStateService,
+        private overrideService: OverrideService,
+        ) {
+        
+            this.appContextService.clearContext();
     }
 
     ngOnInit() {
+        this.subs.push (this.sensorService.getReadings()
+        .subscribe((readings) => { this.readings = readings; }));
+
+        this.subs.push (this.controlStateService.getControlState()
+        .subscribe((controlState) => { this.controlStateResponse = controlState; }));
+
+        this.subs.push (this.overrideService.getOverrides()
+        .subscribe((overrides) => { this.overrides = overrides; }));
     }
 
+    ngOnDestroy() {
+        this.subs.forEach((s) => {
+            s.unsubscribe();
+        });
+    }
 }

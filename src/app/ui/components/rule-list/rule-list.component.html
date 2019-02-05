@@ -1,0 +1,20 @@
+<div class="row">
+    <div class="col-12 d-flex justify-content-center" *ngIf="rules">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>from</th>
+                    <th>to</th>
+                    <th>action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let rule of rules">
+                    <td>{{rule.startTime | timeOfDay}}</td>
+                    <td>{{rule.endTime | timeOfDay}}</td>
+                    <td>turn on heating</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

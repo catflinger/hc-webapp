@@ -30,6 +30,13 @@ import { SensorService } from './services/sensor.service';
 import { LogService } from './services/log.service';
 import { LoggerComponent } from './ui/pages/logger/logger.component';
 import { LogChartComponent } from './ui/components/log-chart/log-chart.component';
+import { SensorReadingListComponent } from './ui/components/sensor-reading-list/sensor-reading-list.component';
+import { ControlStateComponent } from './ui/components/control-state/control-state.component';
+import { OnOffPipe } from './ui/pipes/on-off.pipe';
+import { PageTitleComponent } from './ui/components/page-title/page-title.component';
+import { OverrideListComponent } from './ui/components/override-list/override-list.component';
+import { TimeOfDayPipe } from './ui/pipes/time-of-day.pipe';
+import { RuleListComponent } from './ui/components/rule-list/rule-list.component';
 
 const apiBase: string = "http://localhost:3000/api/";
 const logApi: string = "log";
@@ -53,6 +60,13 @@ const logApi: string = "log";
         RuleEditComponent,
         LoggerComponent,
         LogChartComponent,
+        SensorReadingListComponent,
+        ControlStateComponent,
+        OnOffPipe,
+        PageTitleComponent,
+        OverrideListComponent,
+        TimeOfDayPipe,
+        RuleListComponent,
     ],
     imports: [
         BrowserModule,

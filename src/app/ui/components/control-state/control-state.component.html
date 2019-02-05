@@ -1,0 +1,18 @@
+<div class="row">
+        <div class="col-12 d-flex justify-content-center" *ngIf="controlState">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>heating</th>
+                        <th>hot water</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{controlState.heating | onOff}}</td>
+                        <td>{{controlState.hotWater | onOff}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>

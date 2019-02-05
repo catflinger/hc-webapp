@@ -57,8 +57,8 @@ export class TempComponent implements OnInit, OnDestroy {
             }));
 
         this.subs.push(this.controlStateService.getControlState()
-            .subscribe((controlState) => {
-                this.controlState = controlState;
+            .subscribe((response) => {
+                this.controlState = response.controlState;
                 this.controlStateString = JSON.stringify(this.controlState);
             }));
 
