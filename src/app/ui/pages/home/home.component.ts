@@ -58,7 +58,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     private setOverride(minutes: number) {
         this.overrideService.setOverride(minutes)
-        .then(this.alertService.createAlert("Override set", "info"))
+        .then(this.alertService.createAlert(`Override set for ${minutes} minutes`, "info"))
         .catch(this.alertService.createAlert("Failed to set override", "danger"));
     }
 

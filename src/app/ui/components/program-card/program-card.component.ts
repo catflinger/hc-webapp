@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { IProgram, IRule } from 'src/common/interfaces';
 import { Router } from '@angular/router';
-import { INamedProgramEvent } from '../../events';
+import { INamedProgramEvent, IDeleteProgramEvent } from '../../events';
 
 @Component({
     selector: 'app-program-card',
@@ -12,7 +12,7 @@ export class ProgramCardComponent implements OnInit {
 
     @Input("program") private program: IProgram;
     @Output("setNamedProgram") private namedProgramEvent: EventEmitter<INamedProgramEvent> = new EventEmitter();
-    @Output("deleteProgram") private deleteProgramEvent: EventEmitter<string> = new EventEmitter();
+    @Output("deleteProgram") private deleteProgramEvent: EventEmitter<IDeleteProgramEvent> = new EventEmitter();
 
     constructor(private router: Router) { }
 

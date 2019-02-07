@@ -3,6 +3,7 @@ import { IRule, IProgram, ITimeOfDay } from '../../../../common/interfaces';
 import { v4 as uuid } from 'uuid';
 import { AppContextService } from 'src/app/services/app-context.service';
 import { AppContext } from 'src/app/services/app-context';
+import { IRuleClickEvent } from '../../events';
 
 class RGB {
     constructor(
@@ -37,7 +38,7 @@ export class RuleChartComponent implements OnInit, AfterViewInit, OnChanges {
 
     @Input("rules") public rules: ReadonlyArray<IRule>;
 
-    @Output() ruleClick: EventEmitter<string[]> = new EventEmitter();
+    @Output() ruleClick: EventEmitter<IRuleClickEvent> = new EventEmitter();
 
     constructor(private appContextService: AppContextService) {
         this.canvas = new PieCanvas();

@@ -5,3 +5,6 @@ export interface INamedProgramEvent {
     program: IProgram,
     displayName: string,
 }
+
+export type IDeleteProgramEvent = string;
+export type IRuleClickEvent = string[];
