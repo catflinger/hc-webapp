@@ -5,6 +5,7 @@ import { NamedConfig } from 'src/common/types';
 import { Subscription } from 'rxjs';
 import { AppContextService } from 'src/app/services/app-context.service';
 import { Router } from '@angular/router';
+import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
     selector: 'app-program-list',
@@ -22,12 +23,15 @@ export class ProgramListComponent implements OnInit, OnDestroy {
     constructor(
         private configService: ConfigService,
         private appContextService: AppContextService,
+        private alertService: AlertService,
         private router: Router,
         ) { 
             appContextService.clearContext();
         }
 
     ngOnInit() {
+        this.alertService.clearAlerts();
+
         this.subs.push(this.configService.getConfig()
         .subscribe((config) => {
             // note: 1st time though config is likeley to be null if the source

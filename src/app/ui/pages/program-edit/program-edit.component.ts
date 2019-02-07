@@ -7,6 +7,7 @@ import { IConfiguration, IProgram, IRule } from 'src/common/interfaces';
 import { Program } from 'src/common/types';
 import { Subscription } from 'rxjs';
 import { AppContextService } from 'src/app/services/app-context.service';
+import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
     selector: 'app-program-edit',
@@ -25,10 +26,13 @@ export class ProgramEditComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private configService: ConfigService,
         private appContextService: AppContextService,
+        private alertService: AlertService,
         private fb: FormBuilder,
     ) { }
 
     ngOnInit() {
+        this.alertService.clearAlerts();
+
         this.programId = this.route.snapshot.params.id;
 
         this.appContextService.setProgramContext(this.programId);

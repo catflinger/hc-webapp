@@ -9,6 +9,7 @@ import { IConfiguration, IRule, ISensorConfig, ISensorReading } from 'src/common
 import { SensorService } from 'src/app/services/sensor.service';
 import { routerNgProbeToken } from '@angular/router/src/router_module';
 import { SensorConfig } from 'src/common/types';
+import { AlertService } from 'src/app/services/alert.service';
 
 interface IOption { text: string, value: string };
 
@@ -33,6 +34,7 @@ export class SensorEditComponent implements OnInit {
         private appContextService: AppContextService,
         private configService: ConfigService,
         private sensorService: SensorService,
+        private alertService: AlertService,
         private router: Router,
         private route: ActivatedRoute,
         private fb: FormBuilder,
@@ -41,6 +43,8 @@ export class SensorEditComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.alertService.clearAlerts();
+
         this.subs.push(this.sensorService.getReadings()
         .subscribe(
             (readings: ISensorReading[]) => {

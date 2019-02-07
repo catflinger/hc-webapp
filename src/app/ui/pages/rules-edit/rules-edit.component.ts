@@ -7,6 +7,7 @@ import { Program, BasicHeatingRule } from 'src/common/types';
 import { Subscription } from 'rxjs';
 import { AppContextService } from 'src/app/services/app-context.service';
 import { AppContext } from 'src/app/services/app-context';
+import { AlertService } from 'src/app/services/alert.service';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class RulesEditComponent implements OnInit , OnDestroy {
         private route: ActivatedRoute,
         private configService: ConfigService,
         private appContextService: AppContextService,
+        private alertService: AlertService,
     ) { 
         appContextService.getAppContext().subscribe((ac) => {
             this.appContext = ac;
@@ -33,6 +35,8 @@ export class RulesEditComponent implements OnInit , OnDestroy {
     }
 
     ngOnInit() {
+        this.alertService.clearAlerts();
+
         const programId = this.route.snapshot.params.id;
         this.appContextService.setProgramContext(programId);
 

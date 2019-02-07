@@ -19,4 +19,9 @@ export class Override implements IOverride {
             rule: this.rule,
         };
     }
+
+    public static fromObject(data: any): Override {
+        // TO DO: parse the input data and return new Override(rule, date)
+        return data as Override;
+    }
 }

@@ -4,6 +4,7 @@ import { OverrideService } from '../../../services/override-service';
 import { ISensorConfig, IOverride } from '../../../../common/interfaces';
 import { Subscription } from 'rxjs';
 import { AppContextService } from 'src/app/services/app-context.service';
+import { AlertService, AlertType } from 'src/app/services/alert.service';
 
 @Component({
     selector: 'app-home',
@@ -20,20 +21,33 @@ export class HomeComponent implements OnInit, OnDestroy {
         private sensorReadingService: SensorService,
         private overrideService: OverrideService,
         private appContextService: AppContextService,
+        private alertService: AlertService,
     ) {
         appContextService.clearContext();
      }
 
     ngOnInit() {
-        this.subs.push(this.sensorReadingService.getReadings()
-        .subscribe((readings: ISensorConfig[]) => {
-            this.sensorReadings = readings;
-        }));
+        this.alertService.clearAlerts();
+        
+        this.subs.push(
+            this.sensorReadingService.getReadings()
+            .subscribe(
+                (readings: ISensorConfig[]) => {
+                    this.sensorReadings = readings;
+                },
+                this.alertService.createAlert("Could not get sensor readings", "danger")
+            )
+        );
 
-        this.subs.push(this.overrideService.getOverrides()
-        .subscribe((overrides: IOverride[]) => {
-            this.overrides = overrides;
-        }));
+        this.subs.push(
+            this.overrideService.getOverrides()
+            .subscribe(
+                (overrides: IOverride[]) => {
+                    this.overrides = overrides;
+                },
+                this.alertService.createAlert("Could not get override status", "danger")
+            )
+        );
     }
 
     ngOnDestroy() {
@@ -43,10 +57,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     private setOverride(minutes: number) {
-        this.overrideService.setOverride(minutes);
+        this.overrideService.setOverride(minutes)
+        .then(this.alertService.createAlert("Override set", "info"))
+        .catch(this.alertService.createAlert("Failed to set override", "danger"));
     }
 
     private clearOverrides() {
-        this.overrideService.clearOverrides();
+        this.overrideService.clearOverrides()
+        .then(this.alertService.createAlert("Overrides cleared", "info"))
+        .catch(this.alertService.createAlert("Failed to clear overrides", "danger"));
     }
 }

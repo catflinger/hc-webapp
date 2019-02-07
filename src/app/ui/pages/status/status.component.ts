@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { ControlStateService } from 'src/app/services/control-state.service';
 import { OverrideService } from 'src/app/services/override-service';
 import { ConfigService } from 'src/app/services/config.service';
+import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
     selector: 'app-status',
@@ -23,12 +24,15 @@ export class StatusComponent implements OnInit, OnDestroy {
         private sensorService: SensorService,
         private controlStateService: ControlStateService,
         private overrideService: OverrideService,
+        private alertService: AlertService,
         ) {
         
             this.appContextService.clearContext();
     }
 
     ngOnInit() {
+        this.alertService.clearAlerts();
+
         this.subs.push (this.sensorService.getReadings()
         .subscribe((readings) => { this.readings = readings; }));
 

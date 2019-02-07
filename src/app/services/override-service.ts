@@ -23,31 +23,30 @@ export class OverrideService {
         return this.bSubject.asObservable();
     }
 
-    public setOverride(minutes: number): void {
+    public setOverride(minutes: number): Promise<void> {
         const result = this.http.put(this.apiBase + "override", { duration: minutes });
-        this.applyResult(result);
+        return this.applyResult(result);
     }
 
-    public clearOverrides(): void {
+    public clearOverrides(): Promise<void> {
         const result = this.http.delete(this.apiBase + "override");
-        this.applyResult(result);
+        return this.applyResult(result);
     }
 
-    public refresh(): void {
+    public refresh(): Promise<void> {
         const result = this.http.get(this.apiBase + "override");
-        this.applyResult(result);
+        return this.applyResult(result);
     }
 
-    private applyResult(result: Observable<object>): void {
-        result.pipe(map((data: any): Override[] => {
+    private applyResult(result: Observable<object>): Promise<void> {
+        return result.toPromise<any>()
+        .then((data: any) => {
             const result: Override[] = [];
-            data.overrides.forEach((data: any) => {
-                result.push(data as Override);
+            data.overrides.forEach((ovData: any) => {
+                result.push(Override.fromObject(ovData));
             });
-            return result;
-        }))
-        .subscribe((s) => {
-            this.bSubject.next(s);
+            this.bSubject.next(result);
+            return Promise.resolve();
         });
     }
 }

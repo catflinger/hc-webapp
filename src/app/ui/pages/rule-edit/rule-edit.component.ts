@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { IConfiguration, IRule, IProgram } from 'src/common/interfaces';
 import { BasicHeatingRule, TimeOfDay } from 'src/common/types';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AlertService } from 'src/app/services/alert.service';
 
 class Option {
     constructor(
@@ -39,10 +40,13 @@ export class RuleEditComponent implements OnInit, OnDestroy {
         private router: Router,
         private route: ActivatedRoute,
         private configService: ConfigService,
+        private alertService: AlertService,
         private fb: FormBuilder,
     ) { }
 
     ngOnInit() {
+        this.alertService.clearAlerts();
+
         this.subs.push(this.configService.getConfig()
         .subscribe(
             (config: IConfiguration) => {

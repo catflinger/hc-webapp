@@ -37,6 +37,8 @@ import { PageTitleComponent } from './ui/components/page-title/page-title.compon
 import { OverrideListComponent } from './ui/components/override-list/override-list.component';
 import { TimeOfDayPipe } from './ui/pipes/time-of-day.pipe';
 import { RuleListComponent } from './ui/components/rule-list/rule-list.component';
+import { AlertComponent } from './ui/components/alert/alert.component';
+import { AlertService } from './services/alert.service';
 
 const apiBase: string = "http://localhost:3000/api/";
 const logApi: string = "log";
@@ -67,6 +69,7 @@ const logApi: string = "log";
         OverrideListComponent,
         TimeOfDayPipe,
         RuleListComponent,
+        AlertComponent,
     ],
     imports: [
         BrowserModule,
@@ -77,6 +80,9 @@ const logApi: string = "log";
         NgbModule,
     ],
     providers: [
+        // app
+        AlertService,
+
         // api services
         AppContextService,
         SensorService,

@@ -9,6 +9,7 @@ import { ILogExtract, IConfiguration, ISensorConfig } from 'src/common/interface
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms';
 import { SensorConfig } from 'src/common/types';
+import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
     selector: 'app-logger',
@@ -25,6 +26,7 @@ export class LoggerComponent implements OnInit, OnDestroy {
         private appContextService: AppContextService,
         private logService: LogService,
         private configService: ConfigService,
+        private alertService: AlertService,
         private router: Router,
         private fb: FormBuilder,
     ) {
@@ -32,6 +34,8 @@ export class LoggerComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.alertService.clearAlerts();
+
         this.subs.push(this.configService.getConfig()
         .subscribe((config) => {
             if (config) {

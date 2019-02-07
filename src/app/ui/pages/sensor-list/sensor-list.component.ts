@@ -5,6 +5,7 @@ import { SensorService } from 'src/app/services/sensor.service';
 import { Router } from '@angular/router';
 import { ConfigService } from 'src/app/services/config.service';
 import { Subscription } from 'rxjs';
+import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
     selector: 'app-sensor-list',
@@ -19,12 +20,15 @@ export class SensorListComponent implements OnInit, OnDestroy {
         private appContextService: AppContextService,
         private sensorService: SensorService,
         private configService: ConfigService,
+        private alertService: AlertService,
         private router: Router) {
 
         this.appContextService.clearContext();
     }
 
     ngOnInit() {
+        this.alertService.clearAlerts();
+
         this.refresh();
     }
 
