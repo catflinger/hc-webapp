@@ -1,9 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { IProgram, IRule } from 'src/common/interfaces';
-import { stringify } from '@angular/core/src/util';
-import { BasicHeatingRule } from 'src/common/types';
 import { Router } from '@angular/router';
-import { routerNgProbeToken } from '@angular/router/src/router_module';
+import { INamedProgramEvent } from '../../events';
 
 @Component({
     selector: 'app-program-card',
@@ -13,7 +11,7 @@ import { routerNgProbeToken } from '@angular/router/src/router_module';
 export class ProgramCardComponent implements OnInit {
 
     @Input("program") private program: IProgram;
-    @Output("setNamedProgram") private namedProgramEvent: EventEmitter<{name: string, programId: string}> = new EventEmitter();
+    @Output("setNamedProgram") private namedProgramEvent: EventEmitter<INamedProgramEvent> = new EventEmitter();
     @Output("deleteProgram") private deleteProgramEvent: EventEmitter<string> = new EventEmitter();
 
     constructor(private router: Router) { }
@@ -29,8 +27,8 @@ export class ProgramCardComponent implements OnInit {
         this.router.navigate(['/program', this.program.id,'rules-edit'])
     }
 
-    private setNamedProgram(name: string, programId: string) {
-        this.namedProgramEvent.emit({name, programId});
+    private setNamedProgram(name: string, displayName: string, program: IProgram) {
+        this.namedProgramEvent.emit({name, displayName, program});
     }
 
     private onDelete() {

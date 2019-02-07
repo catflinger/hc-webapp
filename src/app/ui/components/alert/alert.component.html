@@ -1,3 +1,5 @@
-<div *ngIf="alert">
-    <ngb-alert [type]="alert.type" (click)="onCloseAlert(alert)">{{alert.message}}</ngb-alert>
+<div id="alertContainer">
+    <ng-container  *ngIf="alert">
+        <ngb-alert [type]="alert.type" (click)="onCloseAlert(alert)">{{alert.message}}</ngb-alert>
+    </ng-container>
 </div>

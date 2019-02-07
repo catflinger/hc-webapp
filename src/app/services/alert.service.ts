@@ -39,11 +39,8 @@ export class AlertService {
         return this.subject.asObservable();
     }
 
-    public setAlert(alert: IAlert) {
-        // const alerts = this.subject.value;
-        // alerts.push(alert);
-        alert.date = moment();
-        this.subject.next(alert);
+    public setAlert(message: string, type: AlertType) {
+        this.subject.next({ message, type, date: moment() });
     }
 
     public clearAlerts() {
@@ -54,10 +51,7 @@ export class AlertService {
         const self = this;
 
         return () => {
-            self.setAlert({
-                message,
-                type,
-            })
+            self.setAlert(message,type);
         }
     }
 }

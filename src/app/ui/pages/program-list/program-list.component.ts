@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { AppContextService } from 'src/app/services/app-context.service';
 import { Router } from '@angular/router';
 import { AlertService } from 'src/app/services/alert.service';
+import { INamedProgramEvent } from '../../events';
 
 @Component({
     selector: 'app-program-list',
@@ -59,16 +60,13 @@ export class ProgramListComponent implements OnInit, OnDestroy {
         return this.config.getProgramConfig().find((program) => { return program.id === id; });
     }
 
-    private onSetNamedProgram(event: {name: string, programId: string}) {
+    private onSetNamedProgram(event: INamedProgramEvent) {
         this.configService.updateConfig((config: any) => {
-            config.namedConfig[event.name] = event.programId;
+            config.namedConfig[event.name] = event.program.id;
             return false;
         })
-        .catch((err) => {
-            // TO DO: add a status panel to app somehwere
-            alert("ERROR saving config");
-
-        });
+        .then(this.alertService.createAlert(`Program ${event.program.name} set for ${event.displayName}`, "info"))
+        .catch(this.alertService.createAlert("Failed to set program", "danger"));
     }
 
     private onDelete(id: string) {
@@ -81,10 +79,7 @@ export class ProgramListComponent implements OnInit, OnDestroy {
                 return true;
             }
         })
-        .catch((error) => {
-            // to DO: report this somewhere
-            console.log("ERROR saving changes");
-        });
+        .catch(this.alertService.createAlert("Failed to delete program", "danger"));
     }
     
     private onNewProgram() {

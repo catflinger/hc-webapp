@@ -54,16 +54,11 @@ export class ProgramEditComponent implements OnInit, OnDestroy {
                         this.buildForm();
                     } else {
                         this.config = undefined;
-                        // TO DO: show message somewhere;
-                        console.log("Error program not found ");
+                        this.alertService.setAlert("Failed to get configuration data", "danger");
                     }
                 }
             }, 
-            (err) => {
-                this.config = undefined;
-                // TO DO: show message somewhere;
-                console.log("Error loading form " + err);
-            }
+            this.alertService.createAlert("Failed to get configuration data", "danger")
         ));
     }
 

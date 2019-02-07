@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, OnChanges, Input, ChangeDetectorRef } from '@angular/core';
 import { AlertService, IAlert } from 'src/app/services/alert.service';
 import { Subscription } from 'rxjs';
 
@@ -11,12 +11,15 @@ export class AlertComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
     private alert: IAlert = null;
 
-    constructor(private alertService: AlertService) {}
+    constructor(
+        private alertService: AlertService,
+        ) {}
 
     ngOnInit(): void {
         this.subs.push(
             this.alertService.getObservable().subscribe((alert) => {
                 this.alert = alert;
+                this.scrollToAlert();
             })
         );
     }
@@ -27,5 +30,12 @@ export class AlertComponent implements OnInit, OnDestroy {
 
     private onCloseAlert(alert: IAlert) {
         this.alertService.clearAlerts();
+    }
+
+    private scrollToAlert() {
+        const el = document.getElementById("alertContainer");
+        if (el) {
+            el.scrollIntoView(false);
+        }
     }
 }
