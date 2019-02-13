@@ -5,11 +5,6 @@ import { ILogExtract, ILogEntry, ISensorConfig } from 'src/common/interfaces';
 
 export class LogChartDataAdapter {
 
-
-    // TO DO: make this return ChartData rather than ChartConfig
-    // type and options should be set by the component not by the adapter
-
-
     public toChartData(extract: ILogExtract, sensors: string[]): ChartData {
 
         const result = {

@@ -16,7 +16,7 @@ import { AlertService } from 'src/app/services/alert.service';
 export class StatusComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
     private readings: ReadonlyArray<ISensorReading>;
-    private controlStateResponse: IControlStateApiResponse;
+    private controlState: IControlStateApiResponse;
     private overrides: IOverride[];
     
     constructor(
@@ -33,14 +33,20 @@ export class StatusComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.alertService.clearAlerts();
 
-        this.subs.push (this.sensorService.getReadings()
-        .subscribe((readings) => { this.readings = readings; }));
+        this.subs.push (
+            this.sensorService.getObservable()
+            .subscribe((readings) => { this.readings = readings; })
+        );
 
         this.subs.push (this.controlStateService.getControlState()
-        .subscribe((controlState) => { this.controlStateResponse = controlState; }));
+            .subscribe((controlState) => { 
+                this.controlState = controlState; 
+            })
+        );
 
         this.subs.push (this.overrideService.getOverrides()
-        .subscribe((overrides) => { this.overrides = overrides; }));
+            .subscribe((overrides) => { this.overrides = overrides; })
+        );
     }
 
     ngOnDestroy() {

@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.alertService.clearAlerts();
         
         this.subs.push(
-            this.sensorReadingService.getReadings()
+            this.sensorReadingService.getObservable()
             .subscribe(
                 (readings: ISensorConfig[]) => {
                     this.sensorReadings = readings;

@@ -73,13 +73,13 @@ export class RuleEditComponent implements OnInit, OnDestroy {
 
                         this.buildForm();
                     } else {
-                        // TO DO: show some message here
+                        this.alertService.createAlert("Error: could not find progam in config", "danger")
                     }
                 }
             }, 
             (err) => {
                 this.config = undefined;
-                // TO DO: show message somewhere;
+                this.alertService.createAlert("Error: could not load config: " + err, "danger")
             }
         ));
     }
@@ -119,9 +119,7 @@ export class RuleEditComponent implements OnInit, OnDestroy {
             this.navigateToRulesPage();
         })
         .catch((error) => {
-            // to DO: report this somewhere
-            console.log("ERROR updating rule" + error)
-            this.navigateToRulesPage();
+            this.alertService.createAlert("Error: could not save shanges: " + error, "danger")
         });
     }
 

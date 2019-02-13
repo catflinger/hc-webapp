@@ -45,12 +45,10 @@ export class SensorEditComponent implements OnInit {
     ngOnInit() {
         this.alertService.clearAlerts();
 
-        this.subs.push(this.sensorService.getReadings()
-        .subscribe(
-            (readings: ISensorReading[]) => {
+        this.sensorService.refresh()
+        .then(() => {
                 this.params = this.route.snapshot.params;
-
-                this.reading = readings.find((r: ISensorReading) => { 
+                this.reading = this.sensorService.getReadings().find((r: ISensorReading) => { 
                     return r.id === this.params.id ;
                 });
                 
@@ -60,16 +58,14 @@ export class SensorEditComponent implements OnInit {
                         role: this.fb.control(this.roles.find((r) => r.value === this.reading.role), [Validators.required]),
                     });
                 } else {
-                    // TO DO: show some message here
-                    console.log("ERROR: sensor not found");
+                    this.alertService.createAlert("Error: could not find sensor", "danger")
                     this.reading = undefined;
                 }
             },
             (err) => {
-                // TO DO: show message somewhere;
-                console.log("ERROR: could not load form");
+                this.alertService.createAlert("Error: could not read sensors: " + err, "danger")
             }
-        ));
+        );
     }
 
     private onSubmit() {
@@ -92,9 +88,8 @@ export class SensorEditComponent implements OnInit {
         .then(() => {
             this.router.navigate(["/sensors"]);
         })
-        .catch(() => {
-            // TO DO: show message somewhere;
-            console.log("ERROR: could not savethe changes");
+        .catch((error) => {
+            this.alertService.createAlert("Error: could not save changes: " + error, "danger")
         });
     }
 

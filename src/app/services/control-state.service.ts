@@ -5,7 +5,7 @@ import { Observable, BehaviorSubject } from "rxjs";
 
 import { ControlState } from '../../common/types';
 import { INJECTABLES } from '../injection-tokens';
-import { IControlStateApiResponse } from '../../../src/common/interfaces';
+import { IControlStateApiResponse, IControlState } from '../../../src/common/interfaces';
 import { ControlStateApiResponse } from "../../../src/common/api/control-state-api-response";
 
 @Injectable({

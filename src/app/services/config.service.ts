@@ -5,14 +5,15 @@ import { Observable, BehaviorSubject, Subscription } from "rxjs";
 
 import { Configuration, NamedConfig } from '../../common/types';
 import { INJECTABLES } from '../injection-tokens';
-import { IConfiguration } from 'src/common/interfaces';
+import { IConfiguration, IConfigApiResponse } from 'src/common/interfaces';
+import { ConfigApiResponse } from 'src/common/api/config-api-response';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ConfigService {
 
-    private bSubject: BehaviorSubject<Configuration>;
+    private bSubject: BehaviorSubject<IConfiguration>;
 
     constructor(
         private http: HttpClient,
@@ -23,7 +24,7 @@ export class ConfigService {
             this.refresh();
     }
 
-    public getConfig(): Observable<Configuration> {
+    public getConfig(): Observable<IConfiguration> {
         return this.bSubject.asObservable();
     }
 
@@ -62,20 +63,14 @@ export class ConfigService {
 
     public refresh(): void {
         this.http.get(this.baseUrl + "config")
-        .pipe(map((data: any): Configuration => {
+        .pipe(map((data: any): IConfiguration => {
+            const apiResponse: IConfigApiResponse = new ConfigApiResponse(data);
             // console.log("GOT CONFIG:" + JSON.stringify(data, null, 4));
-            return new Configuration(data.config);
+            return apiResponse.config;
         }))
         .subscribe((s) => {
             this.bSubject.next(s);
         });
     }
 
-    // public updateConfig(updater: (any)=>void): Promise<void> {
-    //     const config: any = this.getMutableCopy();
-
-    //     updater(config);
-        
-    //     return this.setConfig(config);
-    // }
 }

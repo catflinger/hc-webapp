@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { ConfigService } from '../../../services/config.service';
-import { IConfiguration, ISensorConfig, IControlState, IOverride, IProgram } from '../../../../common/interfaces';
+import { IConfiguration, ISensorConfig, IControlState, IOverride, IProgram, IControlStateApiResponse } from '../../../../common/interfaces';
 import { SensorService } from "../../../services/sensor.service";
 import { ControlStateService } from '../../../services/control-state.service';
 import { OverrideService } from '../../../services/override-service';
@@ -17,7 +17,7 @@ export class TempComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
 
     private config: IConfiguration;
-    private controlState: IControlState;
+    private controlState: IControlStateApiResponse;
     private sensors: ISensorConfig[] = [];
     private overrides: IOverride[] = [];
 
@@ -34,7 +34,8 @@ export class TempComponent implements OnInit, OnDestroy {
         private controlStateService: ControlStateService,
         private sensorService: SensorService,
         private overrideService: OverrideService,
-        private appContextService: AppContextService) {
+        private appContextService: AppContextService
+        ) {
             appContextService.clearContext();
     }
 
@@ -54,15 +55,16 @@ export class TempComponent implements OnInit, OnDestroy {
                 if (this.config && this.config.getProgramConfig().length) {
                     this.program = this.config.getProgramConfig()[0];
                 }
-            }));
+            })
+        );
 
         this.subs.push(this.controlStateService.getControlState()
-            .subscribe((response) => {
-                this.controlState = response.controlState;
+            .subscribe((controlState) => {
+                this.controlState = controlState;
                 this.controlStateString = JSON.stringify(this.controlState);
             }));
 
-        this.subs.push(this.sensorService.getReadings()
+        this.subs.push(this.sensorService.getObservable()
             .subscribe((readings: ISensorConfig[]) => {
                 this.sensors = readings;
                 this.sensorsString = JSON.stringify(this.sensors);
@@ -72,7 +74,8 @@ export class TempComponent implements OnInit, OnDestroy {
             .subscribe((overrides: IOverride[]) => {
                 this.overrides = overrides;
                 this.overrideStateString = JSON.stringify(this.overrides);
-            }));
+            })
+        );
     }
 
     ngOnDestroy() {

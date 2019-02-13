@@ -101,8 +101,7 @@ export class ProgramEditComponent implements OnInit, OnDestroy {
             }
         })
         .catch((err) => {
-            // to DO: display error somewhere
-            console.log("Error posting form " + err);
+            this.alertService.createAlert("Error posting form " + err, "danger")
         });
     }
 

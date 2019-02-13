@@ -1,10 +1,10 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { map } from "rxjs/operators";
-import { Observable, BehaviorSubject, timer } from "rxjs";
+import { Observable, BehaviorSubject } from "rxjs";
 
 import { INJECTABLES } from '../injection-tokens';
 import { Override } from '../../common/types';
+import { OverrideApiResponse } from 'src/common/api/override-api-response';
 
 @Injectable({
   providedIn: 'root'
@@ -41,11 +41,8 @@ export class OverrideService {
     private applyResult(result: Observable<object>): Promise<void> {
         return result.toPromise<any>()
         .then((data: any) => {
-            const result: Override[] = [];
-            data.overrides.forEach((ovData: any) => {
-                result.push(Override.fromObject(ovData));
-            });
-            this.bSubject.next(result);
+            const apiResponse = new OverrideApiResponse(data);
+            this.bSubject.next(apiResponse.overrides);
             return Promise.resolve();
         });
     }

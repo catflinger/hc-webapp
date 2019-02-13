@@ -6,6 +6,7 @@ import { Observable, BehaviorSubject } from "rxjs";
 import { INJECTABLES } from '../injection-tokens';
 import { ILogExtract } from '../../common/interfaces';
 import { LogExtract } from "../../common/log/log-extract";
+import { LogApiResponse } from 'src/common/api/log-api-response';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +39,8 @@ export class LogService {
 
         .pipe(map((data: any): ILogExtract => {
             // console.log(JSON.stringify(data, null, 4));
-            return new LogExtract(data.log);
+            const apiResponse = new LogApiResponse(data);
+            return apiResponse.log;
         }))
 
         .toPromise()

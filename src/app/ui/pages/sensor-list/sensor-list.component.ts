@@ -42,10 +42,12 @@ export class SensorListComponent implements OnInit, OnDestroy {
         this.sensors = [];
         this.ngOnDestroy();
         
-        this.subs.push(this.sensorService.getReadings()
+        this.subs.push(this.sensorService.getObservable()
         .subscribe((readings) => {
             this.sensors = readings;
         }));
+
+        this.sensorService.refresh();
     }
 
     private onEdit(id: string) {
@@ -63,9 +65,8 @@ export class SensorListComponent implements OnInit, OnDestroy {
         .then(() => {
             this.refresh();
         })
-        .catch(() => {
-            // TO DO: show this somewhere
-            console.log("ERROR: could not clear sensor");
+        .catch((error) => {
+            this.alertService.createAlert("Error: could not clear sensor: " + error, "danger")
         });
     }
 
