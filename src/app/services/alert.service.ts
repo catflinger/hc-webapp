@@ -10,7 +10,7 @@ export interface IAlert {
     date?: moment.Moment;
 }
 
-const secondsToDisplayMessage = 4; 
+const secondsToDisplayMessage = 4;
 
 @Injectable({
     providedIn: 'root'
@@ -20,12 +20,12 @@ export class AlertService {
 
     constructor() {
         this.subject = new BehaviorSubject(null);
-        
+
         // set up a timer that clears the alert if it has been up for more than 5 seconds
         timer(500, 500)
         .subscribe(() => {
             const alert = this.subject.value;
-            
+
             if (alert) {
                 const aFewSecondsAgo = moment().subtract(secondsToDisplayMessage, "seconds");
                 if (alert.date.isBefore(aFewSecondsAgo)) {
@@ -51,7 +51,7 @@ export class AlertService {
         const self = this;
 
         return () => {
-            self.setAlert(message,type);
-        }
+            self.setAlert(message, type);
+        };
     }
 }

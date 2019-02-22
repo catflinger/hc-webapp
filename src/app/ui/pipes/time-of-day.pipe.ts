@@ -13,6 +13,6 @@ export class TimeOfDayPipe implements PipeTransform {
         return tod ?
             tod.hour.toString() + ":" + tod.hour.toString() :
             "";
-    };
+    }
 }
 

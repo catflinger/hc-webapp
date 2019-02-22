@@ -41,7 +41,7 @@ export class SensorListComponent implements OnInit, OnDestroy {
     private refresh() {
         this.sensors = [];
         this.ngOnDestroy();
-        
+
         this.subs.push(this.sensorService.getObservable()
         .subscribe((readings) => {
             this.sensors = readings;
@@ -56,17 +56,18 @@ export class SensorListComponent implements OnInit, OnDestroy {
 
     private onClear(id: string) {
         this.configService.updateConfig((config: any) => {
-            let index: number = config.sensorConfig.findIndex((sc) => sc.id === id);
+            const index: number = config.sensorConfig.findIndex((sc) => sc.id === id);
             if (index >= 0) {
                 config.sensorConfig.splice(index, 1);
-            } 
+            }
+
             return false;
         })
         .then(() => {
             this.refresh();
         })
         .catch((error) => {
-            this.alertService.createAlert("Error: could not clear sensor: " + error, "danger")
+            this.alertService.createAlert("Error: could not clear sensor: " + error, "danger");
         });
     }
 

@@ -5,13 +5,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppContextService } from 'src/app/services/app-context.service';
 import { ConfigService } from 'src/app/services/config.service';
 import { Subscription } from 'rxjs';
-import { IConfiguration, IRule, ISensorConfig, ISensorReading } from 'src/common/interfaces';
+import { ISensorReading } from 'src/common/interfaces';
 import { SensorService } from 'src/app/services/sensor.service';
-import { routerNgProbeToken } from '@angular/router/src/router_module';
 import { SensorConfig } from 'src/common/types';
 import { AlertService } from 'src/app/services/alert.service';
 
-interface IOption { text: string, value: string };
+interface IOption { text: string; value: string; }
 
 @Component({
     selector: 'app-sensor-edit',
@@ -24,7 +23,7 @@ export class SensorEditComponent implements OnInit {
     private params: Params;
     private reading: ISensorReading;
 
-    private roles: IOption[] = [ 
+    private roles: IOption[] = [
         { text: "none", value: "" },
         { text: "hot water", value: "hw" },
         { text: "bedroom", value: "bedroom" },
@@ -48,30 +47,30 @@ export class SensorEditComponent implements OnInit {
         this.sensorService.refresh()
         .then(() => {
                 this.params = this.route.snapshot.params;
-                this.reading = this.sensorService.getReadings().find((r: ISensorReading) => { 
+                this.reading = this.sensorService.getReadings().find((r: ISensorReading) => {
                     return r.id === this.params.id ;
                 });
-                
+
                 if (this.reading) {
                     this.form = this.fb.group({
                         description: this.fb.control(this.reading.description, [Validators.required]),
                         role: this.fb.control(this.roles.find((r) => r.value === this.reading.role), [Validators.required]),
                     });
                 } else {
-                    this.alertService.createAlert("Error: could not find sensor", "danger")
+                    this.alertService.createAlert("Error: could not find sensor", "danger");
                     this.reading = undefined;
                 }
             },
             (err) => {
-                this.alertService.createAlert("Error: could not read sensors: " + err, "danger")
+                this.alertService.createAlert("Error: could not read sensors: " + err, "danger");
             }
         );
     }
 
     private onSubmit() {
         this.configService.updateConfig((config: any) => {
-            let sensor = config.sensorConfig.find((s) => s.id === this.reading.id);
-            
+            const sensor = config.sensorConfig.find((s) => s.id === this.reading.id);
+
             if (!sensor) {
                 config.sensorConfig.push(new SensorConfig({
                     id: this.reading.id,
@@ -89,7 +88,7 @@ export class SensorEditComponent implements OnInit {
             this.router.navigate(["/sensors"]);
         })
         .catch((error) => {
-            this.alertService.createAlert("Error: could not save changes: " + error, "danger")
+            this.alertService.createAlert("Error: could not save changes: " + error, "danger");
         });
     }
 

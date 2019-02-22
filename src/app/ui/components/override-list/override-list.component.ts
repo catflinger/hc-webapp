@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IOverride, IRule } from 'src/common/interfaces';
+import { IOverride, IRuleConfig } from 'src/common/interfaces';
 
 @Component({
     selector: 'app-override-list',
@@ -11,7 +11,7 @@ export class OverrideListComponent implements OnInit {
     @Input()
     private overrides: IOverride[];
 
-    private rules: IRule[];
+    private rules: IRuleConfig[];
 
     constructor() { }
 

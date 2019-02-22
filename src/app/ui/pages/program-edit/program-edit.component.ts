@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, Validators, FormArray, AbstractControl, FormBuilder } from '@angular/forms';
 
 import { ConfigService } from 'src/app/services/config.service';
-import { IConfiguration, IProgram, IRule } from 'src/common/interfaces';
+import { IConfiguration, IProgram } from 'src/common/interfaces';
 import { Program } from 'src/common/types';
 import { Subscription } from 'rxjs';
 import { AppContextService } from 'src/app/services/app-context.service';
@@ -43,8 +43,8 @@ export class ProgramEditComponent implements OnInit, OnDestroy {
                 if (config) {
                     this.config = config;
                     if (this.programId) {
-                        this.program = this.config.getProgramConfig().find((p) => { 
-                            return p.id === this.programId; 
+                        this.program = this.config.getProgramConfig().find((p) => {
+                            return p.id === this.programId;
                         });
                     } else {
                         this.program = new Program();
@@ -57,7 +57,7 @@ export class ProgramEditComponent implements OnInit, OnDestroy {
                         this.alertService.setAlert("Failed to get configuration data", "danger");
                     }
                 }
-            }, 
+            },
             this.alertService.createAlert("Failed to get configuration data", "danger")
         ));
     }
@@ -74,9 +74,9 @@ export class ProgramEditComponent implements OnInit, OnDestroy {
         this.configService.updateConfig((config: any) => {
 
             let program: any;
-            
+
             if (this.programId) {
-                program = config.programConfig.find((p: any) => { return p.id === this.program.id});
+                program = config.programConfig.find((p: any) => p.id === this.program.id);
             } else {
                 program = new Program();
                 newProgramId = program.id;
@@ -90,7 +90,7 @@ export class ProgramEditComponent implements OnInit, OnDestroy {
             } else {
                 throw new Error("program not found");
             }
-            
+
             return false;
         })
         .then((config) => {
@@ -101,7 +101,7 @@ export class ProgramEditComponent implements OnInit, OnDestroy {
             }
         })
         .catch((err) => {
-            this.alertService.createAlert("Error posting form " + err, "danger")
+            this.alertService.createAlert("Error posting form " + err, "danger");
         });
     }
 
@@ -111,7 +111,7 @@ export class ProgramEditComponent implements OnInit, OnDestroy {
 
     private buildForm() {
         const p = this.program;
-        
+
         this.form = this.fb.group({
             id: p.id,
             name: [p.name, [Validators.required]],

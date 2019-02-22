@@ -10,11 +10,11 @@ export class LogChartDataAdapter {
         const result = {
             labels: [],
             datasets: [],
-        } 
+        };
 
         // add one dataset each sensor
         extract.sensors.forEach((sensor: string, sensorIndex: number) => {
-            let dataset = {
+            const dataset = {
                 label: sensor,
                 data: [],
                 borderColor: sensorIndex ? "red" : "blue",
@@ -29,10 +29,10 @@ export class LogChartDataAdapter {
         for (let ticks = 0; ticks < 6 * 24; ticks++) {
             m.add(10, "minutes");
 
-            //find the record (if one exists) for this point in time
-            let entry: ILogEntry = extract.entries.find((e) => m.isSame(e.date, "minutes"));
+            // find the record (if one exists) for this point in time
+            const entry: ILogEntry = extract.entries.find((e) => m.isSame(e.date, "minutes"));
 
-            let readings: ReadonlyArray<number> = entry ? entry.readings : [];
+            const readings: ReadonlyArray<number> = entry ? entry.readings : [];
 
             // add the readings for each dataset
             result.datasets.forEach((dataset, i) => {
@@ -41,7 +41,7 @@ export class LogChartDataAdapter {
                     y: readings[i] === undefined ? null : readings[i],
                 });
             });
-        };
+        }
 
         return result;
     }

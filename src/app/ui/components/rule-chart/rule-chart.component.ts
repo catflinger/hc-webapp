@@ -1,9 +1,13 @@
 import { Component, OnInit, Input, Output, EventEmitter, AfterViewInit, OnChanges } from '@angular/core';
-import { IRule, IProgram, ITimeOfDay } from '../../../../common/interfaces';
+import { IRuleConfig, IProgram, ITimeOfDay } from '../../../../common/interfaces';
 import { v4 as uuid } from 'uuid';
 import { AppContextService } from 'src/app/services/app-context.service';
 import { AppContext } from 'src/app/services/app-context';
 import { IRuleClickEvent } from '../../events';
+
+const PI = Math.PI;
+const secondsPerQuarter = 6 * 60 * 60;
+const radiansPerQuarter = PI / 2;
 
 class RGB {
     constructor(
@@ -12,7 +16,7 @@ class RGB {
         public readonly b: number) { }
 
     public toCssColor(): string {
-        return `rgb(${this.r},${this.g},${this.b})`
+        return `rgb(${this.r},${this.g},${this.b})`;
     }
 
     isSameColorAs(other: RGB) {
@@ -23,9 +27,24 @@ class RGB {
 const fillColor: RGB = new RGB(0xFF, 0x00, 0x00);
 const fillHighlightColor: RGB = new RGB(0x00, 0x7B, 0xFF);
 
-const PI = Math.PI;
-const secondsPerQuarter = 6 * 60 * 60;
-const radiansPerQuarter = PI / 2;
+class PieCanvas {
+    public id: string;
+    public radius = 100;
+    public border = 30;
+    public get height(): number { return this.radius * 2 + this.border * 2; }
+    public get width(): number { return this.radius * 2 + this.border * 2; }
+    public get cx(): number { return this.width / 2; }
+    public get cy(): number { return this.height / 2; }
+
+    constructor() {
+        this.id = uuid();
+    }
+
+    getDrawingContext(): CanvasRenderingContext2D {
+        const el = <HTMLCanvasElement>document.getElementById(this.id);
+        return el ? el.getContext("2d") : null;
+    }
+}
 
 @Component({
     selector: 'app-rule-chart',
@@ -36,7 +55,7 @@ export class RuleChartComponent implements OnInit, AfterViewInit, OnChanges {
     private canvas: PieCanvas;
     private appContext: AppContext;
 
-    @Input("rules") public rules: ReadonlyArray<IRule>;
+    @Input() public rules: ReadonlyArray<IRuleConfig>;
 
     @Output() ruleClick: EventEmitter<IRuleClickEvent> = new EventEmitter();
 
@@ -83,7 +102,7 @@ export class RuleChartComponent implements OnInit, AfterViewInit, OnChanges {
         ctx.arc(0, 0, this.canvas.radius + 20, 0, 2 * Math.PI, false);
         ctx.stroke();
 
-        this.rules.forEach((rule: IRule) => {
+        this.rules.forEach((rule: IRuleConfig) => {
             const color: RGB = rule.id === this.appContext.ruleId ? fillHighlightColor : fillColor;
             this.drawSlot(ctx, rule.startTime, rule.endTime, color, color);
         });
@@ -111,7 +130,7 @@ export class RuleChartComponent implements OnInit, AfterViewInit, OnChanges {
             // work out which rule(s) have been clicked on
             const seconds = this.pointToSeconds(mousePos);
 
-            this.rules.forEach((rule: IRule) => {
+            this.rules.forEach((rule: IRuleConfig) => {
                 if (seconds >= rule.startTime.toSeconds() && seconds <= rule.endTime.toSeconds()) {
                     result.push(rule.id);
                 }
@@ -140,18 +159,18 @@ export class RuleChartComponent implements OnInit, AfterViewInit, OnChanges {
 
     private drawHourLines(ctx: CanvasRenderingContext2D): void {
         for (let n = 0; n < 24; n++) {
-            let radians = (n * Math.PI * 2) / 24 - Math.PI / 2;
-            let tickFactor = n % 6 ? 0.9 : 0.8;
-            let captionFactor = 1.1;
+            const radians = (n * Math.PI * 2) / 24 - Math.PI / 2;
+            const tickFactor = n % 6 ? 0.9 : 0.8;
+            const captionFactor = 1.1;
 
-            let x1 = Math.cos(radians) * this.canvas.radius * tickFactor;
-            let y1 = Math.sin(radians) * this.canvas.radius * tickFactor;
+            const x1 = Math.cos(radians) * this.canvas.radius * tickFactor;
+            const y1 = Math.sin(radians) * this.canvas.radius * tickFactor;
 
-            let x2 = Math.cos(radians) * this.canvas.radius;
-            let y2 = Math.sin(radians) * this.canvas.radius;
+            const x2 = Math.cos(radians) * this.canvas.radius;
+            const y2 = Math.sin(radians) * this.canvas.radius;
 
-            let x3 = Math.cos(radians) * this.canvas.radius * captionFactor;
-            let y3 = Math.sin(radians) * this.canvas.radius * captionFactor;
+            const x3 = Math.cos(radians) * this.canvas.radius * captionFactor;
+            const y3 = Math.sin(radians) * this.canvas.radius * captionFactor;
 
             ctx.strokeStyle = "#FFFFFF";
             ctx.beginPath();
@@ -174,11 +193,11 @@ export class RuleChartComponent implements OnInit, AfterViewInit, OnChanges {
 
         let result: number;
 
-        //get the position iof the click relative to the centre of the chart
+        // get the position iof the click relative to the centre of the chart
         let xOffset = pos.x - this.canvas.cx;
         let yOffset = -(pos.y - this.canvas.cy);
 
-        let lengthOfArc = Math.sqrt(xOffset * xOffset + yOffset * yOffset);
+        const lengthOfArc = Math.sqrt(xOffset * xOffset + yOffset * yOffset);
         xOffset /= lengthOfArc;
         yOffset /= lengthOfArc;
 
@@ -207,24 +226,5 @@ export class RuleChartComponent implements OnInit, AfterViewInit, OnChanges {
         }
 
         return result;
-    }
-}
-
-class PieCanvas {
-    public id: string;
-    public radius: number = 100;
-    public border: number = 30;
-    public get height(): number { return this.radius * 2 + this.border * 2 };
-    public get width(): number { return this.radius * 2 + this.border * 2 };
-    public get cx(): number { return this.width / 2 };
-    public get cy(): number { return this.height / 2 };
-
-    constructor() {
-        this.id = uuid();
-    }
-
-    getDrawingContext(): CanvasRenderingContext2D {
-        const el = <HTMLCanvasElement>document.getElementById(this.id);
-        return el ? el.getContext("2d") : null;
     }
 }

@@ -21,11 +21,11 @@ export class TempComponent implements OnInit, OnDestroy {
     private sensors: ISensorConfig[] = [];
     private overrides: IOverride[] = [];
 
-    private configString: string = "";
-    private sensorsString: string = "";
-    private availableString: string = "";
-    private controlStateString: string = "";
-    private overrideStateString: string = "";
+    private configString = "";
+    private sensorsString = "";
+    private availableString = "";
+    private controlStateString = "";
+    private overrideStateString = "";
 
     private program: IProgram;
 

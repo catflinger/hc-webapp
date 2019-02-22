@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { IRule } from 'src/common/interfaces';
+import { IRuleConfig } from 'src/common/interfaces';
 import { AppContextService } from 'src/app/services/app-context.service';
 import { AppContext } from 'src/app/services/app-context';
 
@@ -11,15 +11,15 @@ import { AppContext } from 'src/app/services/app-context';
 export class RuleCardComponent implements OnInit {
     private appContext: AppContext;
 
-    @Input("rule") private rule: IRule;
-    @Input("title") private title: string;
+    @Input() private rule: IRuleConfig;
+    @Input() private title: string;
 
-    @Output() edit: EventEmitter<IRule> = new EventEmitter();
-    @Output() delete: EventEmitter<IRule> = new EventEmitter();
-    @Output() select: EventEmitter<IRule> = new EventEmitter();
+    @Output() edit: EventEmitter<IRuleConfig> = new EventEmitter();
+    @Output() delete: EventEmitter<IRuleConfig> = new EventEmitter();
+    @Output() select: EventEmitter<IRuleConfig> = new EventEmitter();
 
     constructor(private appContextService: AppContextService) {
-        appContextService.getAppContext().subscribe((ac) => { 
+        appContextService.getAppContext().subscribe((ac) => {
             this.appContext = ac;
         });
      }

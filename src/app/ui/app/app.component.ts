@@ -17,7 +17,7 @@ const longPollInterval = 10 * oneMintue;
 })
 export class AppComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
-    
+
     constructor(
         private sensorService: SensorService,
         private configService: ConfigService,

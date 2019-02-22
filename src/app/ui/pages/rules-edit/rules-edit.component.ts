@@ -2,12 +2,13 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { ConfigService } from 'src/app/services/config.service';
-import { IConfiguration, IProgram, IRule } from 'src/common/interfaces';
-import { Program, BasicHeatingRule } from 'src/common/types';
+import { IConfiguration, IProgram, IRuleConfig } from 'src/common/interfaces';
+import { Program } from 'src/common/types';
 import { Subscription } from 'rxjs';
 import { AppContextService } from 'src/app/services/app-context.service';
 import { AppContext } from 'src/app/services/app-context';
 import { AlertService } from 'src/app/services/alert.service';
+import { RuleConfig } from 'src/common/configuration/rule-config';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class RulesEditComponent implements OnInit , OnDestroy {
     private subs: Subscription[] = [];
     private config: IConfiguration;
     private program: IProgram;
-    private rules: ReadonlyArray<IRule>;
+    private rules: ReadonlyArray<IRuleConfig>;
     private appContext: AppContext;
 
     constructor(
@@ -28,7 +29,7 @@ export class RulesEditComponent implements OnInit , OnDestroy {
         private configService: ConfigService,
         private appContextService: AppContextService,
         private alertService: AlertService,
-    ) { 
+    ) {
         appContextService.getAppContext().subscribe((ac) => {
             this.appContext = ac;
         });
@@ -45,16 +46,16 @@ export class RulesEditComponent implements OnInit , OnDestroy {
             (config: IConfiguration) => {
                 if (config) {
                     this.config = config;
-                    const program = this.config.getProgramConfig().find((p) => { 
-                        return p.id === programId; 
+                    const program = this.config.getProgramConfig().find((p) => {
+                        return p.id === programId;
                     });
-                    
+
                     this.program = program ? program : new Program(null);
                     this.rules = program.getRules();
                 }
-            }, 
+            },
             (err) => {
-                this.alertService.createAlert("Error: could not load config: " + err, "danger")
+                this.alertService.createAlert("Error: could not load config: " + err, "danger");
             }
         ));
     }
@@ -65,19 +66,19 @@ export class RulesEditComponent implements OnInit , OnDestroy {
         });
     }
 
-    private onCardSelect(rule: IRule): void {
+    private onCardSelect(rule: IRuleConfig): void {
         this.appContextService.setRuleContext(rule.id);
     }
 
-    private onEdit(rule:IRule) {
+    private onEdit(rule: IRuleConfig) {
         this.navigateToRuleEdit(rule.id);
     }
 
-    private onDelete(rule:IRule) {
+    private onDelete(rule: IRuleConfig) {
 
         this.configService.updateConfig((config: any) => {
-            let cancel: boolean = true;
-            const program = config.programConfig.find((p) => { return p.id === this.program.id; });
+            let cancel = true;
+            const program = config.programConfig.find((p) => p.id === this.program.id);
             if (program) {
                 program.rules = program.rules.filter((r) => {
                     return r.id !== rule.id;
@@ -90,7 +91,7 @@ export class RulesEditComponent implements OnInit , OnDestroy {
             // stay on this page
         })
         .catch((error) => {
-            this.alertService.createAlert("Error: could not update rules: " + error, "danger")
+            this.alertService.createAlert("Error: could not update rules: " + error, "danger");
         });
     }
 
@@ -102,11 +103,13 @@ export class RulesEditComponent implements OnInit , OnDestroy {
         let ruleId: string = null;
 
         this.configService.updateConfig((config: any) => {
-            const program = config.programConfig.find((p) => { return p.id === this.program.id; });
+            const program = config.programConfig.find((p) => p.id === this.program.id);
             if (program) {
-                const rule = new BasicHeatingRule({
-                    startTime: { hour: 0, minute: 0, second: 0 }, 
-                    endTime: { hour: 0, minute: 0, second: 0 }, 
+                const rule = new RuleConfig({
+                    kind: "BasicHeatingRule",
+                    data: null,
+                    startTime: { hour: 0, minute: 0, second: 0 },
+                    endTime: { hour: 0, minute: 0, second: 0 },
                 });
                 ruleId = rule.id;
                 program.rules.push(rule);
@@ -119,7 +122,7 @@ export class RulesEditComponent implements OnInit , OnDestroy {
             this.navigateToRuleEdit(ruleId);
         })
         .catch((error) => {
-            this.alertService.createAlert("Error: could not update rule: " + error, "danger")
+            this.alertService.createAlert("Error: could not update rule: " + error, "danger");
         });
     }
 

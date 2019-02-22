@@ -17,7 +17,7 @@
                         </tr>
                         <tr>
                             <td class="text-right" colspan="2">
-                                <button type="button" class="btn btn-link mr-0 pr-0" (click)="edit()">edit</button>
+                                <button type="button" class="btn btn-link mr-0 pr-0" (click)="onEdit()">edit</button>
                             </td>
                         </tr>
         
@@ -33,19 +33,19 @@
 
         <div class="row">
             <div class="col-4">
-                <button class="btn btn-outline-primary" (click)="setNamedProgram('weekdayProgramId', 'Weekdays', program)">Weekdays</button>
+                <button class="btn btn-outline-primary" (click)="onSetNamedProgram('weekdayProgramId', 'Weekdays', program)">Weekdays</button>
             </div>
             <div class="col-4">
-                <button class="btn btn-outline-primary" (click)="setNamedProgram('saturdayProgramId', 'Saturdays', program)">Saturdays</button>
+                <button class="btn btn-outline-primary" (click)="onSetNamedProgram('saturdayProgramId', 'Saturdays', program)">Saturdays</button>
             </div>
             <div class="col-4">
-                <button class="btn btn-outline-primary" (click)="setNamedProgram('sundayProgramId', 'Sundays', program)">Sundays</button>
+                <button class="btn btn-outline-primary" (click)="onSetNamedProgram('sundayProgramId', 'Sundays', program)">Sundays</button>
             </div>
         </div>
 
         <div class="row mt-3">
             <div class="col-12">
-                <button (click)="editRules()" class="card-link btn-link">Edit Rules</button>
+                <button (click)="onEditRules()" class="card-link btn-link">Edit Rules</button>
                 <button (click)="onDelete()" class="card-link btn-link">Delete</button>
             </div>
         </div>

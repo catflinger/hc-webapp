@@ -4,3 +4,4 @@ export class AppContext {
         public readonly ruleId: string
     ) {}
 }
+

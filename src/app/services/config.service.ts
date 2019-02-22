@@ -44,13 +44,13 @@ export class ConfigService {
                     try {
                         this.bSubject.next(new Configuration(data.config));
                         resolve(this.bSubject.value);
-                    } catch(err) {
+                    } catch (err) {
                         reject(err);
                     }
                 })
-                .catch((err) => {
+                .catch ((err) => {
                     reject(err);
-                })
+                });
             });
         }
 

@@ -40,8 +40,8 @@ import { RuleListComponent } from './ui/components/rule-list/rule-list.component
 import { AlertComponent } from './ui/components/alert/alert.component';
 import { AlertService } from './services/alert.service';
 
-const apiBase: string = "http://localhost:3000/api/";
-const logApi: string = "log";
+const apiBase = "http://localhost:3000/api/";
+const logApi = "log";
 
 @NgModule({
     declarations: [
@@ -90,7 +90,7 @@ const logApi: string = "log";
         ControlStateService,
         LogService,
         OverrideService,
-        
+
         // constants
         { provide: INJECTABLES.ApiBase, useValue: apiBase },
         { provide: INJECTABLES.LogApi, useValue: logApi },

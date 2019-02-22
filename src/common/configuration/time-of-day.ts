@@ -3,6 +3,10 @@ import { ITimeOfDay } from "../interfaces";
 
 export class TimeOfDay implements ITimeOfDay {
 
+    public readonly hour: number = NaN;
+    public readonly minute: number = NaN;
+    public readonly second: number = NaN;
+
     private static fromSeconds(totalSeconds: number): ITimeOfDay {
         // tidy up the input value to a reasonable positive innteger
         totalSeconds = Math.floor(totalSeconds);
@@ -15,10 +19,6 @@ export class TimeOfDay implements ITimeOfDay {
 
         return new TimeOfDay({ hour, minute, second });
     }
-
-    public readonly hour: number = NaN;
-    public readonly minute: number = NaN;
-    public readonly second: number = NaN;
 
     constructor(data: string | { hour: number, minute: number, second: number }) {
         if (typeof data === "string") {
@@ -33,6 +33,7 @@ export class TimeOfDay implements ITimeOfDay {
             this.minute = Math.floor(ConfigValidation.getNumber(data.minute, "timeOfDayConfig:minute"));
             this.second = Math.floor(ConfigValidation.getNumber(data.second, "timeOfDayConfig:second", 0));
         }
+
         if (isNaN(this.hour) || this.hour < 0 || this.hour > 23) {
             throw new Error(`TimeOfDay: value [${this.hour}] for hour outside range`);
         }

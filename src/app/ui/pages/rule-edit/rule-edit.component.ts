@@ -2,10 +2,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { ConfigService } from 'src/app/services/config.service';
 import { Subscription } from 'rxjs';
-import { IConfiguration, IRule, IProgram } from 'src/common/interfaces';
-import { BasicHeatingRule, TimeOfDay } from 'src/common/types';
+import { IConfiguration, IRuleConfig, IProgram } from 'src/common/interfaces';
+import { TimeOfDay } from 'src/common/types';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertService } from 'src/app/services/alert.service';
+import { RuleConfig } from 'src/common/configuration/rule-config';
 
 class Option {
     constructor(
@@ -22,7 +23,7 @@ class Option {
 export class RuleEditComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
     private config: IConfiguration;
-    private rule: IRule;
+    private rule: IRuleConfig;
     private form: FormGroup;
     private params: Params;
 
@@ -51,21 +52,23 @@ export class RuleEditComponent implements OnInit, OnDestroy {
         .subscribe(
             (config: IConfiguration) => {
                 if (config) {
-                    let rule: IRule = null;
+                    let rule: IRuleConfig = null;
                     this.params = this.route.snapshot.params;
 
                     this.config = config;
-                    let program: IProgram = this.config.getProgramConfig().find((p: IProgram) => { 
-                        return p.id === this.params.id 
+                    const program: IProgram = this.config.getProgramConfig().find((p: IProgram) => {
+                        return p.id === this.params.id;
                     });
-                    
+
                     if (program) {
-                        rule = program.getRules().find((r) => { return r.id === this.params.ruleid });
+                        rule = program.getRules().find((r) => r.id === this.params.ruleid);
 
                         if (rule) {
                             this.rule = rule;
                         } else {
-                            this.rule = new BasicHeatingRule({
+                            this.rule = new RuleConfig({
+                                kind: "BasicHeatingRule",
+                                data: null,
                                 startTime: new TimeOfDay({ hour: 0, minute: 0, second: 0}),
                                 endTime: new TimeOfDay({ hour: 0, minute: 0, second: 0}),
                             });
@@ -73,13 +76,13 @@ export class RuleEditComponent implements OnInit, OnDestroy {
 
                         this.buildForm();
                     } else {
-                        this.alertService.createAlert("Error: could not find progam in config", "danger")
+                        this.alertService.createAlert("Error: could not find progam in config", "danger");
                     }
                 }
-            }, 
+            },
             (err) => {
                 this.config = undefined;
-                this.alertService.createAlert("Error: could not load config: " + err, "danger")
+                this.alertService.createAlert("Error: could not load config: " + err, "danger");
             }
         ));
     }
@@ -93,9 +96,9 @@ export class RuleEditComponent implements OnInit, OnDestroy {
     onSubmit(): void {
         this.configService.updateConfig((config: any) => {
 
-            const program = config.programConfig.find((p) => { return p.id === this.params.id; });
+            const program = config.programConfig.find((p) => p.id === this.params.id);
             if (program) {
-                const rule: IRule = program.rules.find((r) => {
+                const rule: IRuleConfig = program.rules.find((r) => {
                     return r.id === this.params.ruleid;
                 });
 
@@ -119,7 +122,7 @@ export class RuleEditComponent implements OnInit, OnDestroy {
             this.navigateToRulesPage();
         })
         .catch((error) => {
-            this.alertService.createAlert("Error: could not save shanges: " + error, "danger")
+            this.alertService.createAlert("Error: could not save shanges: " + error, "danger");
         });
     }
 
@@ -143,9 +146,9 @@ export class RuleEditComponent implements OnInit, OnDestroy {
     private getDurationOption(): Option {
         const seconds = this.rule.endTime.toSeconds() - this.rule.startTime.toSeconds();
         const minutes = Math.trunc(seconds / 60);
-        let index: number = 0;
+        let index = 0;
 
-        for (let i: number = 0; i < this.durations.length; i++) {
+        for (let i = 0; i < this.durations.length; i++) {
             index = i;
             if (this.durations[i].value >= minutes) {
                 break;
@@ -159,9 +162,9 @@ export class RuleEditComponent implements OnInit, OnDestroy {
     }
 
     private getMinuteOption(): Option {
-        let index: number = 0;
+        let index = 0;
 
-        for (let i: number = 0; i < this.minutes.length; i++) {
+        for (let i = 0; i < this.minutes.length; i++) {
             index = i;
             if (this.minutes[i].value >= this.rule.startTime.minute) {
                 break;

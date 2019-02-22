@@ -32,9 +32,9 @@ export class LogService {
 
     public refresh(from: Date, to: Date, sensors: string[]): Promise<ILogExtract> {
 
-        return this.http.get(this.apiBase + this.logApi + "?params=" + JSON.stringify({ 
-            from: from.toISOString(), 
-            to: to.toISOString(), 
+        return this.http.get(this.apiBase + this.logApi + "?params=" + JSON.stringify({
+            from: from.toISOString(),
+            to: to.toISOString(),
             sensors}))
 
         .pipe(map((data: any): ILogExtract => {

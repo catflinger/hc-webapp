@@ -61,7 +61,7 @@ export class LogChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                     }]
                 },
             }
-        }
+        };
     }
 
     ngAfterViewInit() {
@@ -89,7 +89,7 @@ export class LogChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         if (this.logExtract) {
             this.chartConfig.data = this.adapter.toChartData(this.logExtract, this.sensorFilter);
 
-            let ctx: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("mychart");
+            const ctx: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("mychart");
             if (ctx) {
                 this.chart = new Chart(ctx.getContext("2d"), this.chartConfig);
             }

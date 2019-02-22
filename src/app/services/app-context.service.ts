@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { AppContext } from './app-context';
 
 // This service keeps track of what item(s) the user is currently working on
-// for example: they have selected rule "x" in program "y" 
+// for example: they have selected rule "x" in program "y"
 @Injectable({
     providedIn: 'root'
 })

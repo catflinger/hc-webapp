@@ -26,7 +26,7 @@ export class ProgramListComponent implements OnInit, OnDestroy {
         private appContextService: AppContextService,
         private alertService: AlertService,
         private router: Router,
-        ) { 
+        ) {
             appContextService.clearContext();
         }
 
@@ -43,9 +43,9 @@ export class ProgramListComponent implements OnInit, OnDestroy {
                 const saturdayProgram = this.getProgram(this.config.getNamedConfig().saturdayProgramId);
                 const sundayProgram = this.getProgram(this.config.getNamedConfig().sundayProgramId);
 
-                this.weekdayProgramName = weekdayProgram ? weekdayProgram.name : ""; 
-                this.saturdayProgramName = saturdayProgram ? saturdayProgram.name : ""; 
-                this.sundayProgramName = sundayProgram ? sundayProgram.name : ""; 
+                this.weekdayProgramName = weekdayProgram ? weekdayProgram.name : "";
+                this.saturdayProgramName = saturdayProgram ? saturdayProgram.name : "";
+                this.sundayProgramName = sundayProgram ? sundayProgram.name : "";
             }
         }));
     }
@@ -57,7 +57,7 @@ export class ProgramListComponent implements OnInit, OnDestroy {
     }
 
     private getProgram(id: string): IProgram {
-        return this.config.getProgramConfig().find((program) => { return program.id === id; });
+        return this.config.getProgramConfig().find((program) => program.id === id);
     }
 
     private onSetNamedProgram(event: INamedProgramEvent) {
@@ -72,7 +72,7 @@ export class ProgramListComponent implements OnInit, OnDestroy {
     private onDelete(id: string) {
         this.configService.updateConfig((config: any) => {
 
-            const index = config.programConfig.findIndex((p: IProgram) => { return p.id === id; });
+            const index = config.programConfig.findIndex((p: IProgram) => p.id === id);
             if (index >= 0) {
                 config.programConfig.splice(index, 1);
             } else {
@@ -81,8 +81,8 @@ export class ProgramListComponent implements OnInit, OnDestroy {
         })
         .catch(this.alertService.createAlert("Failed to delete program", "danger"));
     }
-    
+
     private onNewProgram() {
-        this.router.navigate(["/program-new"])
+        this.router.navigate(["/program-new"]);
     }
 }
