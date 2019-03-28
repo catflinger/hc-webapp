@@ -39,8 +39,9 @@ import { TimeOfDayPipe } from './ui/pipes/time-of-day.pipe';
 import { RuleListComponent } from './ui/components/rule-list/rule-list.component';
 import { AlertComponent } from './ui/components/alert/alert.component';
 import { AlertService } from './services/alert.service';
+import { environment } from 'src/environments/environment.prod';
 
-const apiBase = "http://localhost:3000/api/";
+const apiBase = environment.apiBase;
 const logApi = "log";
 
 @NgModule({
