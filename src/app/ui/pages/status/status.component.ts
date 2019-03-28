@@ -14,9 +14,9 @@ import { AlertService } from 'src/app/services/alert.service';
 })
 export class StatusComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
-    private readings: ReadonlyArray<ISensorReading>;
-    private controlState: IControlStateApiResponse;
-    private overrides: IOverride[];
+    public readings: ReadonlyArray<ISensorReading>;
+    public controlState: IControlStateApiResponse;
+    public overrides: IOverride[];
 
     constructor(
         private appContextService: AppContextService,

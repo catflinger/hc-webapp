@@ -10,7 +10,7 @@ import { INamedProgramEvent, IDeleteProgramEvent } from '../../events';
 })
 export class ProgramCardComponent implements OnInit {
 
-    @Input() private program: IProgram;
+    @Input() public program: IProgram;
     @Output() private setNamedProgram: EventEmitter<INamedProgramEvent> = new EventEmitter();
     @Output() private deleteProgram: EventEmitter<IDeleteProgramEvent> = new EventEmitter();
 
@@ -19,19 +19,19 @@ export class ProgramCardComponent implements OnInit {
     ngOnInit() {
     }
 
-    private onEdit() {
+    public onEdit() {
         this.router.navigate(['/program-edit', this.program.id]);
     }
 
-    private onEditRules() {
+    public onEditRules() {
         this.router.navigate(['/program', this.program.id, 'rules-edit']);
     }
 
-    private onSetNamedProgram(name: string, displayName: string, program: IProgram) {
+    public onSetNamedProgram(name: string, displayName: string, program: IProgram) {
         this.setNamedProgram.emit({name, displayName, program});
     }
 
-    private onDelete() {
+    public onDelete() {
         this.deleteProgram.emit(this.program.id);
     }
 }

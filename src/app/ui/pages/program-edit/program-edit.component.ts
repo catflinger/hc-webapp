@@ -16,7 +16,7 @@ import { AlertService } from 'src/app/services/alert.service';
 })
 export class ProgramEditComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
-    private config: IConfiguration;
+    public config: IConfiguration;
     private program: IProgram;
     private form: FormGroup;
     private programId: string;

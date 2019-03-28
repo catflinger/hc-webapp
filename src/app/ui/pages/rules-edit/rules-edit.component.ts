@@ -19,8 +19,8 @@ import { RuleConfig } from 'src/common/configuration/rule-config';
 export class RulesEditComponent implements OnInit , OnDestroy {
     private subs: Subscription[] = [];
     private config: IConfiguration;
-    private program: IProgram;
-    private rules: ReadonlyArray<IRuleConfig>;
+    public program: IProgram;
+    public rules: ReadonlyArray<IRuleConfig>;
     private appContext: AppContext;
 
     constructor(

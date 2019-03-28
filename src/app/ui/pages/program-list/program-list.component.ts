@@ -16,7 +16,7 @@ import { INamedProgramEvent } from '../../events';
 export class ProgramListComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
 
-    private config: IConfiguration;
+    public config: IConfiguration;
     private weekdayProgramName: string;
     private saturdayProgramName: string;
     private sundayProgramName: string;

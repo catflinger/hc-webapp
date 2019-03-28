@@ -9,7 +9,7 @@ import { IControlState } from 'src/common/interfaces';
 export class ControlStateComponent implements OnInit {
 
     @Input()
-    private controlState: IControlState;
+    public controlState: IControlState;
 
     constructor() { }
 

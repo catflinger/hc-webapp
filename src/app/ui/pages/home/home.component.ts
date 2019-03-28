@@ -56,13 +56,13 @@ export class HomeComponent implements OnInit, OnDestroy {
         });
     }
 
-    private setOverride(minutes: number) {
+    public setOverride(minutes: number) {
         this.overrideService.setOverride(minutes)
         .then(this.alertService.createAlert(`Override set for ${minutes} minutes`, "info"))
         .catch(this.alertService.createAlert("Failed to set override", "danger"));
     }
 
-    private clearOverrides() {
+    public clearOverrides() {
         this.overrideService.clearOverrides()
         .then(this.alertService.createAlert("Overrides cleared", "info"))
         .catch(this.alertService.createAlert("Failed to clear overrides", "danger"));

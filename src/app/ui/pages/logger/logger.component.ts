@@ -18,8 +18,8 @@ import { AlertService } from 'src/app/services/alert.service';
 })
 export class LoggerComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
-    private logExtract: ILogExtract;
-    private sensors: ReadonlyArray<ISensorConfig>;
+    public logExtract: ILogExtract;
+    public sensors: ReadonlyArray<ISensorConfig>;
     private form: FormGroup;
 
     constructor(

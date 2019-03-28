@@ -24,7 +24,7 @@ export class RuleEditComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
     private config: IConfiguration;
     private rule: IRuleConfig;
-    private form: FormGroup;
+    public form: FormGroup;
     private params: Params;
 
     private hours: Option[] = Array.from({length: 24}, (v, k) => new Option(k.toString(), k));

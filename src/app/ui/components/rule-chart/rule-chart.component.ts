@@ -52,7 +52,7 @@ class PieCanvas {
     styleUrls: ['./rule-chart.component.css']
 })
 export class RuleChartComponent implements OnInit, AfterViewInit, OnChanges {
-    private canvas: PieCanvas;
+    public canvas: PieCanvas;
     private appContext: AppContext;
 
     @Input() public rules: ReadonlyArray<IRuleConfig>;
@@ -110,7 +110,7 @@ export class RuleChartComponent implements OnInit, AfterViewInit, OnChanges {
         this.drawHourLines(ctx);
     }
 
-    private onClick(event: MouseEvent) {
+    public onClick(event: MouseEvent) {
         const result: string[] = [];
 
         const ctx = this.canvas.getDrawingContext();

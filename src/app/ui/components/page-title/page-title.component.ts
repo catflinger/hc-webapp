@@ -8,7 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class PageTitleComponent implements OnInit {
 
     @Input()
-    private title: string;
+    public title: string;
 
   constructor() { }
 

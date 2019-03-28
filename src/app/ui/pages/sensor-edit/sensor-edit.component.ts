@@ -21,7 +21,7 @@ export class SensorEditComponent implements OnInit {
     private subs: Subscription[] = [];
     private form: FormGroup;
     private params: Params;
-    private reading: ISensorReading;
+    public reading: ISensorReading;
 
     private roles: IOption[] = [
         { text: "none", value: "" },

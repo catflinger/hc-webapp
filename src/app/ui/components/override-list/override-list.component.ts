@@ -11,7 +11,7 @@ export class OverrideListComponent implements OnInit {
     @Input()
     private overrides: IOverride[];
 
-    private rules: IRuleConfig[];
+    public rules: IRuleConfig[];
 
     constructor() { }
 

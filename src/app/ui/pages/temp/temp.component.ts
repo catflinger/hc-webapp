@@ -16,18 +16,18 @@ import { AppContextService } from 'src/app/services/app-context.service';
 export class TempComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
 
-    private config: IConfiguration;
-    private controlState: IControlStateApiResponse;
-    private sensors: ISensorConfig[] = [];
-    private overrides: IOverride[] = [];
+    public config: IConfiguration;
+    protected controlState: IControlStateApiResponse;
+    protected sensors: ISensorConfig[] = [];
+    protected overrides: IOverride[] = [];
 
-    private configString = "";
-    private sensorsString = "";
-    private availableString = "";
-    private controlStateString = "";
-    private overrideStateString = "";
+    public configString = "";
+    public sensorsString = "";
+    public availableString = "";
+    public controlStateString = "";
+    public overrideStateString = "";
 
-    private program: IProgram;
+    protected program: IProgram;
 
     constructor(
         private configService: ConfigService,
@@ -39,11 +39,11 @@ export class TempComponent implements OnInit, OnDestroy {
             appContextService.clearContext();
     }
 
-    private setOverride(minutes: number) {
+    public setOverride(minutes: number) {
         this.overrideService.setOverride(minutes);
     }
 
-    private clearOverrides(minutes: number) {
+    public clearOverrides() {
         this.overrideService.clearOverrides();
     }
 

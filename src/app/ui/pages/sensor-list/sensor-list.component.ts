@@ -14,7 +14,7 @@ import { AlertService } from 'src/app/services/alert.service';
 })
 export class SensorListComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
-    private sensors: ReadonlyArray<ISensorConfig>;
+    public sensors: ReadonlyArray<ISensorConfig>;
 
     constructor(
         private appContextService: AppContextService,

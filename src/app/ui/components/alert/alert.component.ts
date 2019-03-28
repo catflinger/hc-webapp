@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
 })
 export class AlertComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
-    private alert: IAlert = null;
+    public alert: IAlert = null;
 
     constructor(
         private alertService: AlertService,

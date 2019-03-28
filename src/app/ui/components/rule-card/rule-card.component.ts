@@ -11,8 +11,8 @@ import { AppContext } from 'src/app/services/app-context';
 export class RuleCardComponent implements OnInit {
     private appContext: AppContext;
 
-    @Input() private rule: IRuleConfig;
-    @Input() private title: string;
+    @Input() public rule: IRuleConfig;
+    @Input() public title: string;
 
     @Output() edit: EventEmitter<IRuleConfig> = new EventEmitter();
     @Output() delete: EventEmitter<IRuleConfig> = new EventEmitter();
@@ -27,18 +27,18 @@ export class RuleCardComponent implements OnInit {
     ngOnInit() {
     }
 
-    private get selected(): boolean {
+    public get selected(): boolean {
         return this.rule.id === this.appContext.ruleId;
     }
-    private onClick() {
+    public onClick() {
         this.select.emit(this.rule);
     }
 
-    private onEdit() {
+    public onEdit() {
         this.edit.emit(this.rule);
     }
 
-    private onDelete() {
+    public onDelete() {
         this.delete.emit(this.rule);
     }
 }
