@@ -48,7 +48,7 @@ export class TempComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.subs.push(this.configService.getConfig()
+        this.subs.push(this.configService.getObservable()
             .subscribe((config) => {
                 this.config = config;
                 this.configString = JSON.stringify(this.config);

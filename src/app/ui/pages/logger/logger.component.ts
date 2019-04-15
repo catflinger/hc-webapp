@@ -36,7 +36,7 @@ export class LoggerComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.alertService.clearAlerts();
 
-        this.subs.push(this.configService.getConfig()
+        this.subs.push(this.configService.getObservable()
         .subscribe((config) => {
             if (config) {
                 this.sensors = config.getSensorConfig();

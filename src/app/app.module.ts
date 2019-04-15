@@ -27,6 +27,7 @@ import { RuleCardComponent } from './ui/components/rule-card/rule-card.component
 import { RuleEditComponent } from './ui/pages/rule-edit/rule-edit.component';
 import { AppContextService } from './services/app-context.service';
 import { SensorService } from './services/sensor.service';
+import { ReadingService } from './services/reading.service';
 import { LogService } from './services/log.service';
 import { LoggerComponent } from './ui/pages/logger/logger.component';
 import { LogChartComponent } from './ui/components/log-chart/log-chart.component';
@@ -39,7 +40,7 @@ import { TimeOfDayPipe } from './ui/pipes/time-of-day.pipe';
 import { RuleListComponent } from './ui/components/rule-list/rule-list.component';
 import { AlertComponent } from './ui/components/alert/alert.component';
 import { AlertService } from './services/alert.service';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 
 const apiBase = environment.apiBase;
 const logApi = "log";
@@ -87,6 +88,7 @@ const logApi = "log";
         // api services
         AppContextService,
         SensorService,
+        ReadingService,
         ConfigService,
         ControlStateService,
         LogService,

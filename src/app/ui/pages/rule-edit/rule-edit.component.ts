@@ -48,7 +48,7 @@ export class RuleEditComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.alertService.clearAlerts();
 
-        this.subs.push(this.configService.getConfig()
+        this.subs.push(this.configService.getObservable()
         .subscribe(
             (config: IConfiguration) => {
                 if (config) {

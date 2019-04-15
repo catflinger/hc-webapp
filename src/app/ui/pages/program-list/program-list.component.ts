@@ -33,7 +33,7 @@ export class ProgramListComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.alertService.clearAlerts();
 
-        this.subs.push(this.configService.getConfig()
+        this.subs.push(this.configService.getObservable()
         .subscribe((config) => {
             // note: 1st time though config is likeley to be null if the source
             // for this is a behaviour subject

@@ -41,7 +41,7 @@ export class RulesEditComponent implements OnInit , OnDestroy {
         const programId = this.route.snapshot.params.id;
         this.appContextService.setProgramContext(programId);
 
-        this.subs.push(this.configService.getConfig()
+        this.subs.push(this.configService.getObservable()
         .subscribe(
             (config: IConfiguration) => {
                 if (config) {

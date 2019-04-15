@@ -6,7 +6,7 @@ import { AppContextService } from 'src/app/services/app-context.service';
 import { ConfigService } from 'src/app/services/config.service';
 import { Subscription } from 'rxjs';
 import { ISensorReading } from 'src/common/interfaces';
-import { SensorService } from 'src/app/services/sensor.service';
+import { ReadingService } from 'src/app/services/reading.service';
 import { SensorConfig } from 'src/common/types';
 import { AlertService } from 'src/app/services/alert.service';
 
@@ -32,7 +32,7 @@ export class SensorEditComponent implements OnInit {
     constructor(
         private appContextService: AppContextService,
         private configService: ConfigService,
-        private sensorService: SensorService,
+        private readingService: ReadingService,
         private alertService: AlertService,
         private router: Router,
         private route: ActivatedRoute,
@@ -44,10 +44,10 @@ export class SensorEditComponent implements OnInit {
     ngOnInit() {
         this.alertService.clearAlerts();
 
-        this.sensorService.refresh()
+        this.readingService.refresh()
         .then(() => {
                 this.params = this.route.snapshot.params;
-                this.reading = this.sensorService.getReadings().find((r: ISensorReading) => {
+                this.reading = this.readingService.getReadings().find((r: ISensorReading) => {
                     return r.id === this.params.id ;
                 });
 

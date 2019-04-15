@@ -1,40 +1,40 @@
-import { Injectable, Inject } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-import { map } from "rxjs/operators";
-import { Observable, BehaviorSubject } from "rxjs";
-
-import { INJECTABLES } from '../injection-tokens';
-import { ISensorConfig } from '../../common/interfaces';
-import { SensorApiResponse } from 'src/common/api/sensor-api-response';
+import { Injectable } from '@angular/core';
+import { ISensorConfig, IConfiguration, ISensorReading } from 'src/common/interfaces';
+import { ReadingService } from './reading.service';
+import { Observable, combineLatest } from 'rxjs';
+import { ConfigService } from './config.service';
+import { map } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class SensorService {
-    private bSubject: BehaviorSubject<ISensorConfig[]>;
+
+    private combined: Observable<[IConfiguration, ISensorReading[]]>;
 
     constructor(
-        private http: HttpClient,
-        @Inject(INJECTABLES.ApiBase) private apiBase: string) {
+        private readingService: ReadingService,
+        private configService: ConfigService) {
 
-        this.bSubject = new BehaviorSubject<ISensorConfig[]>([]);
-        this.getReadings();
+        this.combined = combineLatest(this.configService.getObservable(), this.readingService.getObservable());
     }
 
     public getObservable(): Observable<ISensorConfig[]> {
-        return this.bSubject.asObservable();
-    }
+        return this.combined.pipe(
+            map<[ IConfiguration, ISensorReading[]], ISensorConfig[]>( (source) => {
+                const sensors: ISensorConfig[] = [];
 
-    public getReadings(): ISensorConfig[] {
-        return this.bSubject.value;
-    }
-
-    public refresh(): Promise<void> {
-        return this.http.get(this.apiBase + "sensor")
-        .pipe(map((data: any): void => {
-            const apiResponse = new SensorApiResponse(data);
-            this.bSubject.next(apiResponse.sensors);
-        }))
-        .toPromise();
+                if (source[0] && source[1]) {
+                    source[0].getSensorConfig().forEach((sensor) => {
+                        const reading = source[1].find((reading) => reading.id === sensor.id);
+                        if (reading) {
+                            sensor.reading = reading.reading; 
+                        }
+                        sensors.push(sensor);
+                    });
+                }
+                return sensors;
+            })
+        ); 
     }
 }

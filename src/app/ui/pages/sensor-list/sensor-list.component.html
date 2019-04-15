@@ -1,7 +1,7 @@
 <app-page-title title="sensors"></app-page-title>
 
 <div class="row">
-    <div class="col-12 mt-5 d-flex justify-content-center" *ngIf="sensors">
+    <div class="col-12 mt-5 d-flex justify-content-center" *ngIf="sensors && readings">
         <table class="table">
             <thead>
                 <tr>
@@ -14,18 +14,30 @@
                 </tr>
             </thead>
             <tbody>
+
                 <tr *ngFor="let sensor of sensors">
                     <td>{{sensor.id}}</td>
                     <td>{{sensor.description}}</td>
                     <td>{{sensor.role}}</td>
                     <td>{{sensor.reading}}</td>
                     <td>
-                        <button class="btn btn-light" (click)="onEdit(sensor.id)">Edit</button>
+                        <button class="btn btn-light" [disabled]="busy" (click)="onEdit(sensor.id)">Edit</button>
                     </td>
                     <td>
-                        <button class="btn btn-light" (click)="onClear(sensor.id)">Clear</button>
+                        <button class="btn btn-light" [disabled]="busy" (click)="onRemove(sensor.id)">Remove</button>
                     </td>
                 </tr>
+
+                <tr *ngFor="let reading of readings">
+                    <td>{{reading.id}}</td>
+                    <td></td>
+                    <td></td>
+                    <td>{{reading.reading}}</td>
+                    <td>
+                        <button class="btn btn-light" [disabled]="busy" (click)="onAdd(reading)">Add</button>
+                    </td>
+                    <td></td>
+
             </tbody>
         </table>
     </div>

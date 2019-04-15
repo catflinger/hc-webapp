@@ -14,7 +14,6 @@ import { AlertService, AlertType } from 'src/app/services/alert.service';
 export class HomeComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
     private sensorReadings: ISensorConfig[] = [];
-    private overrides: IOverride[] = [];
 
 
     constructor(
@@ -36,16 +35,6 @@ export class HomeComponent implements OnInit, OnDestroy {
                     this.sensorReadings = readings;
                 },
                 this.alertService.createAlert("Could not get sensor readings", "danger")
-            )
-        );
-
-        this.subs.push(
-            this.overrideService.getOverrides()
-            .subscribe(
-                (overrides: IOverride[]) => {
-                    this.overrides = overrides;
-                },
-                this.alertService.createAlert("Could not get override status", "danger")
             )
         );
     }

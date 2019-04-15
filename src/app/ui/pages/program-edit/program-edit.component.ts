@@ -37,7 +37,7 @@ export class ProgramEditComponent implements OnInit, OnDestroy {
 
         this.appContextService.setProgramContext(this.programId);
 
-        this.subs.push(this.configService.getConfig()
+        this.subs.push(this.configService.getObservable()
         .subscribe(
             (config: IConfiguration) => {
                 if (config) {
