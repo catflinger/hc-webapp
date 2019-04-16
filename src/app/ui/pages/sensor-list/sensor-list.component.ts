@@ -7,6 +7,7 @@ import { ConfigService } from 'src/app/services/config.service';
 import { Subscription, Observable, combineLatest } from 'rxjs';
 import { AlertService } from 'src/app/services/alert.service';
 import { Configuration } from 'src/common/types';
+import { AppContext } from 'src/app/services/app-context';
 
 @Component({
     selector: 'app-sensor-list',
@@ -17,11 +18,10 @@ export class SensorListComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
     public sensors: ReadonlyArray<ISensorConfig> = [];
     public readings: ReadonlyArray<ISensorReading> = [];
+    public appContext: AppContext = new AppContext(null, null, false);
 
     private config: IConfiguration = null;
     private combined: Observable<[IConfiguration, ISensorReading[]]>;
-
-    private busy: boolean = false;
 
     constructor(
         private appContextService: AppContextService,
@@ -37,6 +37,10 @@ export class SensorListComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.alertService.clearAlerts();
+
+        this.subs.push(this.appContextService.getAppContext().subscribe( (appCtx)=> {
+            this.appContext = appCtx;
+        }));
 
         this.subs.push(this.combined
         .subscribe((results) => {
@@ -66,12 +70,11 @@ export class SensorListComponent implements OnInit, OnDestroy {
     }
 
     private onEdit(id: string) {
-        this.busy = true;
         this.router.navigate(["/sensor-edit", id]);
     }
 
     private onRemove(id: string) {
-        this.busy = true;
+        this.appContextService.setBusy();
 
         this.configService.updateConfig((config: any) => {
             const index: number = config.sensorConfig.findIndex((sc) => sc.id === id);
@@ -82,17 +85,17 @@ export class SensorListComponent implements OnInit, OnDestroy {
             return false;
         })
         .then(() => {
-            this.busy = false;
+            this.appContextService.clearBusy();
 
         })
         .catch((error) => {
             this.alertService.createAlert("Error: could not clear sensor: " + error, "danger");
-            this.busy = false;
+            this.appContextService.clearBusy();
         });
     }
 
     private onAdd(reading: ISensorReading) {
-        this.busy = true;
+        this.appContextService.setBusy();
 
         this.configService.updateConfig((config: any) => {
             config.sensorConfig.push(reading);
@@ -103,7 +106,7 @@ export class SensorListComponent implements OnInit, OnDestroy {
         })
         .catch((error) => {
             this.alertService.createAlert("Error: could not add sensor: " + error, "danger");
-            this.busy = false;
+            this.appContextService.clearBusy();
         });
     }
 }

@@ -3,16 +3,16 @@
 
 <div class="row mt-5">
     <div class="col-sm-3 mb-5">
-        <button type="button" class="btn btn-primary" (click)="setOverride(30)">On 30 mins</button>
+        <button type="button" class="btn btn-primary" [disabled]="appContext.busy" (click)="setOverride(30)">On 30 mins</button> 
     </div>
     <div class="col-sm-3 mb-5">
-        <button type="button" class="btn btn-primary" (click)="setOverride(60)">On 1 hour</button>
+        <button type="button" class="btn btn-primary" [disabled]="appContext.busy" (click)="setOverride(60)">On 1 hour</button>
     </div>
     <div class="col-sm-3 mb-5">
-            <button type="button" class="btn btn-primary" (click)="setOverride(120)">On 2 hours</button>
+            <button type="button" class="btn btn-primary" [disabled]="appContext.busy" (click)="setOverride(120)">On 2 hours</button>
         </div>
         <div class="col-sm-3 mb-5">
-        <button type="button" class="btn btn-primary" (click)="clearOverrides()">Cancel</button>
+        <button type="button" class="btn btn-primary" [disabled]="appContext.busy" (click)="clearOverrides()">Cancel</button>
     </div>
 </div>
 

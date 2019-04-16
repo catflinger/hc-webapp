@@ -38,4 +38,13 @@ export class AppContextService {
     public clearContext() {
         this.bs.next(new AppContext(null, null));
     }
+
+    public setBusy() {
+        this.bs.next(new AppContext(this.bs.value.programId, this.bs.value.ruleId, true));
+    }
+
+    public clearBusy() {
+        this.bs.next(new AppContext(this.bs.value.programId, this.bs.value.ruleId, false));
+    }
+
 }

@@ -11,6 +11,7 @@ import { StatusComponent } from './ui/pages/status/status.component';
 import { RulesEditComponent } from './ui/pages/rules-edit/rules-edit.component';
 import { RuleEditComponent } from './ui/pages/rule-edit/rule-edit.component';
 import { LoggerComponent } from './ui/pages/logger/logger.component';
+import { ProgramUseComponent } from './ui/pages/program-use/program-use.component';
 
 const routes: Routes = [
     { path: "home", component: HomeComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
     { path: "programs", component: ProgramListComponent },
     { path: "program-new", component: ProgramEditComponent },
     { path: "program-edit/:id", component: ProgramEditComponent },
+    { path: "program-use/:id", component: ProgramUseComponent },
     { path: "program/:id/rules-edit", component: RulesEditComponent },
     { path: "program/:id/rules-edit/:ruleid", component: RuleEditComponent },
     { path: "sensors", component: SensorListComponent },

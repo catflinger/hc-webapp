@@ -21,10 +21,10 @@
                     <td>{{sensor.role}}</td>
                     <td>{{sensor.reading}}</td>
                     <td>
-                        <button class="btn btn-light" [disabled]="busy" (click)="onEdit(sensor.id)">Edit</button>
+                        <button class="btn btn-light" [disabled]="appContext.busy" (click)="onEdit(sensor.id)">Edit</button>
                     </td>
                     <td>
-                        <button class="btn btn-light" [disabled]="busy" (click)="onRemove(sensor.id)">Remove</button>
+                        <button class="btn btn-light" [disabled]="appContext.busy" (click)="onRemove(sensor.id)">Remove</button>
                     </td>
                 </tr>
 
@@ -34,7 +34,7 @@
                     <td></td>
                     <td>{{reading.reading}}</td>
                     <td>
-                        <button class="btn btn-light" [disabled]="busy" (click)="onAdd(reading)">Add</button>
+                        <button class="btn btn-light" [disabled]="appContext.busy" (click)="onAdd(reading)">Add</button>
                     </td>
                     <td></td>
 

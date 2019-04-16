@@ -61,15 +61,23 @@ export class ProgramListComponent implements OnInit, OnDestroy {
     }
 
     private onSetNamedProgram(event: INamedProgramEvent) {
+        this.appContextService.setBusy();
+
         this.configService.updateConfig((config: any) => {
             config.namedConfig[event.name] = event.program.id;
             return false;
         })
+        .then(() => this.appContextService.clearBusy())
         .then(this.alertService.createAlert(`Program ${event.program.name} set for ${event.displayName}`, "info"))
-        .catch(this.alertService.createAlert("Failed to set program", "danger"));
+        .catch(() => {
+            this.alertService.createAlert("Failed to set program", "danger");
+            this.appContextService.clearBusy();
+        });
     }
 
     private onDelete(id: string) {
+        this.appContextService.setBusy();
+
         this.configService.updateConfig((config: any) => {
 
             const index = config.programConfig.findIndex((p: IProgram) => p.id === id);
@@ -79,10 +87,16 @@ export class ProgramListComponent implements OnInit, OnDestroy {
                 return true;
             }
         })
+        .then(() => this.appContextService.clearBusy())
         .catch(this.alertService.createAlert("Failed to delete program", "danger"));
     }
 
     private onNewProgram() {
         this.router.navigate(["/program-new"]);
     }
+
+    private onUseProgram(programId: string) {
+        this.router.navigate(["/program-use", programId]);
+    }
+
 }

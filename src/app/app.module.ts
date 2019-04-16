@@ -41,6 +41,7 @@ import { RuleListComponent } from './ui/components/rule-list/rule-list.component
 import { AlertComponent } from './ui/components/alert/alert.component';
 import { AlertService } from './services/alert.service';
 import { environment } from 'src/environments/environment';
+import { ProgramUseComponent } from './ui/pages/program-use/program-use.component';
 
 const apiBase = environment.apiBase;
 const logApi = "log";
@@ -72,6 +73,7 @@ const logApi = "log";
         TimeOfDayPipe,
         RuleListComponent,
         AlertComponent,
+        ProgramUseComponent,
     ],
     imports: [
         BrowserModule,

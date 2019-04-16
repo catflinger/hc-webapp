@@ -5,6 +5,7 @@ import { ISensorConfig, IOverride } from '../../../../common/interfaces';
 import { Subscription } from 'rxjs';
 import { AppContextService } from 'src/app/services/app-context.service';
 import { AlertService, AlertType } from 'src/app/services/alert.service';
+import { AppContext } from 'src/app/services/app-context';
 
 @Component({
     selector: 'app-home',
@@ -13,8 +14,9 @@ import { AlertService, AlertType } from 'src/app/services/alert.service';
 })
 export class HomeComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
-    private sensorReadings: ISensorConfig[] = [];
-
+    
+    public appContext: AppContext = new AppContext(null, null, false);
+    public sensorReadings: ISensorConfig[] = [];
 
     constructor(
         private sensorReadingService: SensorService,
@@ -27,6 +29,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.alertService.clearAlerts();
+
+        this.subs.push(this.appContextService.getAppContext().subscribe( (appCtx)=> {
+            this.appContext = appCtx;
+        }));
 
         this.subs.push(
             this.sensorReadingService.getObservable()
@@ -46,13 +52,17 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     public setOverride(minutes: number) {
+        this.appContextService.setBusy();
         this.overrideService.setOverride(minutes)
+        .then(() => Promise.resolve(this.appContextService.clearBusy()))
         .then(this.alertService.createAlert(`Override set for ${minutes} minutes`, "info"))
         .catch(this.alertService.createAlert("Failed to set override", "danger"));
     }
 
     public clearOverrides() {
+        this.appContextService.setBusy();
         this.overrideService.clearOverrides()
+        .then(() => Promise.resolve(this.appContextService.clearBusy()))
         .then(this.alertService.createAlert("Overrides cleared", "info"))
         .catch(this.alertService.createAlert("Failed to clear overrides", "danger"));
     }

@@ -3,7 +3,7 @@
 
 <div class="row" *ngIf="sensors">
     <div class="col-6 mt-5 d-flex justify-content-center">
-        <ngb-datepicker (select)="onDateSelect($event)"></ngb-datepicker>
+        <ngb-datepicker ngDisabled="appContext.busy" (select)="onDateSelect($event)"></ngb-datepicker>
     </div>  
     <div class="col-6 mt-5 d-flex justify-content-center">
         <form class="form" [formGroup]="form">

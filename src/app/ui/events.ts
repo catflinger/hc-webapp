@@ -7,4 +7,5 @@ export interface INamedProgramEvent {
 }
 
 export type IDeleteProgramEvent = string;
+export type IUseProgramEvent = string;
 export type IRuleClickEvent = string[];

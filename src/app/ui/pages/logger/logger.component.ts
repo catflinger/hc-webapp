@@ -10,6 +10,7 @@ import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms';
 import { SensorConfig } from 'src/common/types';
 import { AlertService } from 'src/app/services/alert.service';
+import { AppContext } from 'src/app/services/app-context';
 
 @Component({
     selector: 'app-logger',
@@ -20,6 +21,8 @@ export class LoggerComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
     public logExtract: ILogExtract;
     public sensors: ReadonlyArray<ISensorConfig>;
+    public appContext: AppContext = new AppContext(null, null, false);
+
     private form: FormGroup;
 
     constructor(
@@ -35,6 +38,10 @@ export class LoggerComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.alertService.clearAlerts();
+
+        this.subs.push(this.appContextService.getAppContext().subscribe( (appCtx)=> {
+            this.appContext = appCtx;
+        }));
 
         this.subs.push(this.configService.getObservable()
         .subscribe((config) => {
@@ -66,10 +73,13 @@ export class LoggerComponent implements OnInit, OnDestroy {
     }
 
     onDateSelect(ds: NgbDateStruct) {
+        this.appContextService.setBusy();
+
         const from: Date = new Date(ds.year, ds.month - 1, ds.day, 0, 0, 0);
         const to: Date = new Date(ds.year, ds.month - 1, ds.day, 23, 59, 59);
         const sensorIds: string[] = this.sensors.map((sc) => sc.id);
 
-        this.logService.refresh(from, to, sensorIds);
+        this.logService.refresh(from, to, sensorIds)
+        .then(() => this.appContextService.clearBusy());
     }
 }
