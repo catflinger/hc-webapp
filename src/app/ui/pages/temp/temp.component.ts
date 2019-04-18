@@ -70,7 +70,7 @@ export class TempComponent implements OnInit, OnDestroy {
                 this.sensorsString = JSON.stringify(this.sensors);
             }));
 
-        this.subs.push(this.overrideService.getOverrides()
+        this.subs.push(this.overrideService.getObservable()
             .subscribe((overrides: IOverride[]) => {
                 this.overrides = overrides;
                 this.overrideStateString = JSON.stringify(this.overrides);

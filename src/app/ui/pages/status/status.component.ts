@@ -43,7 +43,7 @@ export class StatusComponent implements OnInit, OnDestroy {
             })
         );
 
-        this.subs.push (this.overrideService.getOverrides()
+        this.subs.push (this.overrideService.getObservable()
             .subscribe((overrides) => { this.overrides = overrides; })
         );
     }

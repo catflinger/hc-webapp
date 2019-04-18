@@ -3,28 +3,35 @@
 
 <div class="row">
     <div class="col-12 mt-5 d-flex justify-content-center" *ngIf="config">
-        <table class="table">
-            <tbody>
-                <tr>
-                    <td>Weekday</td>
-                    <td>{{weekdayProgramName}}</td>
-                </tr>
-                <tr>
-                    <td>Saturday</td>
-                    <td>{{saturdayProgramName}}</td>
-                </tr>
-                <tr>
-                    <td>Sunday</td>
-                    <td>{{sundayProgramName}}</td>
-                </tr>
-            </tbody>
-        </table>
+        <form class="form mt-5" [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="form">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>Weekday</td>
+                        <td>{{weekdayProgramName}}
+                            <select class="form-control" id="weekdayProgram" formControlName="weekdayProgram">
+                                <option *ngFor="let program of programs" [ngValue]="program">{{program.name}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Saturday</td>
+                        <td>{{saturdayProgramName}}</td>
+                    </tr>
+                    <tr>
+                        <td>Sunday</td>
+                        <td>{{sundayProgramName}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
     </div>
 </div>
 
 <div class="card-deck w-100" *ngIf="config">
     <ng-container *ngFor="let program of config.getProgramConfig()">
-        <app-program-card [program]="program" (setNamedProgram)="onSetNamedProgram($event)" (deleteProgram)="onDelete($event)" (useProgram)="onUseProgram($event)">
+        <app-program-card [program]="program" (setNamedProgram)="onSetNamedProgram($event)"
+            (deleteProgram)="onDelete($event)" (useProgram)="onUseProgram($event)">
         </app-program-card>
     </ng-container>
 </div>

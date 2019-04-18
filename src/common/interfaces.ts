@@ -17,7 +17,7 @@ export interface IProgramM {
     name: string;
     minHwTemp: number;
     maxHwTemp: number;
-    getRules(): ReadonlyArray<IRuleConfig>;
+    rules: IRuleConfig [];
 }
 
 export interface IRuleConfig {
@@ -58,7 +58,7 @@ export interface IConfiguration {
     toMutable(): IConfigurationM;
 }
 
-// interface for the mutable version of Program
+// interface for the mutable copy of configuration
 export interface IConfigurationM {
     datedConfig: IDatedConfigM;
     namedConfig: INamedConfigM;
@@ -72,7 +72,7 @@ export interface INamedConfig {
     sundayProgramId: string;
 }
 
-// interface for the mutable version of named config
+// interface for the mutable copy of named config
 type INamedConfigM = INamedConfig;
 
 export interface IDatedConfig {
@@ -80,7 +80,7 @@ export interface IDatedConfig {
     date: Date;
 }
 
-// interface for the mutable version of dated config
+// interface for the mutable copy of dated config
 type IDatedConfigM = IDatedConfig;
 
 export interface ISensorConfig {
@@ -90,7 +90,7 @@ export interface ISensorConfig {
     reading: number;
 }
 
-// interface for the mutable version of sensor config
+// interface for the mutable copy of sensor config
 export type ISensorConfigM = ISensorConfig;
 
 // the data required for senor configuration and the data required for displaying readings

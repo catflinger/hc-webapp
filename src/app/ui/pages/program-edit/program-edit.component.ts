@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, Validators, FormArray, AbstractControl, FormBuilder } from '@angular/forms';
 
 import { ConfigService } from 'src/app/services/config.service';
-import { IConfiguration, IProgram } from 'src/common/interfaces';
+import { IConfiguration, IProgram, IConfigurationM, IProgramM } from 'src/common/interfaces';
 import { Program } from 'src/common/types';
 import { Subscription } from 'rxjs';
 import { AppContextService } from 'src/app/services/app-context.service';
@@ -71,14 +71,14 @@ export class ProgramEditComponent implements OnInit, OnDestroy {
     private onSubmit() {
         let newProgramId: string = null;
 
-        this.configService.updateConfig((config: any) => {
+        this.configService.updateConfig((config: IConfigurationM) => {
 
-            let program: any;
+            let program: IProgramM;
 
             if (this.programId) {
-                program = config.programConfig.find((p: any) => p.id === this.program.id);
+                program = config.programConfig.find((p: IProgramM) => p.id === this.program.id);
             } else {
-                program = new Program();
+                program = new Program().toMuatble();
                 newProgramId = program.id;
                 config.programConfig.push(program);
             }

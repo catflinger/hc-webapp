@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AppContextService } from 'src/app/services/app-context.service';
-import { ISensorConfig, ISensorReading, IConfiguration } from 'src/common/interfaces';
+import { ISensorConfig, ISensorReading, IConfiguration, IConfigurationM } from 'src/common/interfaces';
 import { ReadingService } from 'src/app/services/reading.service';
 import { Router } from '@angular/router';
 import { ConfigService } from 'src/app/services/config.service';
@@ -76,7 +76,7 @@ export class SensorListComponent implements OnInit, OnDestroy {
     private onRemove(id: string) {
         this.appContextService.setBusy();
 
-        this.configService.updateConfig((config: any) => {
+        this.configService.updateConfig((config: IConfigurationM) => {
             const index: number = config.sensorConfig.findIndex((sc) => sc.id === id);
             if (index >= 0) {
                 config.sensorConfig.splice(index, 1);
@@ -97,7 +97,7 @@ export class SensorListComponent implements OnInit, OnDestroy {
     private onAdd(reading: ISensorReading) {
         this.appContextService.setBusy();
 
-        this.configService.updateConfig((config: any) => {
+        this.configService.updateConfig((config: IConfigurationM) => {
             config.sensorConfig.push(reading);
             return false;
         })

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { ConfigService } from 'src/app/services/config.service';
-import { IConfiguration, IProgram, IRuleConfig } from 'src/common/interfaces';
+import { IConfiguration, IProgram, IRuleConfig, IConfigurationM } from 'src/common/interfaces';
 import { Program } from 'src/common/types';
 import { Subscription } from 'rxjs';
 import { AppContextService } from 'src/app/services/app-context.service';
@@ -76,7 +76,7 @@ export class RulesEditComponent implements OnInit , OnDestroy {
 
     private onDelete(rule: IRuleConfig) {
 
-        this.configService.updateConfig((config: any) => {
+        this.configService.updateConfig((config: IConfigurationM) => {
             let cancel = true;
             const program = config.programConfig.find((p) => p.id === this.program.id);
             if (program) {
@@ -102,7 +102,7 @@ export class RulesEditComponent implements OnInit , OnDestroy {
     private onAdd() {
         let ruleId: string = null;
 
-        this.configService.updateConfig((config: any) => {
+        this.configService.updateConfig((config: IConfigurationM) => {
             const program = config.programConfig.find((p) => p.id === this.program.id);
             if (program) {
                 const rule = new RuleConfig({

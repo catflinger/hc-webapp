@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { ConfigService } from 'src/app/services/config.service';
 import { Subscription } from 'rxjs';
-import { IConfiguration, IRuleConfig, IProgram } from 'src/common/interfaces';
+import { IConfiguration, IRuleConfig, IProgram, IConfigurationM } from 'src/common/interfaces';
 import { TimeOfDay } from 'src/common/types';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertService } from 'src/app/services/alert.service';
@@ -94,7 +94,7 @@ export class RuleEditComponent implements OnInit, OnDestroy {
     }
 
     onSubmit(): void {
-        this.configService.updateConfig((config: any) => {
+        this.configService.updateConfig((config: IConfigurationM) => {
 
             const program = config.programConfig.find((p) => p.id === this.params.id);
             if (program) {

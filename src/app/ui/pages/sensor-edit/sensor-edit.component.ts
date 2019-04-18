@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppContextService } from 'src/app/services/app-context.service';
 import { ConfigService } from 'src/app/services/config.service';
 import { Subscription } from 'rxjs';
-import { ISensorReading } from 'src/common/interfaces';
+import { ISensorReading, IConfigurationM } from 'src/common/interfaces';
 import { ReadingService } from 'src/app/services/reading.service';
 import { SensorConfig } from 'src/common/types';
 import { AlertService } from 'src/app/services/alert.service';
@@ -68,7 +68,7 @@ export class SensorEditComponent implements OnInit {
     }
 
     private onSubmit() {
-        this.configService.updateConfig((config: any) => {
+        this.configService.updateConfig((config: IConfigurationM) => {
             const sensor = config.sensorConfig.find((s) => s.id === this.reading.id);
 
             if (!sensor) {

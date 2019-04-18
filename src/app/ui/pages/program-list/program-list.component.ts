@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConfigService } from 'src/app/services/config.service';
-import { IConfiguration, IProgram } from 'src/common/interfaces';
+import { IConfiguration, IProgram, IConfigurationM, IProgramM } from 'src/common/interfaces';
 import { NamedConfig } from 'src/common/types';
 import { Subscription } from 'rxjs';
 import { AppContextService } from 'src/app/services/app-context.service';
 import { Router } from '@angular/router';
 import { AlertService } from 'src/app/services/alert.service';
 import { INamedProgramEvent } from '../../events';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-program-list',
@@ -17,6 +18,10 @@ export class ProgramListComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
 
     public config: IConfiguration;
+    public form: FormGroup;
+
+    public programs: ReadonlyArray<IProgram> = [];
+
     private weekdayProgramName: string;
     private saturdayProgramName: string;
     private sundayProgramName: string;
@@ -26,6 +31,7 @@ export class ProgramListComponent implements OnInit, OnDestroy {
         private appContextService: AppContextService,
         private alertService: AlertService,
         private router: Router,
+        private fb: FormBuilder,
         ) {
             appContextService.clearContext();
         }
@@ -39,6 +45,7 @@ export class ProgramListComponent implements OnInit, OnDestroy {
             // for this is a behaviour subject
             if (config) {
                 this.config = config;
+
                 const weekdayProgram = this.getProgram(this.config.getNamedConfig().weekdayProgramId);
                 const saturdayProgram = this.getProgram(this.config.getNamedConfig().saturdayProgramId);
                 const sundayProgram = this.getProgram(this.config.getNamedConfig().sundayProgramId);
@@ -46,6 +53,14 @@ export class ProgramListComponent implements OnInit, OnDestroy {
                 this.weekdayProgramName = weekdayProgram ? weekdayProgram.name : "";
                 this.saturdayProgramName = saturdayProgram ? saturdayProgram.name : "";
                 this.sundayProgramName = sundayProgram ? sundayProgram.name : "";
+
+                this.form = this.fb.group({
+                    weekdayProgram: this.fb.control(weekdayProgram, [Validators.required]),
+                    saturdayProgram: this.fb.control(saturdayProgram, [Validators.required]),
+                    sundayProgram: this.fb.control(sundayProgram, [Validators.required])
+                });
+
+                this.programs = config.getProgramConfig();
             }
         }));
     }
@@ -63,7 +78,7 @@ export class ProgramListComponent implements OnInit, OnDestroy {
     private onSetNamedProgram(event: INamedProgramEvent) {
         this.appContextService.setBusy();
 
-        this.configService.updateConfig((config: any) => {
+        this.configService.updateConfig((config: IConfigurationM) => {
             config.namedConfig[event.name] = event.program.id;
             return false;
         })
@@ -78,9 +93,9 @@ export class ProgramListComponent implements OnInit, OnDestroy {
     private onDelete(id: string) {
         this.appContextService.setBusy();
 
-        this.configService.updateConfig((config: any) => {
+        this.configService.updateConfig((config: IConfigurationM) => {
 
-            const index = config.programConfig.findIndex((p: IProgram) => p.id === id);
+            const index = config.programConfig.findIndex((p: IProgramM) => p.id === id);
             if (index >= 0) {
                 config.programConfig.splice(index, 1);
             } else {

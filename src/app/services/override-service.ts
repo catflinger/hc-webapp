@@ -19,7 +19,7 @@ export class OverrideService {
         this.refresh();
     }
 
-    public getOverrides(): Observable<Override[]> {
+    public getObservable(): Observable<Override[]> {
         return this.bSubject.asObservable();
     }
 
@@ -39,8 +39,8 @@ export class OverrideService {
     }
 
     private applyResult(result: Observable<object>): Promise<void> {
-        return result.toPromise<any>()
-        .then((data: any) => {
+        return result.toPromise<object>()
+        .then((data: object) => {
             const apiResponse = new OverrideApiResponse(data);
             this.bSubject.next(apiResponse.overrides);
             return Promise.resolve();

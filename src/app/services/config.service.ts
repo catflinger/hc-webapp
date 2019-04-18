@@ -5,7 +5,7 @@ import { Observable, BehaviorSubject, Subscription } from "rxjs";
 
 import { Configuration, NamedConfig } from '../../common/types';
 import { INJECTABLES } from '../injection-tokens';
-import { IConfiguration, IConfigApiResponse } from 'src/common/interfaces';
+import { IConfiguration, IConfigApiResponse, IConfigurationM } from 'src/common/interfaces';
 import { ConfigApiResponse } from 'src/common/api/config-api-response';
 
 @Injectable({
@@ -28,10 +28,10 @@ export class ConfigService {
         return this.bSubject.asObservable();
     }
 
-    public updateConfig(makeChanges: (config: any) => boolean): Promise<void> {
+    public updateConfig(makeChanges: (config: IConfigurationM) => boolean): Promise<void> {
         let result: Promise<void>;
 
-        const newConfig: any = this.getMutableCopy();
+        const newConfig: IConfigurationM = this.bSubject.value.toMutable();
         const cancel: boolean = makeChanges(newConfig);
 
         if (cancel) {
@@ -42,7 +42,8 @@ export class ConfigService {
                 .toPromise()
                 .then((data: any) => {
                     try {
-                        this.bSubject.next(new Configuration(data.config));
+                        let apiResponse: IConfigApiResponse = new ConfigApiResponse(data);
+                        this.bSubject.next(apiResponse.config);
                         resolve();
                     } catch (err) {
                         reject(err);
@@ -55,10 +56,6 @@ export class ConfigService {
         }
 
         return result;
-    }
-
-    private getMutableCopy(): any {
-        return JSON.parse(JSON.stringify(this.bSubject.value));
     }
 
     public refresh(): void {
