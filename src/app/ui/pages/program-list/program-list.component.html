@@ -2,33 +2,66 @@
 <app-page-title title="programs"></app-page-title>
 
 <div class="row">
-    <div class="col-12 mt-5 d-flex justify-content-center" *ngIf="config">
-        <form class="form mt-5" [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="form">
+    <div class="col-12 mt-5 d-flex justify-content-center" *ngIf="config && appContext">
             <table class="table">
                 <tbody>
                     <tr>
                         <td>Weekday</td>
-                        <td>{{weekdayProgramName}}
-                            <select class="form-control" id="weekdayProgram" formControlName="weekdayProgram">
-                                <option *ngFor="let program of programs" [ngValue]="program">{{program.name}}</option>
+                        <td>
+                            <select 
+                                class="form-control"
+                                id="weekdayProgram"
+                                (change)="onSetNamedProgram('weekdayProgramId', $event.target.value)"
+                                [disabled]="appContext.busy">
+                                <option 
+                                    *ngFor="let program of programs" 
+                                    [value]="program.id"
+                                    [selected]="config.getNamedConfig().weekdayProgramId === program.id">
+                                    {{program.name}}
+                                </option>
                             </select>
                         </td>
                     </tr>
                     <tr>
                         <td>Saturday</td>
-                        <td>{{saturdayProgramName}}</td>
+                        <td>
+                            <select 
+                                class="form-control"
+                                id="saturdayProgram"
+                                (change)="onSetNamedProgram('saturdayProgramId', $event.target.value)"
+                                [disabled]="appContext.busy">
+                                <option 
+                                    *ngFor="let program of programs" 
+                                    [value]="program.id"
+                                    [selected]="config.getNamedConfig().saturdayProgramId === program.id">
+                                    {{program.name}}
+                                </option>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
                         <td>Sunday</td>
-                        <td>{{sundayProgramName}}</td>
+                        <td>
+                            <select 
+                                class="form-control"
+                                id="sundayProgram"
+                                (change)="onSetNamedProgram('sundayProgramId', $event.target.value)"
+                                [disabled]="appContext.busy">
+                                <option 
+                                    *ngFor="let program of programs" 
+                                    [value]="program.id"
+                                    [selected]="config.getNamedConfig().sundayProgramId === program.id">
+                                    {{program.name}}
+                                </option>
+                            </select>
+                        </td>
                     </tr>
                 </tbody>
             </table>
-        </form>
     </div>
 </div>
 
-<div class="card-deck w-100" *ngIf="config">
+<div class="card-deck w-100" *ngIf="config && appContext">
     <ng-container *ngFor="let program of config.getProgramConfig()">
         <app-program-card [program]="program" (setNamedProgram)="onSetNamedProgram($event)"
             (deleteProgram)="onDelete($event)" (useProgram)="onUseProgram($event)">
@@ -36,7 +69,7 @@
     </ng-container>
 </div>
 
-<div class="row" *ngIf="config">
+<div class="row" *ngIf="config && appContext">
     <div class="col-12 mt-5 d-flex justify-content-left">
         <button type="button" class="btn btn-primary" (click)="onNewProgram()">New Program</button>
     </div>

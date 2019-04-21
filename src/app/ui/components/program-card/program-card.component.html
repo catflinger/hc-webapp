@@ -31,18 +31,6 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-4">
-                <button class="btn btn-outline-primary" [disabled]="appContext.busy" (click)="onSetNamedProgram('weekdayProgramId', 'Weekdays', program)">Weekdays</button>
-            </div>
-            <div class="col-4">
-                <button class="btn btn-outline-primary" [disabled]="appContext.busy" (click)="onSetNamedProgram('saturdayProgramId', 'Saturdays', program)">Saturdays</button>
-            </div>
-            <div class="col-4">
-                <button class="btn btn-outline-primary" [disabled]="appContext.busy" (click)="onSetNamedProgram('sundayProgramId', 'Sundays', program)">Sundays</button>
-            </div>
-        </div>
-
         <div class="row mt-3">
             <div class="col-12">
                 <button [disabled]="appContext.busy" (click)="onEditRules()" class="card-link btn-link">Edit Rules</button>

@@ -17,7 +17,6 @@ export class ProgramCardComponent implements OnInit {
     public appContext: AppContext = new AppContext(null, null, false);
 
     @Input() public program: IProgram;
-    @Output() private setNamedProgram: EventEmitter<INamedProgramEvent> = new EventEmitter();
     @Output() private deleteProgram: EventEmitter<IDeleteProgramEvent> = new EventEmitter();
     @Output() private useProgram: EventEmitter<IUseProgramEvent> = new EventEmitter();
 
@@ -43,10 +42,6 @@ export class ProgramCardComponent implements OnInit {
 
     public onEditRules() {
         this.router.navigate(['/program', this.program.id, 'rules-edit']);
-    }
-
-    public onSetNamedProgram(name: string, displayName: string, program: IProgram) {
-        this.setNamedProgram.emit({name, displayName, program});
     }
 
     public onDelete() {

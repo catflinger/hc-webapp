@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { AlertService } from 'src/app/services/alert.service';
 import { INamedProgramEvent } from '../../events';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AppContext } from 'src/app/services/app-context';
 
 @Component({
     selector: 'app-program-list',
@@ -18,26 +19,22 @@ export class ProgramListComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
 
     public config: IConfiguration;
-    public form: FormGroup;
+    public appContext: AppContext;
 
     public programs: ReadonlyArray<IProgram> = [];
-
-    private weekdayProgramName: string;
-    private saturdayProgramName: string;
-    private sundayProgramName: string;
 
     constructor(
         private configService: ConfigService,
         private appContextService: AppContextService,
         private alertService: AlertService,
         private router: Router,
-        private fb: FormBuilder,
         ) {
             appContextService.clearContext();
         }
 
     ngOnInit() {
         this.alertService.clearAlerts();
+        this.appContextService.clearBusy();
 
         this.subs.push(this.configService.getObservable()
         .subscribe((config) => {
@@ -45,23 +42,13 @@ export class ProgramListComponent implements OnInit, OnDestroy {
             // for this is a behaviour subject
             if (config) {
                 this.config = config;
-
-                const weekdayProgram = this.getProgram(this.config.getNamedConfig().weekdayProgramId);
-                const saturdayProgram = this.getProgram(this.config.getNamedConfig().saturdayProgramId);
-                const sundayProgram = this.getProgram(this.config.getNamedConfig().sundayProgramId);
-
-                this.weekdayProgramName = weekdayProgram ? weekdayProgram.name : "";
-                this.saturdayProgramName = saturdayProgram ? saturdayProgram.name : "";
-                this.sundayProgramName = sundayProgram ? sundayProgram.name : "";
-
-                this.form = this.fb.group({
-                    weekdayProgram: this.fb.control(weekdayProgram, [Validators.required]),
-                    saturdayProgram: this.fb.control(saturdayProgram, [Validators.required]),
-                    sundayProgram: this.fb.control(sundayProgram, [Validators.required])
-                });
-
                 this.programs = config.getProgramConfig();
             }
+        }));
+
+        this.subs.push(this.appContextService.getAppContext()
+        .subscribe((appContext) => {
+            this.appContext = appContext;
         }));
     }
 
@@ -71,26 +58,24 @@ export class ProgramListComponent implements OnInit, OnDestroy {
         });
     }
 
-    private getProgram(id: string): IProgram {
-        return this.config.getProgramConfig().find((program) => program.id === id);
-    }
-
-    private onSetNamedProgram(event: INamedProgramEvent) {
+    public onSetNamedProgram(optionName: string, programId: string) {
         this.appContextService.setBusy();
 
+        console.log(`onSetNamedProgram: [${optionName}] [${programId}]` );
+
         this.configService.updateConfig((config: IConfigurationM) => {
-            config.namedConfig[event.name] = event.program.id;
+            config.namedConfig[optionName] = programId;
             return false;
         })
         .then(() => this.appContextService.clearBusy())
-        .then(this.alertService.createAlert(`Program ${event.program.name} set for ${event.displayName}`, "info"))
+        .then(this.alertService.createAlert(`Program ${programId} set for ${optionName}`, "info"))
         .catch(() => {
             this.alertService.createAlert("Failed to set program", "danger");
             this.appContextService.clearBusy();
         });
     }
 
-    private onDelete(id: string) {
+    public onDelete(id: string) {
         this.appContextService.setBusy();
 
         this.configService.updateConfig((config: IConfigurationM) => {
@@ -106,11 +91,11 @@ export class ProgramListComponent implements OnInit, OnDestroy {
         .catch(this.alertService.createAlert("Failed to delete program", "danger"));
     }
 
-    private onNewProgram() {
+    public onNewProgram() {
         this.router.navigate(["/program-new"]);
     }
 
-    private onUseProgram(programId: string) {
+    public onUseProgram(programId: string) {
         this.router.navigate(["/program-use", programId]);
     }
 

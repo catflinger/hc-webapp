@@ -15,7 +15,7 @@ import { AlertService } from 'src/app/services/alert.service';
 export class ProgramUseComponent implements OnInit {
     private subs: Subscription[] = [];
     public config: IConfiguration;
-    private program: IProgram;
+    public program: IProgram;
     private form: FormGroup;
     private programId: string;
 
