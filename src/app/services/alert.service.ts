@@ -39,6 +39,8 @@ export class AlertService {
         return this.subject.asObservable();
     }
 
+    // set an alert immediately
+    // use createCallback() to defer showing an alert (eg use in a catch blcok)
     public setAlert(message: string, type: AlertType) {
         this.subject.next({ message, type, date: moment() });
     }
@@ -47,7 +49,9 @@ export class AlertService {
         this.subject.next(null);
     }
 
-    public createAlert(message: string, type: AlertType): () => void {
+    // creates a callback function to show an alert with the specified message
+    // may or may not show a message, use setAlert() to show a mewssage immediately
+    public createCallback(message: string, type: AlertType): () => void {
         const self = this;
 
         return () => {
