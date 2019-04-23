@@ -1,14 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ConfigService } from 'src/app/services/config.service';
-import { IConfiguration, IProgram, IConfigurationM, IProgramM } from 'src/common/interfaces';
-import { NamedConfig } from 'src/common/types';
+import { IConfiguration, IDatedConfigM, IProgram, IConfigurationM, IProgramM, IDatedConfig } from 'src/common/interfaces';
 import { Subscription } from 'rxjs';
 import { AppContextService } from 'src/app/services/app-context.service';
 import { Router } from '@angular/router';
 import { AlertService } from 'src/app/services/alert.service';
-import { INamedProgramEvent } from '../../events';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppContext } from 'src/app/services/app-context';
+import { ControlStateService } from 'src/app/services/control-state.service';
 
 @Component({
     selector: 'app-program-list',
@@ -26,6 +24,7 @@ export class ProgramListComponent implements OnInit, OnDestroy {
     constructor(
         private configService: ConfigService,
         private appContextService: AppContextService,
+        private controlStateService: ControlStateService,
         private alertService: AlertService,
         private router: Router,
         ) {
@@ -71,7 +70,8 @@ export class ProgramListComponent implements OnInit, OnDestroy {
             this.alertService.setAlert(`Program ${program.name} set for ${optionName}`, "info");
         })
         .catch(this.alertService.createCallback("Failed to set program", "danger"))
-        .then(() => this.appContextService.clearBusy());
+        .then(() => this.appContextService.clearBusy())
+        .then(() => this.configService.refresh());
     }
 
     public onDelete(id: string) {
@@ -98,4 +98,29 @@ export class ProgramListComponent implements OnInit, OnDestroy {
         this.router.navigate(["/program-use", programId]);
     }
 
+    public onDeleteDatedProgram(datedConfig: IDatedConfig) {
+        this.appContextService.setBusy();
+
+        this.configService.updateConfig((config: IConfigurationM) => {
+
+            const index = config.datedConfig.findIndex((dc: IDatedConfigM) => {
+                return dc.programId === datedConfig.programId &&
+                        dc.timeOfYear.month === datedConfig.timeOfYear.month &&
+                        dc.timeOfYear.day === datedConfig.timeOfYear.day;
+            });
+
+            if (index >= 0) {
+                config.datedConfig.splice(index, 1);
+            } else {
+                return true;
+            }
+        })
+        .catch(this.alertService.createCallback("Failed to delete dated program", "danger"))
+        .then(() => this.appContextService.clearBusy())
+        .then(() => this.controlStateService.refresh());
+    }
+
+    public getProgramName(id: string): string {
+        return this.config.getProgramConfig().find((p) => p.id === id).name;
+    }
 }

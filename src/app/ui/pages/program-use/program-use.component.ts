@@ -8,6 +8,7 @@ import { AppContextService } from 'src/app/services/app-context.service';
 import { AlertService } from 'src/app/services/alert.service';
 import { DatedConfig } from 'src/common/types';
 import { TimeOfYear } from 'src/common/configuration/time-of-year';
+import { ControlStateService } from 'src/app/services/control-state.service';
 
 @Component({
     selector: 'app-program-use',
@@ -25,6 +26,7 @@ export class ProgramUseComponent implements OnInit {
         private router: Router,
         private route: ActivatedRoute,
         private configService: ConfigService,
+        private controlStateService: ControlStateService,
         private appContextService: AppContextService,
         private alertService: AlertService,
         private fb: FormBuilder,
@@ -79,7 +81,8 @@ export class ProgramUseComponent implements OnInit {
             })
             .then(() => this.router.navigate(["/programs"]))
             .catch(this.alertService.createCallback("failed to save changes", "danger"))
-            .then(() => this.appContextService.clearBusy());
+            .then(() => this.appContextService.clearBusy())
+            .then(() => this.controlStateService.refresh());
         }
     }
 

@@ -7,6 +7,7 @@ import { ControlStateService } from '../../../services/control-state.service';
 import { OverrideService } from '../../../services/override-service';
 import { Subscription } from 'rxjs';
 import { AppContextService } from 'src/app/services/app-context.service';
+import { ControlStateApiResponse } from 'src/common/api/control-state-api-response';
 
 @Component({
     selector: 'app-temp',
@@ -17,7 +18,7 @@ export class TempComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
 
     public config: IConfiguration;
-    protected controlState: IControlStateApiResponse;
+    protected controlState: IControlState;
     protected sensors: ISensorConfig[] = [];
     protected overrides: IOverride[] = [];
 
@@ -58,10 +59,12 @@ export class TempComponent implements OnInit, OnDestroy {
             })
         );
 
-        this.subs.push(this.controlStateService.getControlState()
-            .subscribe((controlState) => {
-                this.controlState = controlState;
-                this.controlStateString = JSON.stringify(this.controlState);
+        this.subs.push(this.controlStateService.getObservable()
+            .subscribe((controlStateResponse) => {
+                if (controlStateResponse) {
+                    this.controlState = controlStateResponse.controlState;
+                    this.controlStateString = JSON.stringify(this.controlState);
+                }
             }));
 
         this.subs.push(this.sensorService.getObservable()

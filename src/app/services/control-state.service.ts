@@ -25,7 +25,7 @@ export class ControlStateService {
         this.refresh();
     }
 
-    public getControlState(): Observable<IControlStateApiResponse> {
+    public getObservable(): Observable<IControlStateApiResponse> {
         return this.bSubject.asObservable();
     }
 

@@ -1,72 +1,76 @@
 <app-alert></app-alert>
 <app-page-title title="programs"></app-page-title>
 
-<div class="row">
-    <div class="col-12 mt-5 d-flex justify-content-center" *ngIf="config && appContext">
-            <table class="table">
-                <tbody>
-                    <tr>
-                        <td>Weekday</td>
-                        <td>
-                            <select 
-                                class="form-control"
-                                id="weekdayProgram"
-                                (change)="onSetNamedProgram('weekdayProgramId', $event.target.value)"
-                                [disabled]="appContext.busy">
-                                <option 
-                                    *ngFor="let program of programs" 
-                                    [value]="program.id"
-                                    [selected]="config.getNamedConfig().weekdayProgramId === program.id">
-                                    {{program.name}}
-                                </option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Saturday</td>
-                        <td>
-                            <select 
-                                class="form-control"
-                                id="saturdayProgram"
-                                (change)="onSetNamedProgram('saturdayProgramId', $event.target.value)"
-                                [disabled]="appContext.busy">
-                                <option 
-                                    *ngFor="let program of programs" 
-                                    [value]="program.id"
-                                    [selected]="config.getNamedConfig().saturdayProgramId === program.id">
-                                    {{program.name}}
-                                </option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Sunday</td>
-                        <td>
-                            <select 
-                                class="form-control"
-                                id="sundayProgram"
-                                (change)="onSetNamedProgram('sundayProgramId', $event.target.value)"
-                                [disabled]="appContext.busy">
-                                <option 
-                                    *ngFor="let program of programs" 
-                                    [value]="program.id"
-                                    [selected]="config.getNamedConfig().sundayProgramId === program.id">
-                                    {{program.name}}
-                                </option>
-                            </select>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+<div class="row" *ngIf="config && appContext">
+    <div class="col-12 mt-5 d-flex justify-content-center">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td>Weekday</td>
+                    <td>
+                        <select class="form-control" id="weekdayProgram"
+                            (change)="onSetNamedProgram('weekdayProgramId', $event.target.value)"
+                            [disabled]="appContext.busy">
+                            <option *ngFor="let program of programs" [value]="program.id"
+                                [selected]="config.getNamedConfig().weekdayProgramId === program.id">
+                                {{program.name}}
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Saturday</td>
+                    <td>
+                        <select class="form-control" id="saturdayProgram"
+                            (change)="onSetNamedProgram('saturdayProgramId', $event.target.value)"
+                            [disabled]="appContext.busy">
+                            <option *ngFor="let program of programs" [value]="program.id"
+                                [selected]="config.getNamedConfig().saturdayProgramId === program.id">
+                                {{program.name}}
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Sunday</td>
+                    <td>
+                        <select class="form-control" id="sundayProgram"
+                            (change)="onSetNamedProgram('sundayProgramId', $event.target.value)"
+                            [disabled]="appContext.busy">
+                            <option *ngFor="let program of programs" [value]="program.id"
+                                [selected]="config.getNamedConfig().sundayProgramId === program.id">
+                                {{program.name}}
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row" *ngIf="config && config.getDatedConfig().length && appContext">
+    <div class="col-12 mt-5 d-flex justify-content-center">
+        <table class="table">
+            <thead>
+                <td>Program name</td>
+                <td>Use on date</td>
+                <td></td>
+            </thead>
+            <tbody>
+                <tr *ngFor="let dpc of config.getDatedConfig()">
+                    <td>{{getProgramName(dpc.programId)}}</td>
+                    <td>{{dpc.timeOfYear.day}}/{{dpc.timeOfYear.month}}</td>
+                    <td><button class="card-btn btn-link" type="button" [disabled]="appContext.busy" (click)="onDeleteDatedProgram(dpc)">Delete</button></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
 <div class="card-deck w-100" *ngIf="config && appContext">
     <ng-container *ngFor="let program of config.getProgramConfig()">
-        <app-program-card 
-            [program]="program"
-            (deleteProgram)="onDelete($event)" 
-            (useProgram)="onUseProgram($event)">
+        <app-program-card [program]="program" (deleteProgram)="onDelete($event)" (useProgram)="onUseProgram($event)">
         </app-program-card>
     </ng-container>
 </div>

@@ -21,7 +21,7 @@
     </div>
 </div>
 
-<div class="row mt-5" *ngIf="controlState">
+<div class="row mt-5" *ngIf="activeProgram">
     <div class="col-sm-2">ACTIVE PROGRAM</div>
     <div class="col-sm-10">
 
@@ -30,26 +30,26 @@
                 <table>
                     <tbody>
                         <tr>
-                            <td colspan="2" class="font-weight-bold">{{controlState.activeProgram.name}}</td>
+                            <td colspan="2" class="font-weight-bold">{{activeProgram.name}}</td>
                         </tr>
                         <tr>
                             <td>Hot water maximum</td>
-                            <td>{{controlState.activeProgram.maxHwTemp}}</td>
+                            <td>{{activeProgram.maxHwTemp}}</td>
                         </tr>
                         <tr>
                             <td>Hot water minimum</td>
-                            <td>{{controlState.activeProgram.minHwTemp}}</td>
+                            <td>{{activeProgram.minHwTemp}}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
             <div class="col-md">
-                <app-rule-list [rules]="controlState.activeProgram.rules"></app-rule-list>
+                <app-rule-list [rules]="activeProgram.rules"></app-rule-list>
             </div>
 
             <div class="col-md">
-                <app-rule-chart [rules]="controlState.activeProgram.rules"></app-rule-chart>
+                <app-rule-chart [rules]="activeProgram.rules"></app-rule-chart>
             </div>
         </div>
     </div>

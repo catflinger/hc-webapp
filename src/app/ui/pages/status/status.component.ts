@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AppContextService } from 'src/app/services/app-context.service';
 import { SensorService } from 'src/app/services/sensor.service';
-import { ISensorReading, IOverride, IControlStateApiResponse } from 'src/common/interfaces';
+import { ISensorReading, IOverride, IControlStateApiResponse, IControlState, IProgram } from 'src/common/interfaces';
 import { Subscription } from 'rxjs';
 import { ControlStateService } from 'src/app/services/control-state.service';
 import { OverrideService } from 'src/app/services/override-service';
@@ -15,7 +15,8 @@ import { AlertService } from 'src/app/services/alert.service';
 export class StatusComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
     public readings: ReadonlyArray<ISensorReading>;
-    public controlState: IControlStateApiResponse;
+    public controlState: IControlState;
+    public activeProgram: IProgram;
     public overrides: IOverride[];
 
     constructor(
@@ -37,9 +38,12 @@ export class StatusComponent implements OnInit, OnDestroy {
             .subscribe((readings) => { this.readings = readings; })
         );
 
-        this.subs.push (this.controlStateService.getControlState()
-            .subscribe((controlState) => {
-                this.controlState = controlState;
+        this.subs.push (this.controlStateService.getObservable()
+            .subscribe((controlStateResponse) => {
+                if (controlStateResponse) {
+                    this.controlState = controlStateResponse.controlState;
+                    this.activeProgram = controlStateResponse.activeProgram;
+                }
             })
         );
 
