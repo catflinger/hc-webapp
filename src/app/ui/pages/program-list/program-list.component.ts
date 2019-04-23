@@ -59,20 +59,19 @@ export class ProgramListComponent implements OnInit, OnDestroy {
     }
 
     public onSetNamedProgram(optionName: string, programId: string) {
-        this.appContextService.setBusy();
 
-        console.log(`onSetNamedProgram: [${optionName}] [${programId}]` );
+        this.appContextService.setBusy();
 
         this.configService.updateConfig((config: IConfigurationM) => {
             config.namedConfig[optionName] = programId;
             return false;
         })
-        .then(() => this.appContextService.clearBusy())
-        .then(this.alertService.createAlert(`Program ${programId} set for ${optionName}`, "info"))
-        .catch(() => {
-            this.alertService.createAlert("Failed to set program", "danger");
-            this.appContextService.clearBusy();
-        });
+        .then(() => {
+            const program: IProgram = this.programs.find((p: IProgram) => p.id === programId);
+            this.alertService.setAlert(`Program ${program.name} set for ${optionName}`, "info");
+        })
+        .catch(this.alertService.createCallback("Failed to set program", "danger"))
+        .then(this.appContextService.clearBusy);
     }
 
     public onDelete(id: string) {
@@ -87,8 +86,8 @@ export class ProgramListComponent implements OnInit, OnDestroy {
                 return true;
             }
         })
-        .then(() => this.appContextService.clearBusy())
-        .catch(this.alertService.createAlert("Failed to delete program", "danger"));
+        .catch(this.alertService.createCallback("Failed to delete program", "danger"))
+        .then(this.appContextService.clearBusy);
     }
 
     public onNewProgram() {

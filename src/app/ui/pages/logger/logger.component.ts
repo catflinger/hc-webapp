@@ -80,6 +80,7 @@ export class LoggerComponent implements OnInit, OnDestroy {
         const sensorIds: string[] = this.sensors.map((sc) => sc.id);
 
         this.logService.refresh(from, to, sensorIds)
-        .then(() => this.appContextService.clearBusy());
+        .catch()
+        .then(this.appContextService.clearBusy);
     }
 }

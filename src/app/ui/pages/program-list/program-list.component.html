@@ -63,8 +63,10 @@
 
 <div class="card-deck w-100" *ngIf="config && appContext">
     <ng-container *ngFor="let program of config.getProgramConfig()">
-        <app-program-card [program]="program" (setNamedProgram)="onSetNamedProgram($event)"
-            (deleteProgram)="onDelete($event)" (useProgram)="onUseProgram($event)">
+        <app-program-card 
+            [program]="program"
+            (deleteProgram)="onDelete($event)" 
+            (useProgram)="onUseProgram($event)">
         </app-program-card>
     </ng-container>
 </div>

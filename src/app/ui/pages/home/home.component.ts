@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit, OnDestroy {
                 (readings: ISensorConfig[]) => {
                     this.sensorReadings = readings;
                 },
-                this.alertService.createAlert("Could not get sensor readings", "danger")
+                this.alertService.createCallback("Could not get sensor readings", "danger")
             )
         );
     }
@@ -54,16 +54,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     public setOverride(minutes: number) {
         this.appContextService.setBusy();
         this.overrideService.setOverride(minutes)
-        .then(() => Promise.resolve(this.appContextService.clearBusy()))
-        .then(this.alertService.createAlert(`Override set for ${minutes} minutes`, "info"))
-        .catch(this.alertService.createAlert("Failed to set override", "danger"));
+        .then(this.alertService.createCallback(`Override set for ${minutes} minutes`, "info"))
+        .catch(this.alertService.createCallback("Failed to set override", "danger"))
+        .then(this.appContextService.clearBusy);
     }
 
     public clearOverrides() {
         this.appContextService.setBusy();
         this.overrideService.clearOverrides()
-        .then(() => Promise.resolve(this.appContextService.clearBusy()))
-        .then(this.alertService.createAlert("Overrides cleared", "info"))
-        .catch(this.alertService.createAlert("Failed to clear overrides", "danger"));
+        .then(this.alertService.createCallback("Overrides cleared", "info"))
+        .catch(this.alertService.createCallback("Failed to clear overrides", "danger"))
+        .then(this.appContextService.clearBusy)
     }
 }

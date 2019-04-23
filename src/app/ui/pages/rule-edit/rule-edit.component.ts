@@ -76,13 +76,13 @@ export class RuleEditComponent implements OnInit, OnDestroy {
 
                         this.buildForm();
                     } else {
-                        this.alertService.createAlert("Error: could not find progam in config", "danger");
+                        this.alertService.setAlert("Error: could not find progam in config", "danger");
                     }
                 }
             },
             (err) => {
                 this.config = undefined;
-                this.alertService.createAlert("Error: could not load config: " + err, "danger");
+                this.alertService.setAlert("Error: could not load config: " + err, "danger");
             }
         ));
     }
@@ -122,7 +122,7 @@ export class RuleEditComponent implements OnInit, OnDestroy {
             this.navigateToRulesPage();
         })
         .catch((error) => {
-            this.alertService.createAlert("Error: could not save shanges: " + error, "danger");
+            this.alertService.setAlert("Error: could not save shanges: " + error, "danger");
         });
     }
 

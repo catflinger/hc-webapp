@@ -55,7 +55,7 @@ export class RulesEditComponent implements OnInit , OnDestroy {
                 }
             },
             (err) => {
-                this.alertService.createAlert("Error: could not load config: " + err, "danger");
+                this.alertService.setAlert("Error: could not load config: " + err, "danger");
             }
         ));
     }
@@ -91,7 +91,7 @@ export class RulesEditComponent implements OnInit , OnDestroy {
             // stay on this page
         })
         .catch((error) => {
-            this.alertService.createAlert("Error: could not update rules: " + error, "danger");
+            this.alertService.setAlert("Error: could not update rules: " + error, "danger");
         });
     }
 
@@ -122,7 +122,7 @@ export class RulesEditComponent implements OnInit , OnDestroy {
             this.navigateToRuleEdit(ruleId);
         })
         .catch((error) => {
-            this.alertService.createAlert("Error: could not update rule: " + error, "danger");
+            this.alertService.setAlert("Error: could not update rule: " + error, "danger");
         });
     }
 

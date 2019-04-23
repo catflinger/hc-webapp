@@ -47,7 +47,7 @@ export class ProgramUseComponent implements OnInit {
                         }
                     }
                 },
-                this.alertService.createAlert("Failed to get configuration data", "danger")
+                this.alertService.createCallback("Failed to get configuration data", "danger")
             ));
     }
 

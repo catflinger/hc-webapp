@@ -57,12 +57,12 @@ export class SensorEditComponent implements OnInit {
                         role: this.fb.control(this.roles.find((r) => r.value === this.reading.role), [Validators.required]),
                     });
                 } else {
-                    this.alertService.createAlert("Error: could not find sensor", "danger");
+                    this.alertService.setAlert("Error: could not find sensor", "danger");
                     this.reading = undefined;
                 }
             },
             (err) => {
-                this.alertService.createAlert("Error: could not read sensors: " + err, "danger");
+                this.alertService.setAlert("Error: could not read sensors: " + err, "danger");
             }
         );
     }
@@ -88,7 +88,7 @@ export class SensorEditComponent implements OnInit {
             this.router.navigate(["/sensors"]);
         })
         .catch((error) => {
-            this.alertService.createAlert("Error: could not save changes: " + error, "danger");
+            this.alertService.setAlert("Error: could not save changes: " + error, "danger");
         });
     }
 

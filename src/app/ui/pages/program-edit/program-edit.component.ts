@@ -58,7 +58,7 @@ export class ProgramEditComponent implements OnInit, OnDestroy {
                     }
                 }
             },
-            this.alertService.createAlert("Failed to get configuration data", "danger")
+            this.alertService.createCallback("Failed to get configuration data", "danger")
         ));
     }
 
@@ -101,7 +101,7 @@ export class ProgramEditComponent implements OnInit, OnDestroy {
             }
         })
         .catch((err) => {
-            this.alertService.createAlert("Error posting form " + err, "danger");
+            this.alertService.setAlert("Error posting form " + err, "danger");
         });
     }
 

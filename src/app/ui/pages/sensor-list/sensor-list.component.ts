@@ -84,14 +84,11 @@ export class SensorListComponent implements OnInit, OnDestroy {
 
             return false;
         })
-        .then(() => {
-            this.appContextService.clearBusy();
-
-        })
         .catch((error) => {
-            this.alertService.createAlert("Error: could not clear sensor: " + error, "danger");
-            this.appContextService.clearBusy();
-        });
+            this.alertService.setAlert("Error: could not clear sensor: " + error, "danger");
+        })
+        .then(this.appContextService.clearBusy);
+
     }
 
     private onAdd(reading: ISensorReading) {
@@ -105,8 +102,8 @@ export class SensorListComponent implements OnInit, OnDestroy {
             this.router.navigate(["/sensor-edit", reading.id]);
         })
         .catch((error) => {
-            this.alertService.createAlert("Error: could not add sensor: " + error, "danger");
-            this.appContextService.clearBusy();
-        });
+            this.alertService.setAlert("Error: could not add sensor: " + error, "danger");
+        })
+        .then(this.appContextService.clearBusy);
     }
 }
