@@ -28,7 +28,7 @@ export class AlertService {
 
             if (alert) {
                 const aFewSecondsAgo = moment().subtract(secondsToDisplayMessage, "seconds");
-                if (alert.date.isBefore(aFewSecondsAgo)) {
+                if (alert.date.isBefore(aFewSecondsAgo) && alert.type !== "danger") {
                     this.clearAlerts();
                 }
             }

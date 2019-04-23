@@ -1,3 +1,5 @@
+import { TimeOfYear } from "./configuration/time-of-year";
+
 /*
 All these interfaces are intended for use with immutable classes.
 */
@@ -43,6 +45,15 @@ export interface ITimeOfDay {
 
     toSeconds(): number;
     toString(): string;
+
+    justBefore(): ITimeOfDay;
+}
+
+export interface ITimeOfYear {
+    month: number;
+    day: number;
+
+    isToday(date: Date): boolean;
 }
 
 export interface IControlState {
@@ -60,7 +71,7 @@ export interface IConfiguration {
 
 // interface for the mutable version of Program
 export interface IConfigurationM {
-    datedConfig: IDatedConfigM;
+    datedConfig: IDatedConfigM[];
     namedConfig: INamedConfigM;
     programConfig: IProgramM [];
     sensorConfig: ISensorConfigM [];
@@ -77,7 +88,7 @@ type INamedConfigM = INamedConfig;
 
 export interface IDatedConfig {
     programId: string;
-    date: Date;
+    timeOfYear: TimeOfYear;
 }
 
 // interface for the mutable version of dated config

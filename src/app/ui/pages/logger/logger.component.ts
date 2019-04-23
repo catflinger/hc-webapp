@@ -81,6 +81,6 @@ export class LoggerComponent implements OnInit, OnDestroy {
 
         this.logService.refresh(from, to, sensorIds)
         .catch()
-        .then(this.appContextService.clearBusy);
+        .then(() => this.appContextService.clearBusy());
     }
 }

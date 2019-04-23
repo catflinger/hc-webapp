@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 
 import { ConfigValidation } from "../config-validation";
-import { IProgram, IRuleConfig, IProgramM } from "../interfaces";
+import { IProgram, IProgramM, IRuleConfig } from "../interfaces";
 import { RuleConfig } from "./rule-config";
 
 export class Program implements IProgram {

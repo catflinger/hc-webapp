@@ -87,7 +87,7 @@ export class SensorListComponent implements OnInit, OnDestroy {
         .catch((error) => {
             this.alertService.setAlert("Error: could not clear sensor: " + error, "danger");
         })
-        .then(this.appContextService.clearBusy);
+        .then(() => this.appContextService.clearBusy());
 
     }
 
@@ -104,6 +104,6 @@ export class SensorListComponent implements OnInit, OnDestroy {
         .catch((error) => {
             this.alertService.setAlert("Error: could not add sensor: " + error, "danger");
         })
-        .then(this.appContextService.clearBusy);
+        .then(() => this.appContextService.clearBusy());
     }
 }

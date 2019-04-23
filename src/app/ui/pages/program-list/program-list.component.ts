@@ -71,7 +71,7 @@ export class ProgramListComponent implements OnInit, OnDestroy {
             this.alertService.setAlert(`Program ${program.name} set for ${optionName}`, "info");
         })
         .catch(this.alertService.createCallback("Failed to set program", "danger"))
-        .then(this.appContextService.clearBusy);
+        .then(() => this.appContextService.clearBusy());
     }
 
     public onDelete(id: string) {
@@ -87,7 +87,7 @@ export class ProgramListComponent implements OnInit, OnDestroy {
             }
         })
         .catch(this.alertService.createCallback("Failed to delete program", "danger"))
-        .then(this.appContextService.clearBusy);
+        .then(() => this.appContextService.clearBusy());
     }
 
     public onNewProgram() {

@@ -56,7 +56,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.overrideService.setOverride(minutes)
         .then(this.alertService.createCallback(`Override set for ${minutes} minutes`, "info"))
         .catch(this.alertService.createCallback("Failed to set override", "danger"))
-        .then(this.appContextService.clearBusy);
+        .then(() => this.appContextService.clearBusy());
     }
 
     public clearOverrides() {
@@ -64,6 +64,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.overrideService.clearOverrides()
         .then(this.alertService.createCallback("Overrides cleared", "info"))
         .catch(this.alertService.createCallback("Failed to clear overrides", "danger"))
-        .then(this.appContextService.clearBusy)
+        .then(() => this.appContextService.clearBusy());
     }
 }

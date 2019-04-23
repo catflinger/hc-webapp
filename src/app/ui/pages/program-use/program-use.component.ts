@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { IConfiguration, IProgram } from 'src/common/interfaces';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { IConfiguration, IProgram, IConfigurationM } from 'src/common/interfaces';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ConfigService } from 'src/app/services/config.service';
 import { AppContextService } from 'src/app/services/app-context.service';
 import { AlertService } from 'src/app/services/alert.service';
+import { DatedConfig } from 'src/common/types';
+import { TimeOfYear } from 'src/common/configuration/time-of-year';
 
 @Component({
     selector: 'app-program-use',
@@ -37,13 +39,19 @@ export class ProgramUseComponent implements OnInit {
             .subscribe(
                 (config: IConfiguration) => {
                     if (config) {
-                        this.config = config;
-                        this.program = this.config.getProgramConfig().find((p) => {
-                            return p.id === this.programId;
-                        });
-
-                        if (!this.program) {
+                        if (!config) {
                             this.alertService.setAlert("Failed to get configuration data", "danger");
+                        } else {
+                            this.config = config;
+
+                            this.program = this.config.getProgramConfig().find((p) => {
+                                return p.id === this.programId;
+                            });
+    
+                            this.form = this.fb.group({
+                                startDate: this.fb.control(new Date(), [Validators.required]),
+                            });
+                    
                         }
                     }
                 },
@@ -55,6 +63,28 @@ export class ProgramUseComponent implements OnInit {
         this.subs.forEach((s) => {
             s.unsubscribe();
         });
+    }
+
+    onSubmit() {
+        if (this.form.valid) {
+            
+            this.appContextService.setBusy();
+            
+            this.configService.updateConfig((config: IConfigurationM): boolean => {
+                config.datedConfig.push(new DatedConfig({
+                    programId: this.program.id,
+                    timeOfYear: new TimeOfYear(this.form.value.startDate),
+                }));
+                return false;
+            })
+            .then(() => this.router.navigate(["/programs"]))
+            .catch(this.alertService.createCallback("failed to save changes", "danger"))
+            .then(() => this.appContextService.clearBusy());
+        }
+    }
+
+    onCancel() {
+        this.router.navigate(["/programs"]);
     }
 
 }
