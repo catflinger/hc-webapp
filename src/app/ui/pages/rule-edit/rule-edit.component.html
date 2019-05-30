@@ -2,23 +2,6 @@
     <div class="col d-flex justify-content-center">
         <form class="form mt-5" [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="form">
 
-            <!-- <div class="form-group">
-                    <label class="control-label" for="startTime">Start time</label>
-                    <input class="form-control" type="text" id="startTime" formControlName="startTime">
-                </div>
-    
-                <div class="form-group">
-                        <label class="control-label" for="endTime">End time</label>
-                        <input class="form-control" type="text" id="endTime" formControlName="endTime">
-                    </div>
-        
-                    <div class="form-group row">
-                    <div class=col>
-                        <button type="submit" class="btn btn-primary mr-5 mt-3">Save</button>
-                        <button type="button" class="btn btn-primary mr-5 mt-3" (click)="onCancel()">Cancel</button>
-                    </div>
-                </div> -->
-
             <div class="form-group">
                 <label class="control-label" for="startHour">Start time</label>
                 <select class="form-control" id="startHour" formControlName="startHour">
@@ -35,12 +18,26 @@
                 </select>
             </div>
 
+            <div class="form-group">
+                <label class="control-label" for="role">Sensor</label>
+                <select class="form-control" id="role" formControlName="role" (change)="onRoleChange()">
+                    <option *ngFor="let r of roles" [ngValue]="r">{{r.text}}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label" for="temp">Temperature</label>
+                <input class="form-control" type="number" step="1" id="temp" formControlName="temp" />
+                <div class="alert-danger" *ngIf="form.errors">{{form.errors.roleTempValidator}}</div>
+            </div>
+
             <div class="form-group row">
                 <div class=col>
-                    <button type="submit" class="btn btn-primary mr-5 mt-3">Save</button>
+                    <button type="submit" class="btn btn-primary mr-5 mt-3" [disabled]="!form.valid">Save</button>
                     <button type="button" class="btn btn-primary mr-5 mt-3" (click)="onCancel()">Cancel</button>
                 </div>
             </div>
+
         </form>
     </div>
 </div>

@@ -46,6 +46,8 @@ import { ProgramUseComponent } from './ui/pages/program-use/program-use.componen
 const apiBase = environment.apiBase;
 const logApi = "log";
 
+console.log("ApiBase is [" + apiBase + "]");
+
 @NgModule({
     declarations: [
         AppComponent,

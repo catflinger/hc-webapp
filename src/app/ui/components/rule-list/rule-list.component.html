@@ -12,7 +12,8 @@
                 <tr *ngFor="let rule of rules">
                     <td>{{rule.startTime | timeOfDay}}</td>
                     <td>{{rule.endTime | timeOfDay}}</td>
-                    <td>turn on heating</td>
+                    <td *ngIf="rule.role">{{rule.role}} to {{rule.temp}} degrees</td>
+                    <td *ngIf="!rule.role">heating on</td>
                 </tr>
             </tbody>
         </table>

@@ -43,9 +43,11 @@ export class ConfigService {
                 .then((data: any) => {
                     try {
                         let apiResponse: IConfigApiResponse = new ConfigApiResponse(data);
+                        console.log("config updated");
                         this.bSubject.next(apiResponse.config);
                         resolve();
                     } catch (err) {
+                        console.log("failed to load config after update");
                         reject(err);
                     }
                 })

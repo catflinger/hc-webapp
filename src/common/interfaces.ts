@@ -1,9 +1,7 @@
-import { TimeOfYear } from "./configuration/time-of-year";
-
 /*
 All these interfaces are intended for use with immutable classes.
 */
-export type RoleType = "" | "hw" | "bedroom";
+export type RoleType = "hw" | "bedroom";
 
 export interface IProgram {
     id: string;
@@ -11,6 +9,7 @@ export interface IProgram {
     minHwTemp: number;
     maxHwTemp: number;
     getRules(): ReadonlyArray<IRuleConfig>;
+    toMutable(): IProgramM;
 }
 
 // interface for the mutable version of Program
@@ -26,10 +25,9 @@ export interface IRuleConfig {
     id: string;
     startTime: ITimeOfDay;
     endTime: ITimeOfDay;
-    
+
     role?: RoleType;
-    max?: number;
-    min?: number;
+    temp?: number;
 }
 
 export interface ITimeOfDay {
