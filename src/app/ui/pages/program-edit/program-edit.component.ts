@@ -78,7 +78,7 @@ export class ProgramEditComponent implements OnInit, OnDestroy {
             if (this.programId) {
                 program = config.programConfig.find((p: IProgramM) => p.id === this.program.id);
             } else {
-                program = new Program().toMuatble();
+                program = new Program().toMutable();
                 newProgramId = program.id;
                 config.programConfig.push(program);
             }
