@@ -19,7 +19,7 @@
                     <td>{{sensor.id}}</td>
                     <td>{{sensor.description}}</td>
                     <td>{{sensor.role}}</td>
-                    <td>{{sensor.reading}}</td>
+                    <td>{{sensor.reading | number: "1.0-1"}}</td>
                     <td>
                         <button class="btn btn-light" [disabled]="appContext.busy" (click)="onEdit(sensor.id)">Edit</button>
                     </td>
@@ -32,7 +32,7 @@
                     <td>{{reading.id}}</td>
                     <td></td>
                     <td></td>
-                    <td>{{reading.reading}}</td>
+                    <td>{{reading.reading | number: "1.0-1"}}</td>
                     <td>
                         <button class="btn btn-light" [disabled]="appContext.busy" (click)="onAdd(reading)">Add</button>
                     </td>

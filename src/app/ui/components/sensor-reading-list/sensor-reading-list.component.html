@@ -12,7 +12,7 @@
                 <tr *ngFor="let reading of readings">
                     <td>{{reading.description}}</td>
                     <td>{{reading.role}}</td>
-                    <td>{{reading.reading}}</td>
+                    <td>{{reading.reading | number: "1.0-1"}}</td>
                 </tr>
             </tbody>
         </table>
