@@ -9,7 +9,7 @@ import { ISensorReading } from 'src/common/interfaces';
 export class SensorReadingListComponent implements OnInit {
 
     @Input()
-    public readings: ISensorReading;
+    public readings: ISensorReading[];
 
   constructor() { }
 
