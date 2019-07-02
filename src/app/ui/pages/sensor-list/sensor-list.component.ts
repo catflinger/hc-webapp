@@ -58,7 +58,8 @@ export class SensorListComponent implements OnInit, OnDestroy {
                 });
 
                 // only show readings here for unconfigured sensors
-                this.readings = readings.filter((reading) => !this.sensors.find((sensor) => sensor.id === reading.id));
+                this.readings = readings
+                    .filter((r) => !this.sensors.find((sensor) => sensor.id === r.id));
             }
         }));
     }

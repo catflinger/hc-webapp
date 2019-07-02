@@ -5,7 +5,7 @@ import { ILogExtract, ILogEntry, ISensorConfig } from 'src/common/interfaces';
 
 export class LogChartDataAdapter {
 
-    public toChartData(extract: ILogExtract, sensors: string[]): ChartData {
+    public toChartData(extract: ILogExtract, config: ISensorConfig[]): ChartData {
 
         const result = {
             labels: [],
@@ -13,11 +13,13 @@ export class LogChartDataAdapter {
         };
 
         // add one dataset each sensor
-        extract.sensors.forEach((sensor: string, sensorIndex: number) => {
+        extract.sensors.forEach((sensorId: string, sensorIndex: number) => {
+            let sensorConfig = config.find((s) => s.id === sensorId);
+            
             const dataset = {
-                label: sensor,
+                label: sensorConfig ? sensorConfig.description : sensorId,
                 data: [],
-                borderColor: sensorIndex ? "red" : "blue",
+                borderColor: sensorConfig.displayColor,
                 fill: false
             };
             result.datasets.push(dataset);

@@ -9,7 +9,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let reading of readings">
+                <tr *ngFor="let reading of sortedReadings()">
                     <td>{{reading.description}}</td>
                     <td>{{reading.role}}</td>
                     <td>{{reading.reading | number: "1.0-1"}}</td>

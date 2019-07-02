@@ -8,6 +8,8 @@
                     <th>sensor id</th>
                     <th>name</th>
                     <th>role</th>
+                    <th>colour</th>
+                    <th>order</th>
                     <th>reading</th>
                     <th></th>
                     <th></th>
@@ -19,6 +21,8 @@
                     <td>{{sensor.id}}</td>
                     <td>{{sensor.description}}</td>
                     <td>{{sensor.role}}</td>
+                    <td>{{sensor.displayColor}}</td>
+                    <td>{{sensor.displayOrder}}</td>
                     <td>{{sensor.reading | number: "1.0-1"}}</td>
                     <td>
                         <button class="btn btn-light" [disabled]="appContext.busy" (click)="onEdit(sensor.id)">Edit</button>
@@ -30,6 +34,8 @@
 
                 <tr *ngFor="let reading of readings">
                     <td>{{reading.id}}</td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td>{{reading.reading | number: "1.0-1"}}</td>

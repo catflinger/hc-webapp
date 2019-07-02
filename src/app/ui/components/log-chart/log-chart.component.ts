@@ -22,7 +22,7 @@ export class LogChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     dateFilter: Date;
 
     @Input()
-    sensorFilter: string[];
+    sensorFilter: ISensorConfig[];
 
     constructor() {
         this.adapter = new LogChartDataAdapter();

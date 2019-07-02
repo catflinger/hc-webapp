@@ -24,6 +24,10 @@ export class ConfigService {
             this.refresh();
     }
 
+    public getConfig(): IConfiguration {
+        return this.bSubject.value;
+    }
+
     public getObservable(): Observable<IConfiguration> {
         return this.bSubject.asObservable();
     }
@@ -60,13 +64,14 @@ export class ConfigService {
         return result;
     }
 
-    public refresh(): void {
-        this.http.get(this.baseUrl + "config")
+    public refresh(): Promise<void> {
+        return this.http.get(this.baseUrl + "config")
         .pipe(map((data: any): IConfiguration => {
             const apiResponse: IConfigApiResponse = new ConfigApiResponse(data);
             return apiResponse.config;
         }))
-        .subscribe((s) => {
+        .toPromise()
+        .then((s) => {
             this.bSubject.next(s);
         });
     }
