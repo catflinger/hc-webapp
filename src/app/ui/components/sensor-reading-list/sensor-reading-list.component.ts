@@ -18,10 +18,7 @@ export class SensorReadingListComponent implements OnInit {
 
     public sortedReadings(): ISensorReading[] {
         return this.readings.concat().sort(
-            (a, b): number => { 
-                return  a.displayOrder - b.displayOrder 
-            }
+            (a, b) => a.displayOrder - b.displayOrder
         );
     }
-
 }

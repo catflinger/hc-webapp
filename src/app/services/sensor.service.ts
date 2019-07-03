@@ -26,15 +26,15 @@ export class SensorService {
 
                 if (source[0] && source[1]) {
                     source[0].getSensorConfig().forEach((sensor) => {
-                        const reading = source[1].find((reading) => reading.id === sensor.id);
+                        const reading = source[1].find((r) => r.id === sensor.id);
                         if (reading) {
-                            sensor.reading = reading.reading; 
+                            sensor.reading = reading.reading;
                         }
                         sensors.push(sensor);
                     });
                 }
                 return sensors;
             })
-        ); 
+        );
     }
 }

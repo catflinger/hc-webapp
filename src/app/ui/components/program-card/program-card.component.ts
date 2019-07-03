@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { IProgram } from 'src/common/interfaces';
 import { Router } from '@angular/router';
 import { INamedProgramEvent, IDeleteProgramEvent, IUseProgramEvent } from '../../events';
@@ -11,7 +11,7 @@ import { AppContextService } from 'src/app/services/app-context.service';
     templateUrl: './program-card.component.html',
     styleUrls: ['./program-card.component.css']
 })
-export class ProgramCardComponent implements OnInit {
+export class ProgramCardComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
 
     public appContext: AppContext = new AppContext(null, null, false);

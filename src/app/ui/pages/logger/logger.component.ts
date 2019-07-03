@@ -39,7 +39,7 @@ export class LoggerComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.alertService.clearAlerts();
 
-        this.subs.push(this.appContextService.getAppContext().subscribe( (appCtx)=> {
+        this.subs.push(this.appContextService.getAppContext().subscribe( (appCtx) => {
             this.appContext = appCtx;
         }));
 

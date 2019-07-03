@@ -3,12 +3,12 @@ import { ITimeOfYear } from "../interfaces";
 
 export class TimeOfYear implements ITimeOfYear {
 
+    public readonly month: number;
+    public readonly day: number;
+
     public static fromDate(date: Date): ITimeOfYear {
         return new TimeOfYear({month: date.getMonth() + 1, day: date.getDate()});
     }
-
-    public readonly month: number;
-    public readonly day: number;
 
     constructor(data: {month: number, day: number}) {
         this.day = ConfigValidation.getNumber(data.day, "TimeOfYear: day");

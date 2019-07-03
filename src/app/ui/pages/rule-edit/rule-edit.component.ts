@@ -135,7 +135,7 @@ export class RuleEditComponent implements OnInit, OnDestroy {
 
                         rule.role = this.form.value.role.value || null;
 
-                        if (rule.role){
+                        if (rule.role) {
                             rule.temp = this.form.value.temp || null;
                         } else {
                             rule.temp = null;
@@ -182,8 +182,8 @@ export class RuleEditComponent implements OnInit, OnDestroy {
                     Validators.max(30),
                 ]),
             },
-            { 
-                validators: [ roleTempValidator] 
+            {
+                validators: [ roleTempValidator]
             },
         );
     }

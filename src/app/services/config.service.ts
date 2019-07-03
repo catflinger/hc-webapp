@@ -46,7 +46,7 @@ export class ConfigService {
                 .toPromise()
                 .then((data: any) => {
                     try {
-                        let apiResponse: IConfigApiResponse = new ConfigApiResponse(data);
+                        const apiResponse: IConfigApiResponse = new ConfigApiResponse(data);
                         console.log("config updated");
                         this.bSubject.next(apiResponse.config);
                         resolve();

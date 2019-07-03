@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { IConfiguration, IProgram, IConfigurationM } from 'src/common/interfaces';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -15,7 +15,7 @@ import { ControlStateService } from 'src/app/services/control-state.service';
     templateUrl: './program-use.component.html',
     styleUrls: ['./program-use.component.css']
 })
-export class ProgramUseComponent implements OnInit {
+export class ProgramUseComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
     public config: IConfiguration;
     public program: IProgram;
@@ -49,11 +49,11 @@ export class ProgramUseComponent implements OnInit {
                             this.program = this.config.getProgramConfig().find((p) => {
                                 return p.id === this.programId;
                             });
-    
+
                             this.form = this.fb.group({
                                 startDate: this.fb.control(new Date(), [Validators.required]),
                             });
-                    
+
                         }
                     }
                 },
@@ -69,9 +69,9 @@ export class ProgramUseComponent implements OnInit {
 
     onSubmit() {
         if (this.form.valid) {
-            
+
             this.appContextService.setBusy();
-            
+
             this.configService.updateConfig((config: IConfigurationM): boolean => {
                 config.datedConfig.push(new DatedConfig({
                     programId: this.program.id,

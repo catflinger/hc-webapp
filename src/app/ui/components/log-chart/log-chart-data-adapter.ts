@@ -14,8 +14,8 @@ export class LogChartDataAdapter {
 
         // add one dataset each sensor
         extract.sensors.forEach((sensorId: string, sensorIndex: number) => {
-            let sensorConfig = config.find((s) => s.id === sensorId);
-            
+            const sensorConfig = config.find((s) => s.id === sensorId);
+
             const dataset = {
                 label: sensorConfig ? sensorConfig.description : sensorId,
                 data: [],

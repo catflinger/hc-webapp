@@ -38,7 +38,7 @@ export class SensorListComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.alertService.clearAlerts();
 
-        this.subs.push(this.appContextService.getAppContext().subscribe( (appCtx)=> {
+        this.subs.push(this.appContextService.getAppContext().subscribe( (appCtx) => {
             this.appContext = appCtx;
         }));
 
@@ -47,11 +47,14 @@ export class SensorListComponent implements OnInit, OnDestroy {
             if (results[0] && results[1]) {
                 const config = results[0];
                 const readings = results[1];
-                this.sensors = config.getSensorConfig();
+                this.sensors = config
+                    .getSensorConfig()
+                    .slice()
+                    .sort((a, b) => a.displayOrder - b.displayOrder);
 
                 // add readings to configured sensors (if there is one)
                 this.sensors.forEach((sensor: ISensorConfig) => {
-                    let reading = readings.find((reading: ISensorConfig) => reading.id === sensor.id);
+                    const reading = readings.find((r: ISensorConfig) => r.id === sensor.id);
                     if (reading) {
                         sensor.reading = reading.reading;
                     }

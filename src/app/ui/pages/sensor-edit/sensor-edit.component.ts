@@ -73,7 +73,7 @@ export class SensorEditComponent implements OnInit {
                         reading: null,
                         displayColor: "black",
                         displayOrder: 100,
-                    })
+                    });
                 }
 
                 this.form = this.fb.group({
@@ -123,7 +123,7 @@ export class SensorEditComponent implements OnInit {
     }
 
     private findOption(options: IOption[], val: any): IOption {
-        let result = options.find((r) => r.value === val);
+        const result = options.find((r) => r.value === val);
 
         return result || options[0];
     }

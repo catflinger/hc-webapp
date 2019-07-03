@@ -14,7 +14,7 @@ import { AppContext } from 'src/app/services/app-context';
 })
 export class HomeComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
-    
+
     public appContext: AppContext = new AppContext(null, null, false);
     public sensorReadings: ISensorConfig[] = [];
 
@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.alertService.clearAlerts();
 
-        this.subs.push(this.appContextService.getAppContext().subscribe( (appCtx)=> {
+        this.subs.push(this.appContextService.getAppContext().subscribe( (appCtx) => {
             this.appContext = appCtx;
         }));
 
