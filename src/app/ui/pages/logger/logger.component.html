@@ -1,49 +1,27 @@
 <app-page-title title="logs"></app-page-title>
 
 
-<div class="row" *ngIf="sensors">
-    <div class="col-6 mt-5 d-flex justify-content-center">
-        <ngb-datepicker ngDisabled="appContext.busy" (select)="onDateSelect($event)"></ngb-datepicker>
-    </div>  
-    <div class="col-6 mt-5 d-flex justify-content-center">
-        <form class="form" [formGroup]="form">
+<form class="form" [formGroup]="form"  *ngIf="sensors">
+    <div class="row">
+        <div class="col-6 mt-5 d-flex justify-content-center">
+            <ngb-datepicker ngDisabled="appContext.busy" formControlName="logDate" ></ngb-datepicker>
+        </div>
+    
+        <div class="col-6 mt-5 d-flex justify-content-center">
             <div formArrayName="sensors">
                 <div *ngFor="let sensor of sensors; let i = index">
-                        <label class="">
-                            <input type="checkbox" [formControlName]="i">
+                        <label >
+                            <input [formControlName]="i" type="checkbox" >
                             {{sensor.description}}
-                        </label>   
+                        </label>
                     </div>
                 </div>
-        </form>
-    </div>  
-</div>
+        </div>
+    </div>
+</form>
 
 <div class="row" *ngIf="logExtract">
     <div class="col-12 mt-5 d-flex justify-content-center">
             <app-log-chart [logExtract]="logExtract" [sensorFilter]="sensors"></app-log-chart>
     </div>
 </div>
-
-<!-- <div class="row" *ngIf="logExtract">
-    <div class="col-12 mt-5 d-flex justify-content-center">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>date</th>
-                    <th>heating</th>
-                    <th>hot water</th>
-                    <th *ngFor="let sensor of logExtract.sensors">{{sensor}}</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let entry of logExtract.entries">
-                    <td>{{entry.date | date:"short"}}</td>
-                    <td>{{entry.heating}}</td>
-                    <td>{{entry.hotWater}}</td>
-                    <td *ngFor="let reading of entry.readings">{{reading}}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div> -->

@@ -48,15 +48,15 @@ export class LoggerComponent implements OnInit, OnDestroy {
             if (config) {
                 this.sensors = config.getSensorConfig();
 
-                this.form = this.fb.group({
-                    sensors: this.fb.array(this.sensors.map((sensor) => {
-                        return {
-                            checked: false,
-                            id: sensor.id,
-                            label: sensor.description,
-                        };
-                    })),
-                });
+                this.form = this.fb.group(
+                    {
+                        logDate: null,
+                        sensors: this.fb.array(this.sensors.map((s, i) => true))
+                    }
+                );
+
+                this.subs.push(
+                    this.form.valueChanges.subscribe((val) => this.onChanges(val)));
             }
         }));
 
@@ -82,5 +82,25 @@ export class LoggerComponent implements OnInit, OnDestroy {
         this.logService.refresh(from, to, sensorIds)
         .catch()
         .then(() => this.appContextService.clearBusy());
+    }
+
+    onChanges(val: any): void {
+        if (val.logDate) {
+            this.appContextService.setBusy();
+
+            const from: Date = new Date(val.logDate.year, val.logDate.month - 1, val.logDate.day, 0, 0, 0);
+            const to: Date = new Date(val.logDate.year, val.logDate.month - 1, val.logDate.day, 23, 59, 59);
+
+            const selectedSensorIds: string[] = [];
+
+            val.sensors
+                .map( (v, i) => ({selected: v, index: i}) )
+                .filter(si => si.selected)
+                .forEach(si => selectedSensorIds.push(this.sensors[si.index].id));
+
+            this.logService.refresh(from, to, selectedSensorIds)
+            .catch()
+            .then(() => this.appContextService.clearBusy());
+        }
     }
 }
