@@ -32,13 +32,19 @@ export class SensorEditComponent implements OnInit {
 
     private colors: IOption[] = [
         { text: "black", value: "black" },
+        { text: "grey", value: "silver" },
         { text: "red", value: "red" },
         { text: "pink", value: "pink" },
+        { text: "orchid", value: "orchid" },
         { text: "blue", value: "blue" },
+        { text: "isobel purple", value: "rebeccapurple" },
+        { text: "sky blue", value: "lightskyblue" },
         { text: "green", value: "green" },
         { text: "yellow", value: "yellow" },
         { text: "orange", value: "orange" },
         { text: "brown", value: "brown" },
+        { text: "goldenrod", value: "goldenrod" },
+        { text: "cornflower blue", value: "cornflowerblue" },
     ];
 
     constructor(
