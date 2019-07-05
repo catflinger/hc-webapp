@@ -25,6 +25,20 @@ export class LogChartDataAdapter {
             result.datasets.push(dataset);
         });
 
+        const HWdDataset = {
+            label: "HW ON",
+            data: [],
+            borderColor: "orange",
+            fill: false
+        };
+
+        const CHdDataset = {
+            label: "CH ON",
+            data: [],
+            borderColor: "red",
+            fill: false
+        };
+
         const m = moment(extract.from);
 
         // add a tick every 10 minutes
@@ -43,7 +57,22 @@ export class LogChartDataAdapter {
                     y: readings[i] === undefined ? null : readings[i] / 10,
                 });
             });
+
+            // this is a dummy dataset that shows the boiler state as a horizontal line on the graph
+            // ON is shown as 100 degrees and OFF is a null value
+            HWdDataset.data.push({
+                x: m.toISOString(),
+                y: entry && entry.hotWater ? 80 : null,
+            });
+
+            CHdDataset.data.push({
+                x: m.toISOString(),
+                y: entry && entry.heating ? 85 : null,
+            });
         }
+
+        result.datasets.push(HWdDataset);
+        result.datasets.push(CHdDataset);
 
         return result;
     }

@@ -1,9 +1,8 @@
 import { Component, Input, OnInit, AfterViewInit, OnChanges, OnDestroy } from '@angular/core';
 import { Chart, ChartConfiguration } from "chart.js";
 
-import { ILogExtract, ISensorReading, ISensorConfig } from 'src/common/interfaces';
+import { ILogExtract, ISensorConfig } from 'src/common/interfaces';
 import { LogChartDataAdapter } from './log-chart-data-adapter';
-import { AutoClose } from '@ng-bootstrap/ng-bootstrap/util/autoclose';
 
 @Component({
     selector: 'app-log-chart',
@@ -41,6 +40,10 @@ export class LogChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
                 title: {
                     display: true,
                     text: "Logs for " + this.logExtract.from,
+                },
+
+                legend: {
+                    position: 'bottom',
                 },
 
                 elements: {
