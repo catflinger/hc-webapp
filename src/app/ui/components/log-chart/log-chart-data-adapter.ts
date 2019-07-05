@@ -40,7 +40,7 @@ export class LogChartDataAdapter {
             result.datasets.forEach((dataset, i) => {
                 dataset.data.push({
                     x: m.toISOString(),
-                    y: readings[i] === undefined ? null : readings[i],
+                    y: readings[i] === undefined ? null : readings[i] / 10,
                 });
             });
         }
