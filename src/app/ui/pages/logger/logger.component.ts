@@ -11,6 +11,7 @@ import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms';
 import { SensorConfig } from 'src/common/types';
 import { AlertService } from 'src/app/services/alert.service';
 import { AppContext } from 'src/app/services/app-context';
+import { DayOfYear } from 'src/common/configuration/day-of-year';
 
 @Component({
     selector: 'app-logger',
@@ -21,6 +22,7 @@ export class LoggerComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
     public logExtract: ILogExtract;
     public sensors: ReadonlyArray<ISensorConfig>;
+    private selectedSensors: ISensorConfig[] = [];
     public appContext: AppContext = new AppContext(null, null, false);
 
     private form: FormGroup;
@@ -60,10 +62,10 @@ export class LoggerComponent implements OnInit, OnDestroy {
             }
         }));
 
-        this.subs.push(this.logService.getObservable()
-            .subscribe((extract) => {
-                this.logExtract = extract;
-            }));
+        // this.subs.push(this.logService.getObservable()
+        //     .subscribe((extract) => {
+        //         this.logExtract = extract;
+        //     }));
     }
 
     ngOnDestroy() {
@@ -72,33 +74,46 @@ export class LoggerComponent implements OnInit, OnDestroy {
         });
     }
 
-    onDateSelect(ds: NgbDateStruct) {
-        this.appContextService.setBusy();
+    // onDateSelect(ds: NgbDateStruct) {
+    //     this.appContextService.setBusy();
 
-        const from: Date = new Date(ds.year, ds.month - 1, ds.day, 0, 0, 0);
-        const to: Date = new Date(ds.year, ds.month - 1, ds.day, 23, 59, 59);
-        const sensorIds: string[] = this.sensors.map((sc) => sc.id);
+    //     console.log ("onDateSelect ");
 
-        this.logService.refresh(from, to, sensorIds)
-        .catch()
-        .then(() => this.appContextService.clearBusy());
-    }
+    //     const dayOfYear = new DayOfYear({year: ds.year, month: ds.month, day: ds.day });
+
+    //     this.logService.getLog(dayOfYear)
+    //     .then((log) => {
+    //         this.logExtract = log;
+    //         console.log ("Got " + log)
+    //     })
+    //     .catch()
+    //     .then(() => this.appContextService.clearBusy());
+    // }
 
     onChanges(val: any): void {
+
         if (val.logDate) {
             this.appContextService.setBusy();
 
-            const from: Date = new Date(val.logDate.year, val.logDate.month - 1, val.logDate.day, 0, 0, 0);
-            const to: Date = new Date(val.logDate.year, val.logDate.month - 1, val.logDate.day, 23, 59, 59);
+            const dayOfYear = new DayOfYear({
+                year: val.logDate.year, 
+                month: val.logDate.month, 
+                day: val.logDate.day,
+            });
 
-            const selectedSensorIds: string[] = [];
+            this.selectedSensors = [];
 
             val.sensors
                 .map( (v, i) => ({selected: v, index: i}) )
                 .filter(si => si.selected)
-                .forEach(si => selectedSensorIds.push(this.sensors[si.index].id));
+                .forEach(si => {
+                    this.selectedSensors.push(this.sensors[si.index])
+                });
 
-            this.logService.refresh(from, to, selectedSensorIds)
+            this.logService.getLog(dayOfYear)
+            .then((log) => {
+                this.logExtract = log;
+            })
             .catch()
             .then(() => this.appContextService.clearBusy());
         }

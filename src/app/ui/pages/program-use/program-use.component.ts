@@ -7,8 +7,8 @@ import { ConfigService } from 'src/app/services/config.service';
 import { AppContextService } from 'src/app/services/app-context.service';
 import { AlertService } from 'src/app/services/alert.service';
 import { DatedConfig } from 'src/common/types';
-import { TimeOfYear } from 'src/common/configuration/time-of-year';
 import { ControlStateService } from 'src/app/services/control-state.service';
+import { DayOfYear } from 'src/common/configuration/day-of-year';
 
 @Component({
     selector: 'app-program-use',
@@ -75,7 +75,7 @@ export class ProgramUseComponent implements OnInit, OnDestroy {
             this.configService.updateConfig((config: IConfigurationM): boolean => {
                 config.datedConfig.push(new DatedConfig({
                     programId: this.program.id,
-                    timeOfYear: new TimeOfYear(this.form.value.startDate),
+                    dayOfYear: new DayOfYear(this.form.value.startDate),
                 }));
                 return false;
             })

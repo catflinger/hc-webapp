@@ -28,6 +28,7 @@ export class LogChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     }
 
     ngOnInit() {
+        const d = this.logExtract.dayOfYear;
 
         this.chartConfig = {
 
@@ -39,7 +40,7 @@ export class LogChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
                 title: {
                     display: true,
-                    text: "Logs for " + this.logExtract.from,
+                    text: `Logs for ${d.year}/${d.month}/${d.day}`,
                 },
 
                 legend: {

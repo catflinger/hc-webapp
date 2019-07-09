@@ -105,8 +105,9 @@ export class ProgramListComponent implements OnInit, OnDestroy {
 
             const index = config.datedConfig.findIndex((dc: IDatedConfigM) => {
                 return dc.programId === datedConfig.programId &&
-                        dc.timeOfYear.month === datedConfig.timeOfYear.month &&
-                        dc.timeOfYear.day === datedConfig.timeOfYear.day;
+                        dc.dayOfYear.year === datedConfig.dayOfYear.year &&
+                        dc.dayOfYear.month === datedConfig.dayOfYear.month &&
+                        dc.dayOfYear.day === datedConfig.dayOfYear.day;
             });
 
             if (index >= 0) {

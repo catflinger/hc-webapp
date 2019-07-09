@@ -63,14 +63,14 @@ function getValue(typeName: string, val: any, message: string, defaultValue?: an
     if (val === undefined && defaultValue === undefined) {
         // value missing but no default
         throw new Error(`Config validation, cannot find ${message} and no default value supplied`);
-    } else if (val !== undefined && typeof val !== typeName) {
+    } else if (val !== undefined && val !== null && typeof val !== typeName) {
         // value is present but not the correct type
         throw new Error(`Config validation, value for ${message} is not ${typeName}`);
-    } else if (val === undefined && defaultValue !== undefined) {
+    } else if ((val === undefined || val === null) && defaultValue !== undefined) {
         // value is missing but we have got a default value
         result = defaultValue;
     } else {
-        // value is resent and of the correct type
+        // value is present and of the correct type
         result = val;
     }
     return result;

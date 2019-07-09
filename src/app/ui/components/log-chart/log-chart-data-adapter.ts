@@ -39,7 +39,7 @@ export class LogChartDataAdapter {
             fill: false
         };
 
-        const m = moment(extract.from);
+        const m = moment(extract.dayOfYear.getStartAsDate());
 
         // add a tick every 10 minutes
         for (let ticks = 0; ticks < 6 * 24; ticks++) {

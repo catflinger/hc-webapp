@@ -1,53 +1,51 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { map } from "rxjs/operators";
-import { Observable, BehaviorSubject } from "rxjs";
 
 import { INJECTABLES } from '../injection-tokens';
-import { ILogExtract } from '../../common/interfaces';
-import { LogExtract } from "../../common/log/log-extract";
+import { ILogExtract, IDayOfYear } from '../../common/interfaces';
 import { LogApiResponse } from 'src/common/api/log-api-response';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class LogService {
-    private bSubject: BehaviorSubject<ILogExtract>;
+    private logs: ILogExtract[] = [];
 
     constructor(
         private http: HttpClient,
         @Inject(INJECTABLES.ApiBase) private apiBase: string,
         @Inject(INJECTABLES.LogApi) private logApi: string,
-        ) {
-            this.bSubject = new BehaviorSubject(null);
+    ) {
     }
 
-    public getObservable(): Observable<ILogExtract> {
-        return this.bSubject.asObservable();
+    public getLog(dayOfYear: IDayOfYear): Promise<ILogExtract> {
+
+        let result = this.getCachedExtract(dayOfYear);
+
+        if (result) {
+            return Promise.resolve(result);
+        } else {
+            return this.fetchLog(dayOfYear)
+                .then((log) => {
+                    this.logs.push(log);
+                    return Promise.resolve(log);
+                });
+        }
     }
 
-    public getValue(): ILogExtract {
-        return this.bSubject.value;
+    private getCachedExtract(dayOfYear: IDayOfYear): ILogExtract {
+        return this.logs.find((log) => log.dayOfYear.isSameAs(dayOfYear));
     }
 
-    public refresh(from: Date, to: Date, sensors: string[]): Promise<ILogExtract> {
-
-        return this.http.get(this.apiBase + this.logApi + "?params=" + JSON.stringify({
-            from: from.toISOString(),
-            to: to.toISOString(),
-            sensors}))
-
-        .pipe(map((data: any): ILogExtract => {
-            // console.log(JSON.stringify(data, null, 4));
-            const apiResponse = new LogApiResponse(data);
-            return apiResponse.log;
-        }))
-
-        .toPromise()
-
-        .then((extract: ILogExtract) => {
-            this.bSubject.next(extract);
-            return extract;
-        });
+    private fetchLog(dayOfYear: IDayOfYear): Promise<ILogExtract> {
+        return this.http.get(`${this.apiBase}${this.logApi}?year=${dayOfYear.year}&month=${dayOfYear.month}&day=${dayOfYear.day}`)
+            .pipe(
+                map((data: any): ILogExtract => {
+                    const apiResponse = new LogApiResponse(data);
+                    return apiResponse.log;
+                })
+            )
+            .toPromise();
     }
 }
