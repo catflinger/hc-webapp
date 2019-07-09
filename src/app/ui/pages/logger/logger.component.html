@@ -1,34 +1,33 @@
 <app-page-title title="logs"></app-page-title>
 
 
-<form class="form" [formGroup]="form"  *ngIf="sensors">
+<form class="form" [formGroup]="form" *ngIf="sensors">
     <div class="row">
-        <div class="col-6 mt-5 d-flex justify-content-center">
-            <ngb-datepicker ngDisabled="appContext.busy" formControlName="logDate" ></ngb-datepicker>
+        <div class="col-md-4 mt-5 justify-content-center">
+            <ngb-datepicker ngDisabled="appContext.busy" formControlName="logDate"></ngb-datepicker>
         </div>
-    
-        <div class="col-6 mt-5 d-flex justify-content-center">
+
+        <div class="col-md-3 mt-5 justify-content-center">
             <div formArrayName="sensors">
                 <div *ngFor="let sensor of sensors; let i = index">
-                        <label >
-                            <input [formControlName]="i" type="checkbox" >
-                            {{sensor.description}}
-                        </label>
-                    </div>
+                    <label>
+                        <input [formControlName]="i" type="checkbox">
+                        {{sensor.description}}
+                    </label>
                 </div>
+            </div>
         </div>
+
+        <div class="col-md-3 mt-5 justify-content-center">
+            <button class="btn btn-primary" (click)="onRefresh()">Update</button>
+        </div>
+
     </div>
+
 </form>
 
 <div class="row" *ngIf="logExtract">
-    <div class="col-12 mt-5 d-flex ">
-        <button class="btn btn-primary" (click)="onRefresh()">Update</button>
-    </div>
-</div>
-
-<div class="row" *ngIf="logExtract">
     <div class="col-12 mt-5 d-flex justify-content-center">
-            <app-log-chart [logExtract]="logExtract" [sensorFilter]="selectedSensors"></app-log-chart>
+        <app-log-chart [logExtract]="logExtract" [sensorFilter]="selectedSensors"></app-log-chart>
     </div>
 </div>
-

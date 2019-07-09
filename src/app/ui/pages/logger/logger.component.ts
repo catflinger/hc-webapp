@@ -1,18 +1,15 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, OnChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { AppContextService } from 'src/app/services/app-context.service';
 import { ConfigService } from 'src/app/services/config.service';
 import { LogService } from 'src/app/services/log.service';
-import { ILogExtract, IConfiguration, ISensorConfig } from 'src/common/interfaces';
-import { NgbDateStruct, NgbDate } from '@ng-bootstrap/ng-bootstrap';
-import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms';
-import { SensorConfig } from 'src/common/types';
+import { ILogExtract, ISensorConfig } from 'src/common/interfaces';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { AlertService } from 'src/app/services/alert.service';
 import { AppContext } from 'src/app/services/app-context';
 import { DayOfYear } from 'src/common/configuration/day-of-year';
-import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
 @Component({
     selector: 'app-logger',
@@ -79,7 +76,7 @@ export class LoggerComponent implements OnInit, OnDestroy {
         this.logService
             .update()
             .then(() => {
-                return this.logService.getLog(DayOfYear.fromDate(new Date()))
+                return this.logService.getLog(this.form.value.logDate)
             })
             .then((log) => {
                 this.logExtract = log;
@@ -108,7 +105,7 @@ export class LoggerComponent implements OnInit, OnDestroy {
                     this.selectedSensors.push(this.sensors[si.index])
                 });
 
-            this.logService.getLog(DayOfYear.fromDate(new Date()))
+            this.logService.getLog(dayOfYear)
             .then((log) => {
                 this.logExtract = log;
             })
