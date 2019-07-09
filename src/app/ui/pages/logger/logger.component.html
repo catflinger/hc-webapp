@@ -21,7 +21,14 @@
 </form>
 
 <div class="row" *ngIf="logExtract">
+    <div class="col-12 mt-5 d-flex ">
+        <button class="btn btn-primary" (click)="onRefresh()">Update</button>
+    </div>
+</div>
+
+<div class="row" *ngIf="logExtract">
     <div class="col-12 mt-5 d-flex justify-content-center">
             <app-log-chart [logExtract]="logExtract" [sensorFilter]="selectedSensors"></app-log-chart>
     </div>
 </div>
+

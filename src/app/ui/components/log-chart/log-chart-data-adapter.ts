@@ -16,13 +16,15 @@ export class LogChartDataAdapter {
         extract.sensors.forEach((sensorId: string, sensorIndex: number) => {
             const sensorConfig = config.find((s) => s.id === sensorId);
 
-            const dataset = {
-                label: sensorConfig ? sensorConfig.description : sensorId,
-                data: [],
-                borderColor: sensorConfig.displayColor,
-                fill: false
-            };
-            result.datasets.push(dataset);
+            if (sensorConfig) {
+                const dataset = {
+                    label: sensorConfig ? sensorConfig.description : sensorId,
+                    data: [],
+                    borderColor: sensorConfig.displayColor,
+                    fill: false
+                };
+                result.datasets.push(dataset);
+            }
         });
 
         const HWdDataset = {

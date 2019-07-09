@@ -5,6 +5,7 @@ import { map } from "rxjs/operators";
 import { INJECTABLES } from '../injection-tokens';
 import { ILogExtract, IDayOfYear } from '../../common/interfaces';
 import { LogApiResponse } from 'src/common/api/log-api-response';
+import { DayOfYear } from 'src/common/configuration/day-of-year';
 
 @Injectable({
     providedIn: 'root'
@@ -32,6 +33,20 @@ export class LogService {
                     return Promise.resolve(log);
                 });
         }
+    }
+
+    public update(): Promise<void> {
+        return this.fetchLog(DayOfYear.fromDate(new Date()))
+        .then((log) => {
+            let idx = this.logs.findIndex(item => item.dayOfYear.isToday());
+
+            if (idx >= 0) {
+                this.logs.splice(idx, 1, log);
+            }
+            return Promise.resolve();
+            
+        });
+
     }
 
     private getCachedExtract(dayOfYear: IDayOfYear): ILogExtract {

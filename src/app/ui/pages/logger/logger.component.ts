@@ -6,12 +6,13 @@ import { AppContextService } from 'src/app/services/app-context.service';
 import { ConfigService } from 'src/app/services/config.service';
 import { LogService } from 'src/app/services/log.service';
 import { ILogExtract, IConfiguration, ISensorConfig } from 'src/common/interfaces';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateStruct, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormControl, FormArray, FormBuilder } from '@angular/forms';
 import { SensorConfig } from 'src/common/types';
 import { AlertService } from 'src/app/services/alert.service';
 import { AppContext } from 'src/app/services/app-context';
 import { DayOfYear } from 'src/common/configuration/day-of-year';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
 @Component({
     selector: 'app-logger',
@@ -38,7 +39,7 @@ export class LoggerComponent implements OnInit, OnDestroy {
         this.appContextService.clearContext();
     }
 
-    ngOnInit() {
+    public ngOnInit() {
         this.alertService.clearAlerts();
 
         this.subs.push(this.appContextService.getAppContext().subscribe( (appCtx) => {
@@ -52,45 +53,42 @@ export class LoggerComponent implements OnInit, OnDestroy {
 
                 this.form = this.fb.group(
                     {
-                        logDate: null,
+                        logDate: DayOfYear.fromDate(new Date()),
                         sensors: this.fb.array(this.sensors.map((s, i) => true))
                     }
                 );
 
                 this.subs.push(
                     this.form.valueChanges.subscribe((val) => this.onChanges(val)));
+
+                // trigger the value changes event immediately
+                this.onChanges(this.form.value);
             }
         }));
-
-        // this.subs.push(this.logService.getObservable()
-        //     .subscribe((extract) => {
-        //         this.logExtract = extract;
-        //     }));
     }
 
-    ngOnDestroy() {
+    public ngOnDestroy() {
         this.subs.forEach((s) => {
             s.unsubscribe();
         });
     }
 
-    // onDateSelect(ds: NgbDateStruct) {
-    //     this.appContextService.setBusy();
+    public onRefresh() {
+        this.appContextService.setBusy();
 
-    //     console.log ("onDateSelect ");
+        this.logService
+            .update()
+            .then(() => {
+                return this.logService.getLog(DayOfYear.fromDate(new Date()))
+            })
+            .then((log) => {
+                this.logExtract = log;
+            })
+            .catch()
+            .then(() => this.appContextService.clearBusy());
+}
 
-    //     const dayOfYear = new DayOfYear({year: ds.year, month: ds.month, day: ds.day });
-
-    //     this.logService.getLog(dayOfYear)
-    //     .then((log) => {
-    //         this.logExtract = log;
-    //         console.log ("Got " + log)
-    //     })
-    //     .catch()
-    //     .then(() => this.appContextService.clearBusy());
-    // }
-
-    onChanges(val: any): void {
+    public onChanges(val: any): void {
 
         if (val.logDate) {
             this.appContextService.setBusy();
@@ -110,7 +108,7 @@ export class LoggerComponent implements OnInit, OnDestroy {
                     this.selectedSensors.push(this.sensors[si.index])
                 });
 
-            this.logService.getLog(dayOfYear)
+            this.logService.getLog(DayOfYear.fromDate(new Date()))
             .then((log) => {
                 this.logExtract = log;
             })
