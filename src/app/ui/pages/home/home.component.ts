@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { AppContextService } from 'src/app/services/app-context.service';
 import { AlertService, AlertType } from 'src/app/services/alert.service';
 import { AppContext } from 'src/app/services/app-context';
+import { ControlService } from 'src/app/services/control.service';
 
 @Component({
     selector: 'app-home',
@@ -20,6 +21,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     constructor(
         private sensorReadingService: SensorService,
+        private controlService: ControlService,
         private overrideService: OverrideService,
         private appContextService: AppContextService,
         private alertService: AlertService,
@@ -64,6 +66,14 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.overrideService.clearOverrides()
         .then(this.alertService.createCallback("Overrides cleared", "info"))
         .catch(this.alertService.createCallback("Failed to clear overrides", "danger"))
+        .then(() => this.appContextService.clearBusy());
+    }
+
+    public hwBoost() {
+        this.appContextService.setBusy();
+        this.controlService.hwBoost()
+        .then(this.alertService.createCallback("Hot Water boost on", "info"))
+        .catch(this.alertService.createCallback("Failed to set hot water boost", "danger"))
         .then(() => this.appContextService.clearBusy());
     }
 }

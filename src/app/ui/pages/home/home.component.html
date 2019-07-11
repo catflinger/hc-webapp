@@ -9,7 +9,7 @@
         <button type="button" class="btn btn-primary" [disabled]="appContext.busy" (click)="setOverride(60)">On 1 hour</button>
     </div>
     <div class="col-sm-3 mb-5">
-            <button type="button" class="btn btn-primary" [disabled]="appContext.busy" (click)="setOverride(120)">On 2 hours</button>
+            <button type="button" class="btn btn-primary" [disabled]="appContext.busy" (click)="hwBoost()">Bath boost</button>
         </div>
         <div class="col-sm-3 mb-5">
         <button type="button" class="btn btn-primary" [disabled]="appContext.busy" (click)="clearOverrides()">Cancel</button>

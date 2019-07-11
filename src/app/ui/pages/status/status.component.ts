@@ -30,7 +30,7 @@ export class StatusComponent implements OnInit, OnDestroy {
             this.appContextService.clearContext();
     }
 
-    ngOnInit() {
+    public ngOnInit() {
         this.alertService.clearAlerts();
 
         this.subs.push (
@@ -52,9 +52,16 @@ export class StatusComponent implements OnInit, OnDestroy {
         );
     }
 
-    ngOnDestroy() {
+    public ngOnDestroy() {
         this.subs.forEach((s) => {
             s.unsubscribe();
         });
+    }
+
+    public onRefresh() {
+        this.controlStateService.refresh();
+        this.overrideService.refresh();
+
+        // TO DO: how to refresh the sensors and config??
     }
 }
