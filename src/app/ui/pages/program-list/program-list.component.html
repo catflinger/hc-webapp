@@ -60,7 +60,7 @@
             <tbody>
                 <tr *ngFor="let dpc of config.getDatedConfig()">
                     <td>{{getProgramName(dpc.programId)}}</td>
-                    <td>{{dpc.timeOfYear.day}}/{{dpc.timeOfYear.month}}</td>
+                    <td>{{dpc.dayOfYear.day}}/{{dpc.dayOfYear.month}}</td>
                     <td><button class="card-btn btn-link" type="button" [disabled]="appContext.busy" (click)="onDeleteDatedProgram(dpc)">Delete</button></td>
                 </tr>
             </tbody>
