@@ -51,7 +51,7 @@ export class LoggerComponent implements OnInit, OnDestroy {
                 this.form = this.fb.group(
                     {
                         logDate: DayOfYear.fromDate(new Date()),
-                        sensors: this.fb.array(this.sensors.map((s, i) => true))
+                        sensors: this.fb.array(this.sensors.map(_ => this.fb.control(true))),
                     }
                 );
 

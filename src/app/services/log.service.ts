@@ -56,11 +56,12 @@ export class LogService {
     private fetchLog(dayOfYear: IDayOfYear): Promise<ILogExtract> {
         return this.http.get(`${this.apiBase}${this.logApi}?year=${dayOfYear.year}&month=${dayOfYear.month}&day=${dayOfYear.day}`)
             .pipe(
+                //tap(x => console.log(`LOG IS ${JSON.stringify(x)}`)),
                 map((data: any): ILogExtract => {
                     const apiResponse = new LogApiResponse(data);
                     return apiResponse.log;
-                })
+                }),
             )
-            .toPromise();
+            .toPromise()
     }
 }
