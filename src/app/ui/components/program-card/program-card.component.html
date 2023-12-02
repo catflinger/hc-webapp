@@ -17,7 +17,7 @@
                         </tr>
                         <tr>
                             <td class="text-right" colspan="2">
-                                <button type="button" class="btn btn-link mr-0 pr-0" [disabled]="appContext.busy" (click)="onEdit()">edit</button>
+                                <button type="button" class="btn btn-link me-0 pr-0" [disabled]="appContext.busy" (click)="onEdit()">edit</button>
                             </td>
                         </tr>
         
@@ -33,9 +33,9 @@
 
         <div class="row mt-3">
             <div class="col-12">
-                <button [disabled]="appContext.busy" (click)="onEditRules()" class="card-link btn-link">Edit Rules</button>
-                <button [disabled]="appContext.busy" (click)="onDelete()" class="card-link btn-link">Delete</button>
-                <button [disabled]="appContext.busy" (click)="onUse()" class="card-link btn-link">Use on...</button>
+                <button [disabled]="appContext.busy" (click)="onEditRules()" class="btn btn-link">Edit Rules</button>
+                <button [disabled]="appContext.busy" (click)="onDelete()" class="btn btn-link">Delete</button>
+                <button [disabled]="appContext.busy" (click)="onUse()" class="btn btn-link">Use on...</button>
             </div>
         </div>
     </div>
