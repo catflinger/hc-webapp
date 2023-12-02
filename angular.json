@@ -41,7 +41,6 @@
                                 "scripts": true,
                                 "hidden": true
                             },
-                            "extractCss": true,
                             "namedChunks": false,
                             "aot": true,
                             "extractLicenses": true,
@@ -157,5 +156,8 @@
             }
         }
     },
-    "defaultProject": "hc-webapp"
+    "defaultProject": "hc-webapp",
+    "cli": {
+      "analytics": "4893d711-10b5-4022-a5eb-67e30aa1877e"
+    }
 }

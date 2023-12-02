@@ -1,4 +1,4 @@
-import { ChartData, ChartDataSets } from 'chart.js';
+import { ChartData } from 'chart.js';
 import * as moment from "moment";
 
 import { ILogExtract, ILogEntry, ISensorConfig } from 'src/common/interfaces';
