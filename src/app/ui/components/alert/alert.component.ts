@@ -28,7 +28,7 @@ export class AlertComponent implements OnInit, OnDestroy {
         this.subs.forEach((s) => s.unsubscribe());
     }
 
-    private onCloseAlert(alert: IAlert) {
+    public onCloseAlert(alert: IAlert) {
         this.alertService.clearAlerts();
     }
 

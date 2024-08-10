@@ -73,11 +73,11 @@ export class SensorListComponent implements OnInit, OnDestroy {
         });
     }
 
-    private onEdit(id: string) {
+    public onEdit(id: string) {
         this.router.navigate(["/sensor-edit", id]);
     }
 
-    private onRemove(id: string) {
+    public onRemove(id: string) {
         this.appContextService.setBusy();
 
         this.configService.updateConfig((config: IConfigurationM) => {
@@ -95,7 +95,7 @@ export class SensorListComponent implements OnInit, OnDestroy {
 
     }
 
-    private onAdd(reading: ISensorReading) {
+    public onAdd(reading: ISensorReading) {
         this.appContextService.setBusy();
 
         this.configService.updateConfig((config: IConfigurationM) => {

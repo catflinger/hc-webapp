@@ -13,7 +13,7 @@ export class SensorReadingListOptions {
 export class SensorReadingListComponent implements OnInit {
 
     @Input()
-    public readings: ISensorReading[];
+    public readings: readonly ISensorReading[];
 
     @Input()
     public options: SensorReadingListOptions;

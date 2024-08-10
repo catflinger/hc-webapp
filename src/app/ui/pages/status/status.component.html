@@ -45,11 +45,11 @@
             </div>
 
             <div class="col-md">
-                <app-rule-list [rules]="activeProgram.rules"></app-rule-list>
+                <app-rule-list [rules]="activeProgram.getRules()"></app-rule-list>
             </div>
 
             <div class="col-md">
-                <app-rule-chart [rules]="activeProgram.rules"></app-rule-chart>
+                <app-rule-chart [rules]="activeProgram.getRules()"></app-rule-chart>
             </div>
         </div>
     </div>

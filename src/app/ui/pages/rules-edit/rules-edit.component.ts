@@ -66,15 +66,15 @@ export class RulesEditComponent implements OnInit , OnDestroy {
         });
     }
 
-    private onCardSelect(rule: IRuleConfig): void {
+    public onCardSelect(rule: IRuleConfig): void {
         this.appContextService.setRuleContext(rule.id);
     }
 
-    private onEdit(rule: IRuleConfig) {
+    public onEdit(rule: IRuleConfig) {
         this.navigateToRuleEdit(rule.id);
     }
 
-    private onDelete(rule: IRuleConfig) {
+    public onDelete(rule: IRuleConfig) {
 
         this.configService.updateConfig((config: IConfigurationM) => {
             let cancel = true;
@@ -95,11 +95,11 @@ export class RulesEditComponent implements OnInit , OnDestroy {
         });
     }
 
-    private onClose() {
+    public onClose() {
         this.router.navigate(["programs"]);
     }
 
-    private onAdd() {
+    public onAdd() {
         let ruleId: string = null;
 
         this.configService.updateConfig((config: IConfigurationM) => {
@@ -126,7 +126,7 @@ export class RulesEditComponent implements OnInit , OnDestroy {
         });
     }
 
-    private onChartClick(event: string[]) {
+    public onChartClick(event: string[]) {
         if (event && event.length) {
             this.appContextService.setRuleContext(event[0]);
         } else {

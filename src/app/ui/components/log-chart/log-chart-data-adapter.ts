@@ -13,7 +13,7 @@ export class LogChartDataAdapter {
         };
 
         // add one dataset each sensor
-        extract.sensors.forEach((sensorId: string, sensorIndex: number) => {
+        extract.sensors.forEach((sensorId: string) => {
             const sensorConfig = config.find((s) => s.id === sensorId);
 
             if (sensorConfig) {
@@ -21,6 +21,7 @@ export class LogChartDataAdapter {
                     label: sensorConfig ? sensorConfig.description : sensorId,
                     data: [],
                     borderColor: sensorConfig.displayColor,
+                    borderDash: sensorConfig.role === "hw" ? [8, 2] : [],
                     fill: false
                 };
                 result.datasets.push(dataset);

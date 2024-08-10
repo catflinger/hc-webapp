@@ -18,7 +18,7 @@ export class ProgramEditComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
     public config: IConfiguration;
     private program: IProgram;
-    private form: FormGroup;
+    public form: FormGroup;
     private programId: string;
 
     constructor(
@@ -68,7 +68,7 @@ export class ProgramEditComponent implements OnInit, OnDestroy {
         });
     }
 
-    private onSubmit() {
+    public onSubmit() {
         let newProgramId: string = null;
 
         this.configService.updateConfig((config: IConfigurationM) => {
@@ -105,7 +105,7 @@ export class ProgramEditComponent implements OnInit, OnDestroy {
         });
     }
 
-    private onCancel() {
+    public onCancel() {
         this.router.navigate(["programs"]);
     }
 

@@ -57,8 +57,8 @@ export class ProgramListComponent implements OnInit, OnDestroy {
         });
     }
 
-    public onSetNamedProgram(optionName: string, programId: string) {
-
+    public onSetNamedProgram(optionName: string, element: EventTarget) {
+        const programId: string = (element as HTMLSelectElement).value;
         this.appContextService.setBusy();
 
         this.configService.updateConfig((config: IConfigurationM) => {

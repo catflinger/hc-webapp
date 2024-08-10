@@ -41,10 +41,10 @@ export class RuleEditComponent implements OnInit, OnDestroy {
     public form: FormGroup;
     private params: Params;
 
-    private hours: Option[] = Array.from({length: 24}, (v, k) => new Option(k.toString(), k));
-    private minutes: Option[] = Array.from({length: 6}, (v, k) => new Option((k * 10).toString(), k * 10));
+    public readonly hours: Option[] = Array.from({length: 24}, (v, k) => new Option(k.toString(), k));
+    public readonly minutes: Option[] = Array.from({length: 6}, (v, k) => new Option((k * 10).toString(), k * 10));
 
-    private durations: Option[] = [
+    public readonly durations: Option[] = [
         { text: "30 minues", value: 30 },
         { text: "1 hour", value: 60 },
         { text: "2 hours", value: 120 },
@@ -52,7 +52,7 @@ export class RuleEditComponent implements OnInit, OnDestroy {
         { text: "4 hours", value: 240 },
     ] ;
 
-    private roles: RoleOption[] = [
+    public readonly roles: RoleOption[] = [
         { text: "", value: null },
         { text: "hot water", value: "hw" },
         { text: "bedroom", value: "bedroom" },

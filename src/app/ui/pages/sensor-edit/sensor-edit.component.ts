@@ -24,13 +24,13 @@ export class SensorEditComponent implements OnInit {
     private params: Params;
     private sensorId: string;
 
-    private roles: IOption[] = [
+    public roles: readonly IOption[] = [
         { text: "none", value: "" },
         { text: "hot water", value: "hw" },
         { text: "bedroom", value: "bedroom" },
     ];
 
-    private colors: IOption[] = [
+    public colors: readonly IOption[] = [
         { text: "black", value: "black" },
         { text: "grey", value: "silver" },
         { text: "red", value: "red" },
@@ -95,7 +95,7 @@ export class SensorEditComponent implements OnInit {
         );
     }
 
-    private onSubmit() {
+    public onSubmit() {
         this.configService.updateConfig((config: IConfigurationM) => {
             const sensor = config.sensorConfig.find((s) => s.id === this.sensorId);
 
@@ -124,11 +124,11 @@ export class SensorEditComponent implements OnInit {
         });
     }
 
-    private onCancel() {
+    public onCancel() {
         this.router.navigate(["/sensors"]);
     }
 
-    private findOption(options: IOption[], val: any): IOption {
+    private findOption(options: readonly IOption[], val: any): IOption {
         const result = options.find((r) => r.value === val);
 
         return result || options[0];

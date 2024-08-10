@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -6,24 +6,25 @@ import { AppContextService } from 'src/app/services/app-context.service';
 import { ConfigService } from 'src/app/services/config.service';
 import { LogService } from 'src/app/services/log.service';
 import { ILogExtract, ISensorConfig } from 'src/common/interfaces';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import { AlertService } from 'src/app/services/alert.service';
 import { AppContext } from 'src/app/services/app-context';
 import { DayOfYear } from 'src/common/configuration/day-of-year';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-logger',
     templateUrl: './logger.component.html',
     styleUrls: ['./logger.component.css']
 })
-export class LoggerComponent implements OnInit, OnDestroy {
+export class LoggerComponent implements OnInit, OnDestroy, AfterViewInit {
     private subs: Subscription[] = [];
     public logExtract: ILogExtract;
     public sensors: ReadonlyArray<ISensorConfig>;
-    private selectedSensors: ISensorConfig[] = [];
+    public selectedSensors: ISensorConfig[] = [];
     public appContext: AppContext = new AppContext(null, null, false);
 
-    private form: FormGroup;
+    public form: FormGroup;
 
     constructor(
         private appContextService: AppContextService,
@@ -34,7 +35,12 @@ export class LoggerComponent implements OnInit, OnDestroy {
         private fb: FormBuilder,
     ) {
         this.appContextService.clearContext();
-    }
+        this.form = this.fb.group({
+            logDate: DayOfYear.fromDate(new Date()),
+            sensors: this.fb.array([]),
+        }
+    );
+}
 
     public ngOnInit() {
         this.alertService.clearAlerts();
@@ -43,25 +49,35 @@ export class LoggerComponent implements OnInit, OnDestroy {
             this.appContext = appCtx;
         }));
 
-        this.subs.push(this.configService.getObservable()
-        .subscribe((config) => {
-            if (config) {
-                this.sensors = config.getSensorConfig();
+        this.subs.push(
+            this.configService.getObservable()
+            .pipe(
+                tap(config => {
+                    if (config) {
+                        this.sensors = config.getSensorConfig();
 
-                this.form = this.fb.group(
-                    {
-                        logDate: DayOfYear.fromDate(new Date()),
-                        sensors: this.fb.array(this.sensors.map(_ => this.fb.control(true))),
+                        const sensorArray: FormArray = this.form.get("sensors") as FormArray;
+
+                        sensorArray.clear();
+                        this.sensors.forEach(sensor => {
+                            sensorArray.push(this.fb.control(true))
+                        });
                     }
-                );
+                }),
+                switchMap(_ => {
+                    return this.form.valueChanges;
+                })
+            )
+            .subscribe((values) => {
+                if (values) {
+                    this.onChanges(values);
+                }
+            })
+        );
+    }
 
-                this.subs.push(
-                    this.form.valueChanges.subscribe((val) => this.onChanges(val)));
-
-                // trigger the value changes event immediately
-                this.onChanges(this.form.value);
-            }
-        }));
+    public ngAfterViewInit(): void {
+        this.onChanges(this.form.value);
     }
 
     public ngOnDestroy() {

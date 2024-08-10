@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, AfterViewInit, OnChanges, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, OnChanges, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Chart, ChartConfiguration } from "chart.js";
 
 import { ILogExtract, ISensorConfig } from 'src/common/interfaces';
@@ -7,7 +7,8 @@ import { LogChartDataAdapter } from './log-chart-data-adapter';
 @Component({
     selector: 'app-log-chart',
     templateUrl: './log-chart.component.html',
-    styleUrls: ['./log-chart.component.css']
+    styleUrls: ['./log-chart.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LogChartComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
     private chartConfig: ChartConfiguration;
@@ -17,13 +18,13 @@ export class LogChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     @Input()
     logExtract: ILogExtract;
 
-    @Input()
-    dateFilter: Date;
+    // @Input()
+    // dateFilter: Date;
 
     @Input()
     sensorFilter: ISensorConfig[];
 
-    constructor() {
+    constructor(private changeRef: ChangeDetectorRef) {
         this.adapter = new LogChartDataAdapter();
     }
 

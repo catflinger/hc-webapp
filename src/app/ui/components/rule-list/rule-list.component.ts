@@ -9,7 +9,7 @@ import { IRuleConfig } from 'src/common/interfaces';
 export class RuleListComponent implements OnInit {
 
     @Input()
-    public rules: IRuleConfig[];
+    public rules: readonly IRuleConfig[];
 
     constructor() { }
 

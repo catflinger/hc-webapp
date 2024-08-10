@@ -19,7 +19,7 @@ export class ProgramUseComponent implements OnInit, OnDestroy {
     private subs: Subscription[] = [];
     public config: IConfiguration;
     public program: IProgram;
-    private form: FormGroup;
+    public form: FormGroup;
     private programId: string;
 
     constructor(
