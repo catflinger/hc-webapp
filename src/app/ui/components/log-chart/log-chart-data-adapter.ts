@@ -21,7 +21,7 @@ export class LogChartDataAdapter {
                     label: sensorConfig ? sensorConfig.description : sensorId,
                     data: [],
                     borderColor: sensorConfig.displayColor,
-                    borderDash: sensorConfig.role === "hw" ? [8, 2] : [],
+                    borderDash: this.hasRole(sensorConfig) ? [8, 2] : [],
                     fill: false
                 };
                 result.datasets.push(dataset);
@@ -78,5 +78,9 @@ export class LogChartDataAdapter {
         result.datasets.push(CHdDataset);
 
         return result;
+    }
+
+    private hasRole(sensor: ISensorConfig): boolean {
+        return sensor.role === "hw" || sensor.role === "bedroom";
     }
 }
