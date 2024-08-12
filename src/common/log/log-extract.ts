@@ -5,7 +5,7 @@ import { LogEntry } from "./log-entry";
 
 export class LogExtract implements ILogExtract {
     public readonly dayOfYear: DayOfYear;
-    public readonly sensors: ReadonlyArray<string>;
+    public readonly sensorIds: ReadonlyArray<string>;
     public readonly entries: ReadonlyArray<ILogEntry>;
 
     constructor(data: any) {
@@ -21,7 +21,7 @@ export class LogExtract implements ILogExtract {
         data.entries.forEach((entry: any) => {
             entries.push(new LogEntry(entry));
         });
-        this.sensors = sensors;
+        this.sensorIds = sensors;
         this.entries = entries;
     }
 }

@@ -29,44 +29,10 @@ export class LogChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     }
 
     ngOnInit() {
+        this.chartConfig = this.initialConfig;
+
         const d = this.logExtract.dayOfYear;
-
-        this.chartConfig = {
-
-            type: "line",
-
-            data: {},
-
-            options: {
-
-                title: {
-                    display: true,
-                    text: `Logs for ${d.year}/${d.month}/${d.day}`,
-                },
-
-                legend: {
-                    position: 'bottom',
-                },
-
-                elements: {
-                    point: {
-                        radius: 0,
-                    },
-                },
-
-                scales: {
-                    xAxes: [{
-                        type: "time",
-                        time: {
-                            unit: "hour"
-                        },
-                        ticks: {
-                            source: "auto",
-                        },
-                    }]
-                },
-            }
-        };
+        this.chartConfig.options.title.text = `Logs for ${d.year}/${d.month}/${d.day}`;
     }
 
     ngAfterViewInit() {
@@ -107,5 +73,42 @@ export class LogChartComponent implements OnInit, AfterViewInit, OnChanges, OnDe
             this.chart.update();
         }
     }
+
+    private initialConfig: ChartConfiguration = {
+
+        type: "line",
+
+        data: {},
+
+        options: {
+
+            title: {
+                display: true,
+                text: "",
+            },
+
+            legend: {
+                position: 'bottom',
+            },
+
+            elements: {
+                point: {
+                    radius: 0,
+                },
+            },
+
+            scales: {
+                xAxes: [{
+                    type: "time",
+                    time: {
+                        unit: "hour"
+                    },
+                    ticks: {
+                        source: "auto",
+                    },
+                }]
+            },
+        }
+    };
 
 }

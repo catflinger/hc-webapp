@@ -147,7 +147,7 @@ export interface ILogExtract {
 
     dayOfYear: IDayOfYear;
 
-    sensors: ReadonlyArray<string>;
+    sensorIds: ReadonlyArray<string>;
     entries: ReadonlyArray<ILogEntry>;
 }
 
