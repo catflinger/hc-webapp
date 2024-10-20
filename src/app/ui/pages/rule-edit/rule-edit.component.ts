@@ -42,15 +42,19 @@ export class RuleEditComponent implements OnInit, OnDestroy {
     private params: Params;
 
     public readonly hours: Option[] = Array.from({length: 24}, (v, k) => new Option(k.toString(), k));
-    public readonly minutes: Option[] = Array.from({length: 6}, (v, k) => new Option((k * 10).toString(), k * 10));
+    public readonly minutes: Option[] = Array.from({length: 4}, (v, k) => new Option((k * 15).toString(), k * 15));
 
     public readonly durations: Option[] = [
-        { text: "15 minues", value: 15 },
-        { text: "30 minues", value: 30 },
+        { text: "15 minutes", value: 15 },
+        { text: "30 minutes", value: 30 },
+        { text: "45 minutes", value: 45 },
         { text: "1 hour", value: 60 },
+        { text: "1 hour 30 minutes", value: 90 },
         { text: "2 hours", value: 120 },
         { text: "3 hours", value: 180 },
         { text: "4 hours", value: 240 },
+        { text: "8 hours", value: 480 },
+        { text: "16 hours", value: 960 },
     ] ;
 
     public readonly roles: RoleOption[] = [
