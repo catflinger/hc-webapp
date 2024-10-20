@@ -7,11 +7,9 @@ import { ITimeOfDay } from 'src/common/interfaces';
 export class TimeOfDayPipe implements PipeTransform {
 
     transform(tod: ITimeOfDay, args?: any): string {
-        const hour: string = tod.hour.toString();
-        const minute: string = tod.minute.toString();
 
         return tod ?
-            tod.hour.toString() + ":" + tod.hour.toString() :
+            tod.hour.toString() + ":" + tod.minute.toString() :
             "";
     }
 }
